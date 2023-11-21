@@ -2,26 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+  :root {
+    --background: 240 44% 6%;
+    --foreground: 280 13% 95%;
+
+    --card: 240 44% 6%;
+    --card-foreground: 280 13% 95%;
+
+    --popover: 240 44% 6%;
+    --popover-foreground: 280 13% 95%;
+
+    --primary: 10 97% 59%;
+    --primary-foreground: 36 100% 98%;
+
+    --secondary: 143 65% 25%;
+    --secondary-foreground: 139 77% 97%;
+
+    --muted: 240 29% 10%;
+    --muted-foreground: 247 4% 43%;
+
+    --accent: 336 75% 36%;
+    --accent-foreground: 328 74% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 280 13% 95%;
+
+    --border: 240 29% 10%;
+    --input: 240 29% 10%;
+    --ring: 10 97% 59%;
+
+    --radius: 0.5rem;
+
+    --ACCENT-COLOR: #cd6060;
+    --LEFT-COLUMN-GAP: 17;
+    --RIGHT-COLUMN-GAP: 25;
+
+    --WIDTHPERCENTAGE: 1pt;
+  }
+
+  /* 'picton-blue': {
+    '50': '#F5FEFF', 
+    '100': '#E8F9FC', 
+    '200': '#C8F2FA', 
+    '300': '#A8E9F7', 
+    '400': '#6BD3F2', 
+    '500': '#30BCED', 
+    '600': '#27A2D6', 
+    '700': '#1B7BB3', 
+    '800': '#115A8F', 
+    '900': '#0A3E6B', 
+    '950': '#042245'
+} */
+
+  /* 'pomegranate': {
+  '50': '#FFFBF5', 
+  '100': '#FFF6EB', 
+  '200': '#FFE5CC', 
+  '300': '#FFCFAD', 
+  '400': '#FC986D', 
+  '500': '#FC5130', 
+  '600': '#E34627', 
+  '700': '#BD331A', 
+  '800': '#962211', 
+  '900': '#73170A', 
+  '950': '#4A0B04'
+} */
+
+  /* "neutral": {
+    'mine-shaft': {
+    '50': '#F4F2F5', 
+    '100': '#E9E8EB', 
+    '200': '#C8C6CC', 
+    '300': '#A9A6AD', 
+    '400': '#6B6A73', 
+    '500': '#303036', 
+    '600': '#272730', 
+    '700': '#1B1B29', 
+    '800': '#121221', 
+    '900': '#090917', 
+    '950': '#04040F'
+}
+  } */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.bg-overlay {
+  z-index: -99;
+  filter: blur(1px);
+  opacity: 20%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100svh;
+  --s: max(27vw, 200px); /* control the size */
+  --c1: #04040f;
+  --c2: #090917;
+  --c3: #121221;
+
+  background:
+    repeating-conic-gradient(from 30deg, #0000 0 120deg, var(--c3) 0 180deg)
+      calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+    repeating-conic-gradient(
+      from 30deg,
+      var(--c1) 0 60deg,
+      var(--c2) 0 120deg,
+      var(--c3) 0 180deg
+    );
+  background-size: var(--s) calc(var(--s) * 0.577);
+}
+
+.blob {
+  animation: rotate 2s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    scale: 1 1.5;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
