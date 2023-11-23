@@ -4,7 +4,7 @@ import TemplateWrapper from "@/components/template-wrapper";
 import ImageSection from "./sections/image-section";
 import ContactAndSocialSection from "./sections/contacts-and-socials-section";
 import SkillsSection from "./sections/skills-section";
-// import InterestsSection from "./sections/interests-section";
+import InterestsSection from "./sections/interests-section";
 // import AboutSection from "./sections/about-section";
 // import EducationSection from "./sections/education-section";
 // import ProjectsSection from "./sections/projects-section";
@@ -42,7 +42,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
                 <SkillsSection />
 
                 {/* INTERESTS SECTION */}
-                {/* <InterestsSection /> */}
+                <InterestsSection />
               </div>
             </div>
             {/* RIGHT COLUMN */}
