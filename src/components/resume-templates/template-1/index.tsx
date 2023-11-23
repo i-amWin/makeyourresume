@@ -1,9 +1,7 @@
-"use client";
-
 import TemplateWrapper from "@/components/template-wrapper";
 import { forwardRef } from "react";
 
-// import ImageSection from "./sections/image-section";
+import ImageSection from "./sections/image-section";
 // import ContactAndSocialSection from "./sections/contacts-and-social-section";
 // import SkillsSection from "./sections/skills-section";
 // import InterestsSection from "./sections/interests-section";
@@ -22,15 +20,20 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
         <div className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/596)]">
           <div
             ref={ref}
-            className="flex aspect-[596/842] w-full gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white py-[21pt] pl-[calc(var(--WIDTHPERCENTAGE)*15)]"
+            className="
+              flex aspect-[596/842] w-full 
+              gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
+              py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
+            "
           >
             {/* LEFT COLUMN */}
-            <div className="w-[122pt] space-y-[15pt]">
+            <div className="w-[calc(var(--WIDTHPERCENTAGE)*122)] space-y-[calc(var(--WIDTHPERCENTAGE)*15)]">
               {/* IMAGE SECTION */}
-              {/* <ImageSection /> */}
+              <ImageSection />
 
               <div
-                className="grid flex-1 gap-[var[]]"
+                // TODO: implement gap changing feature
+                className="grid flex-1 gap-[12pt]"
                 // style={{ gap: customStyles.LEFT_COLUMN_GAP + "pt" }}
               >
                 {/* CONTACTS AND SOCIAL SECTION */}
@@ -44,12 +47,13 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               </div>
             </div>
             {/* RIGHT COLUMN */}
-            <div className="flex-1 space-y-[15pt]">
+            <div className="flex-1 space-y-[calc(var(--WIDTHPERCENTAGE)*15)]">
               {/* NAME, TITLE & ABOUT SECTION */}
               {/* <AboutSection /> */}
 
               <div
-                className="grid"
+                // TODO: implement gap changing feature
+                className="grid gap-[15pt]"
                 style={
                   {
                     // gap: customStyles.RIGHT_COLUMN_GAP + "pt",

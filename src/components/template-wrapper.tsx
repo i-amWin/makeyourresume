@@ -16,6 +16,7 @@ function Wrapper({
           // "--WIDTHPERCENTAGE": (width * 0.75) / 596 + "pt",
         } as React.CSSProperties
       }
+      className="print:![--WIDTH:596pt]"
     >
       {width && children}
     </div>
