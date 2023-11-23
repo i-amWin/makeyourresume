@@ -1,8 +1,8 @@
-import TemplateWrapper from "@/components/template-wrapper";
 import { forwardRef } from "react";
 
+import TemplateWrapper from "@/components/template-wrapper";
 import ImageSection from "./sections/image-section";
-// import ContactAndSocialSection from "./sections/contacts-and-social-section";
+import ContactAndSocialSection from "./sections/contacts-and-socials";
 // import SkillsSection from "./sections/skills-section";
 // import InterestsSection from "./sections/interests-section";
 // import AboutSection from "./sections/about-section";
@@ -31,13 +31,9 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               {/* IMAGE SECTION */}
               <ImageSection />
 
-              <div
-                // TODO: implement gap changing feature
-                className="grid flex-1 gap-[12pt]"
-                // style={{ gap: customStyles.LEFT_COLUMN_GAP + "pt" }}
-              >
+              <div className="grid flex-1 gap-[calc(var(--WIDTHPERCENTAGE)*var(--LEFT-COLUMN-GAP))]">
                 {/* CONTACTS AND SOCIAL SECTION */}
-                {/* <ContactAndSocialSection /> */}
+                <ContactAndSocialSection />
 
                 {/* SKILLS SECTION */}
                 {/* <SkillsSection /> */}
@@ -51,15 +47,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               {/* NAME, TITLE & ABOUT SECTION */}
               {/* <AboutSection /> */}
 
-              <div
-                // TODO: implement gap changing feature
-                className="grid gap-[15pt]"
-                style={
-                  {
-                    // gap: customStyles.RIGHT_COLUMN_GAP + "pt",
-                  }
-                }
-              >
+              <div className="grid gap-[calc(var(--WIDTHPERCENTAGE)*var(--RIGHT-COLUMN-GAP))]">
                 {/* EXPERIENCE SECTION */}
                 {/* <ExperienceSection /> */}
 
