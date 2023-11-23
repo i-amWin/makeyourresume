@@ -34,11 +34,9 @@
 
     --radius: 0.5rem;
 
-    --ACCENT-COLOR: #cd6060;
+    --ACCENT-COLOR: 205, 96, 96;
     --LEFT-COLUMN-GAP: 17;
     --RIGHT-COLUMN-GAP: 25;
-
-    --WIDTHPERCENTAGE: 1pt;
   }
 
   /* 'picton-blue': {

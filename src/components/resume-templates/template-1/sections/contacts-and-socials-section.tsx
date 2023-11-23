@@ -148,9 +148,9 @@ function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
   return (
     <p className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*1)]">
       <span>
-        <Icon className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)] text-[--ACCENT-COLOR]" />
+        <Icon className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)] text-[rgb(var(--ACCENT-COLOR))]" />
       </span>
-      <span className="break-words text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug text-black">
+      <span className="break-words text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
         {text}
       </span>
     </p>

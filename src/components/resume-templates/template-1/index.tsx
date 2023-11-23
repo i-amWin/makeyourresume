@@ -2,8 +2,8 @@ import { forwardRef } from "react";
 
 import TemplateWrapper from "@/components/template-wrapper";
 import ImageSection from "./sections/image-section";
-import ContactAndSocialSection from "./sections/contacts-and-socials";
-// import SkillsSection from "./sections/skills-section";
+import ContactAndSocialSection from "./sections/contacts-and-socials-section";
+import SkillsSection from "./sections/skills-section";
 // import InterestsSection from "./sections/interests-section";
 // import AboutSection from "./sections/about-section";
 // import EducationSection from "./sections/education-section";
@@ -17,13 +17,16 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <section className="overflow-x-scroll shadow-2xl dark:shadow-white/[.25]">
       <TemplateWrapper>
-        <div className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/596)]">
+        <div
+          ref={ref}
+          className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/596)] print:![--WIDTHPERCENTAGE:1pt]"
+        >
           <div
-            ref={ref}
             className="
               flex aspect-[596/842] w-full 
               gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
               py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
+              text-black
             "
           >
             {/* LEFT COLUMN */}
@@ -36,7 +39,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
                 <ContactAndSocialSection />
 
                 {/* SKILLS SECTION */}
-                {/* <SkillsSection /> */}
+                <SkillsSection />
 
                 {/* INTERESTS SECTION */}
                 {/* <InterestsSection /> */}

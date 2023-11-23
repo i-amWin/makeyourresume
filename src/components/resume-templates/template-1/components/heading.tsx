@@ -15,7 +15,7 @@ export default function Heading({
   return (
     <h2
       className={cn(
-        "text-[calc(var(--WIDTHPERCENTAGE)*14)] font-extrabold uppercase text-[var(--ACCENT-COLOR)]",
+        "text-[calc(var(--WIDTHPERCENTAGE)*14)] font-extrabold uppercase text-[rgb(var(--ACCENT-COLOR))]",
         bottomLine && "relative pl-[calc(var(--WIDTHPERCENTAGE)*9)]",
         className,
       )}

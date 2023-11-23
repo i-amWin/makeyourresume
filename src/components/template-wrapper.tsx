@@ -13,10 +13,8 @@ function Wrapper({
       style={
         {
           "--WIDTH": width! * 0.75 + "pt",
-          // "--WIDTHPERCENTAGE": (width * 0.75) / 596 + "pt",
         } as React.CSSProperties
       }
-      className="print:![--WIDTH:596pt]"
     >
       {width && children}
     </div>

@@ -7,7 +7,7 @@ export default function ImageSection() {
   return (
     <div
       className="flex aspect-square w-full items-center justify-center overflow-hidden rounded"
-      style={{ border: `2px solid var(--ACCENT-COLOR)` }}
+      style={{ border: `2px solid rgb(var(--ACCENT-COLOR))` }}
     >
       {image === "" ? (
         <ImagePlaceholder />
@@ -24,7 +24,7 @@ function ImagePlaceholder() {
   const lastName = useLastName();
 
   return (
-    <p className="text-[calc(var(--WIDTHPERCENTAGE)*62)] font-semibold leading-none text-[var(--ACCENT-COLOR)]">
+    <p className="text-[calc(var(--WIDTHPERCENTAGE)*62)] font-semibold leading-none text-[rgb(var(--ACCENT-COLOR))]">
       {(firstName[0] || "J") + (lastName[0] || "D")}
     </p>
   );
