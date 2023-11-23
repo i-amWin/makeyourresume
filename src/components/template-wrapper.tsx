@@ -12,11 +12,12 @@ function Wrapper({
     <div
       style={
         {
-          "--WIDTH": width * 0.75 + "pt",
+          "--WIDTH": width! * 0.75 + "pt",
+          // "--WIDTHPERCENTAGE": (width * 0.75) / 596 + "pt",
         } as React.CSSProperties
       }
     >
-      {children}
+      {width && children}
     </div>
   );
 }
