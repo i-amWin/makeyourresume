@@ -20,7 +20,7 @@ export default function Heading({
         className,
       )}
       style={{
-        marginBottom: `${mb}pt`,
+        marginBottom: `calc(var(--WIDTHPERCENTAGE)*${mb})`,
       }}
     >
       {children}

@@ -1,3 +1,5 @@
+"use client";
+
 import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
 import { useInterests } from "@/store/resume-data-store";

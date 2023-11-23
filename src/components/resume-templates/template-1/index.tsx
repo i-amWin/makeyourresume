@@ -5,7 +5,7 @@ import ImageSection from "./sections/image-section";
 import ContactAndSocialSection from "./sections/contacts-and-socials-section";
 import SkillsSection from "./sections/skills-section";
 import InterestsSection from "./sections/interests-section";
-// import AboutSection from "./sections/about-section";
+import AboutSection from "./sections/about-section";
 // import EducationSection from "./sections/education-section";
 // import ProjectsSection from "./sections/projects-section";
 // import PersonalProfile from "./sections/personal-profile";
@@ -48,7 +48,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
             {/* RIGHT COLUMN */}
             <div className="flex-1 space-y-[calc(var(--WIDTHPERCENTAGE)*15)]">
               {/* NAME, TITLE & ABOUT SECTION */}
-              {/* <AboutSection /> */}
+              <AboutSection />
 
               <div className="grid gap-[calc(var(--WIDTHPERCENTAGE)*var(--RIGHT-COLUMN-GAP))]">
                 {/* EXPERIENCE SECTION */}
