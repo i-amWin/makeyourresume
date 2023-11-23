@@ -6,10 +6,10 @@ import ContactAndSocialSection from "./sections/contacts-and-socials-section";
 import SkillsSection from "./sections/skills-section";
 import InterestsSection from "./sections/interests-section";
 import AboutSection from "./sections/about-section";
+import ExperienceSection from "./sections/experience-section";
 // import EducationSection from "./sections/education-section";
 // import ProjectsSection from "./sections/projects-section";
 // import PersonalProfile from "./sections/personal-profile";
-// import ExperienceSection from "./sections/experience-section";
 
 // calc(var(--WIDTHPERCENTAGE)*122)
 
@@ -52,7 +52,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
 
               <div className="grid gap-[calc(var(--WIDTHPERCENTAGE)*var(--RIGHT-COLUMN-GAP))]">
                 {/* EXPERIENCE SECTION */}
-                {/* <ExperienceSection /> */}
+                <ExperienceSection />
 
                 {/* PROJECTS SECTION */}
                 {/* <ProjectsSection /> */}

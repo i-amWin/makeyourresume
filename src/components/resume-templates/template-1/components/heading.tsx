@@ -25,7 +25,7 @@ export default function Heading({
     >
       {children}
       {bottomLine && (
-        <span className="absolute left-0 top-[105%] block h-[calc(var(--WIDTHPERCENTAGE)*1)] w-full text-[var(--ACCENT-COLOR)]" />
+        <span className="absolute left-0 top-[105%] block h-[calc(var(--WIDTHPERCENTAGE)*1.1)] w-full bg-[rgb(var(--ACCENT-COLOR))]" />
       )}
     </h2>
   );
