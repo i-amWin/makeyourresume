@@ -71,6 +71,7 @@
   left: 0;
   width: 100%;
   min-height: 100svh;
+  height: 100%;
   --s: max(27vw, 200px); /* control the size */
 
   --c1: #ddd6fe;

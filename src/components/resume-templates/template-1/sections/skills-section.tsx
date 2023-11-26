@@ -58,7 +58,7 @@ export default function SkillsSection() {
         {(skills.length === 0 ? initialSkills : skills).map((skill) => (
           <li
             key={skill.id}
-            className="rounded border border-[rgba(var(--ACCENT-COLOR),.502)] bg-[rgba(var(--ACCENT-COLOR),.063)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
+            className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border border-[rgba(var(--ACCENT-COLOR),.502)] bg-[rgba(var(--ACCENT-COLOR),.063)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
           >
             {skill.name}
           </li>

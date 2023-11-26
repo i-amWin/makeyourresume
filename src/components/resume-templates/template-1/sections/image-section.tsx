@@ -6,8 +6,10 @@ export default function ImageSection() {
 
   return (
     <div
-      className="flex aspect-square w-full items-center justify-center overflow-hidden rounded"
-      style={{ border: `2px solid rgb(var(--ACCENT-COLOR))` }}
+      className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-[calc(var(--WIDTHPERCENTAGE)*3)]"
+      style={{
+        border: `calc(var(--WIDTHPERCENTAGE)*1) solid rgb(var(--ACCENT-COLOR))`,
+      }}
     >
       {image === "" ? (
         <ImagePlaceholder />
