@@ -8,7 +8,7 @@ import InterestsSection from "./sections/interests-section";
 import AboutSection from "./sections/about-section";
 import ExperienceSection from "./sections/experience-section";
 import ProjectsSection from "./sections/projects-section";
-// import EducationSection from "./sections/education-section";
+import EducationSection from "./sections/education-section";
 // import PersonalProfile from "./sections/personal-profile";
 
 // calc(var(--WIDTHPERCENTAGE)*122)
@@ -58,7 +58,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
                 <ProjectsSection />
 
                 {/* EDUCATION SECTION */}
-                {/* <EducationSection /> */}
+                <EducationSection />
 
                 {/* PERSONAL PROFILE */}
                 {/* <PersonalProfile /> */}

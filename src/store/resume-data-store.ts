@@ -3,7 +3,6 @@ import { immer } from "zustand/middleware/immer";
 import { nanoid } from "nanoid";
 
 // LABEL: TYPES
-
 interface IWorkExperience {
   id: string;
   companyName: string;
@@ -193,7 +192,7 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
         });
       });
     },
-  }))
+  })),
 );
 
 // LABEL: SELECTORS
