@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import TemplateWrapper from "@/components/template-wrapper";
+import TemplateWrapper from "@/components/resume-templates/components/template-wrapper";
 import ImageSection from "./sections/image-section";
 import ContactAndSocialSection from "./sections/contacts-and-socials-section";
 import SkillsSection from "./sections/skills-section";
