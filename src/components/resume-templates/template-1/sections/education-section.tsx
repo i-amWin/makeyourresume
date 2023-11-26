@@ -49,8 +49,7 @@ export default function EducationSection() {
                 style={{
                   color: "rgb(var(--ACCENT-COLOR))",
                 }}
-                size="calc(var(--WIDTHPERCENTAGE)*6)"
-                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)]"
+                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
                 <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-semibold leading-[1.1] text-[rgb(var(--ACCENT-COLOR))]">

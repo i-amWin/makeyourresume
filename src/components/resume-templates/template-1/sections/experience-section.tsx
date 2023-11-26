@@ -74,8 +74,7 @@ export default function ExperienceSection() {
               style={{
                 color: "rgb(var(--ACCENT-COLOR))",
               }}
-              size="calc(var(--WIDTHPERCENTAGE)*6)"
-              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)]"
+              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
 
             <div className="grid flex-1">
@@ -106,8 +105,7 @@ export default function ExperienceSection() {
                         style={{
                           color: "rgb(var(--ACCENT-COLOR))",
                         }}
-                        className="mt-[calc(var(--WIDTHPERCENTAGE)*3.33)]"
-                        size="calc(var(--WIDTHPERCENTAGE)*7)"
+                        className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
                       />
                       <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
                         {responsibility}

@@ -40,8 +40,7 @@ export default function PersonalProfileSection() {
               style={{
                 color: "rgb(var(--ACCENT-COLOR))",
               }}
-              size="calc(var(--WIDTHPERCENTAGE)*6)"
-              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)]"
+              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
             <p className="grid w-full grid-cols-3">
               <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold">

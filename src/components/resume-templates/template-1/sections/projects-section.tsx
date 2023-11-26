@@ -45,8 +45,7 @@ export default function ProjectsSection() {
               style={{
                 color: "rgb(var(--ACCENT-COLOR))",
               }}
-              size="calc(var(--WIDTHPERCENTAGE)*6)"
-              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)]"
+              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
             <div className="grid flex-1">
               <div className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*1.5)] leading-[1.1] text-[rgb(var(--ACCENT-COLOR))]">
