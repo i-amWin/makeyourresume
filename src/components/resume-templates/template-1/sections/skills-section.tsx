@@ -2,7 +2,7 @@
 import { useSkills } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 
-const initialSkills = [
+const defaultSkills = [
   {
     id: "skill1",
     name: "html5",
@@ -55,7 +55,7 @@ export default function SkillsSection() {
     <div>
       <Heading>Skills</Heading>
       <ul className="flex flex-wrap gap-[calc(var(--WIDTHPERCENTAGE)*6.5)]">
-        {(skills.length === 0 ? initialSkills : skills).map((skill) => (
+        {(skills.length === 0 ? defaultSkills : skills).map((skill) => (
           <li
             key={skill.id}
             className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border border-[rgba(var(--ACCENT-COLOR),.502)] bg-[rgba(var(--ACCENT-COLOR),.063)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"

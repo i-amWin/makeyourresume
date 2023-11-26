@@ -4,7 +4,7 @@ import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
 import { useInterests } from "@/store/resume-data-store";
 
-const initialInterest = [
+const defaultInterest = [
   {
     id: "interest1",
     name: "Reading",
@@ -25,7 +25,7 @@ export default function InterestsSection() {
     <div>
       <Heading>Interests</Heading>
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
-        {(interests.length === 0 ? initialInterest : interests).map(
+        {(interests.length === 0 ? defaultInterest : interests).map(
           (interest) => (
             <li key={interest.id}>
               <InterestText text={interest.name} />

@@ -70,7 +70,7 @@ function Address() {
   );
 }
 
-const initialSocials = [
+const defaultSocials = [
   {
     id: "social1",
     name: "linkedin",
@@ -93,7 +93,7 @@ function Socials() {
 
   return (
     <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      {(socials.length === 0 ? initialSocials : socials).map((social) => (
+      {(socials.length === 0 ? defaultSocials : socials).map((social) => (
         <li key={social.id}>
           <ContactAndSocialText icon={social.name} text={social.url} />
         </li>

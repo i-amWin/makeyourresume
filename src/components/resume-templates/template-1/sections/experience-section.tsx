@@ -4,7 +4,7 @@ import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
 
-const initialWorkExperiences = [
+const defaultWorkExperiences = [
   {
     id: "work-experience-1",
     companyName: "Tech Solutions Inc.",
@@ -62,7 +62,7 @@ export default function ExperienceSection() {
 
       <ul className="grid gap-[calc(var(--WIDTHPERCENTAGE)*9)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
         {(workExperiences.length === 0
-          ? initialWorkExperiences
+          ? defaultWorkExperiences
           : workExperiences
         ).map((experience) => (
           <li
