@@ -16,7 +16,7 @@ export default function Templates() {
           return (
             <li
               key={template.id}
-              className="origin-bottom overflow-hidden rounded border-2 border-primary transition-transform hover:scale-105"
+              className="origin-bottom overflow-hidden rounded border-2 transition-transform hover:scale-105"
             >
               <Link href={`/templates/${template.id}/resume-form`}>
                 <Image

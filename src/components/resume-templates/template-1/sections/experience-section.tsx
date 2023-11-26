@@ -1,3 +1,5 @@
+"use client";
+
 import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";

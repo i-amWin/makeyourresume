@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
-import ThemeProvider from "@/components/theme-provider";
+import ThemeProvider from "@/components/themes/theme-provider";
 // import Blob from "@/components/ui/blob";
 // import NextTopLoader from "nextjs-toploader";
 

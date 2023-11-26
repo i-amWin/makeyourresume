@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggler from "./theme-toggler";
+import ThemeToggler from "./themes/theme-toggler";
 
 export default function Header() {
   return (

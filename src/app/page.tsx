@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <section className="grid h-[100svh] place-content-center gap-4 text-center sm:gap-7">
-      {/* <Waves /> */}
+      <Waves />
       <h1 className="text-[clamp(2.25rem,1.1786rem+5.3571vw,3.75rem)] font-bold leading-[1.1]">
         Build Your Resume for <span className="text-primary">Free!</span>
       </h1>
