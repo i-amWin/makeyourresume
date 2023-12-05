@@ -24,10 +24,6 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
-
-    --ACCENT-COLOR: 205, 96, 96;
-    --LEFT-COLUMN-GAP: 15;
-    --RIGHT-COLUMN-GAP: 15;
   }
   .dark {
     --background: 224 71.4% 4.1%;
@@ -93,7 +89,7 @@
 }
 
 .dark .bg-overlay {
-  --opacity: 8%;
+  --opacity: 12%;
   --c1: #2e1065;
   --c2: #4c1d95;
   --c3: #5b21b6;

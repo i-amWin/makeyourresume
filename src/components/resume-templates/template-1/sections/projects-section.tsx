@@ -1,8 +1,7 @@
-"use client";
-
 import { useProjects } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
+import { useAccentColor } from "@/store/custom-styles-store";
 
 const defaultProjects = [
   {
@@ -26,6 +25,7 @@ const defaultProjects = [
 ];
 
 export default function ProjectsSection() {
+  const accentColor = useAccentColor();
   const projects = useProjects();
 
   return (
@@ -41,15 +41,18 @@ export default function ProjectsSection() {
             className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
           >
             <Circle
-              fill="currentColor"
-              style={{
-                color: "rgb(var(--ACCENT-COLOR))",
-              }}
+              fill={accentColor}
+              color={accentColor}
               className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
             <div className="grid flex-1">
-              <div className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*1.5)] leading-[1.1] text-[rgb(var(--ACCENT-COLOR))]">
-                <h3 className=" text-[calc(var(--WIDTHPERCENTAGE)*12)] font-semibold">
+              <div
+                className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*1.5)] leading-[1.1]"
+                style={{
+                  color: accentColor,
+                }}
+              >
+                <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
                   {project.projectName}
                 </h3>
                 <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
@@ -60,10 +63,15 @@ export default function ProjectsSection() {
                 {project.projectDescription}
               </p>
               <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-                <span className="font-medium">Source Code: </span>
+                <span className="font-semibold">Source Code: </span>
                 <span className="text-blue-500">{project.sourceLink}</span>
               </p>
-              <p className="text-[calc(var(--WIDTHPERCENTAGE)*8)] leading-snug text-[rgb(var(--ACCENT-COLOR))]">
+              <p
+                className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
+                style={{
+                  color: accentColor,
+                }}
+              >
                 {project.tags}
               </p>
             </div>

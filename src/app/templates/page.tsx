@@ -1,4 +1,4 @@
-import { templates } from "@/lib/data";
+import { templatesList } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default function Templates() {
         Select a template to get started.
       </p>
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {templates.map((template) => {
+        {templatesList.map((template) => {
           return (
             <li
               key={template.id}
@@ -20,7 +20,7 @@ export default function Templates() {
             >
               <Link href={`/templates/${template.id}/resume-form`}>
                 <Image
-                  src={template.image}
+                  src={template.previewImage}
                   alt={template.name}
                   sizes="(min-width: 1040px) 182px, (min-width: 780px) calc(25vw - 23px), (min-width: 640px) calc(33.33vw - 24px), calc(50vw - 27px)"
                 />

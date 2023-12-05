@@ -1,5 +1,4 @@
-"use client";
-
+import { useAccentColor } from "@/store/custom-styles-store";
 import {
   useAddress,
   useEmail,
@@ -20,7 +19,7 @@ import {
   Twitter,
 } from "lucide-react";
 
-export const icons = {
+export const icons: Record<string, LucideIcon> = {
   mail: Mail,
   mapPin: MapPin,
   phone: Phone,
@@ -31,7 +30,7 @@ export const icons = {
   instagram: Instagram,
   twitter: Twitter,
   other: Paperclip,
-} as const;
+};
 
 export default function ContactAndSocialSection() {
   return (
@@ -103,54 +102,59 @@ function Socials() {
 }
 
 function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
-  let Icon: LucideIcon;
+  const accentColor = useAccentColor();
 
-  switch (icon) {
-    case "mail":
-      Icon = icons.mail;
-      break;
+  let Icon: LucideIcon = icons[icon] || icons.other;
 
-    case "mapPin":
-      Icon = icons.mapPin;
-      break;
+  // switch (icon) {
+  //   case "mail":
+  //     Icon = icons.mail;
+  //     break;
 
-    case "phone":
-      Icon = icons.phone;
-      break;
+  //   case "mapPin":
+  //     Icon = icons.mapPin;
+  //     break;
 
-    case "linkedin":
-      Icon = icons.linkedin;
-      break;
+  //   case "phone":
+  //     Icon = icons.phone;
+  //     break;
 
-    case "github":
-      Icon = icons.github;
-      break;
+  //   case "linkedin":
+  //     Icon = icons.linkedin;
+  //     break;
 
-    case "portfolio":
-      Icon = icons.portfolio;
-      break;
+  //   case "github":
+  //     Icon = icons.github;
+  //     break;
 
-    case "facebook":
-      Icon = icons.facebook;
-      break;
+  //   case "portfolio":
+  //     Icon = icons.portfolio;
+  //     break;
 
-    case "instagram":
-      Icon = icons.instagram;
-      break;
+  //   case "facebook":
+  //     Icon = icons.facebook;
+  //     break;
 
-    case "twitter":
-      Icon = icons.twitter;
-      break;
+  //   case "instagram":
+  //     Icon = icons.instagram;
+  //     break;
 
-    default:
-      Icon = icons.other;
-      break;
-  }
+  //   case "twitter":
+  //     Icon = icons.twitter;
+  //     break;
+
+  //   default:
+  //     Icon = icons.other;
+  //     break;
+  // }
 
   return (
     <p className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*1)]">
       <span>
-        <Icon className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)] text-[rgb(var(--ACCENT-COLOR))]" />
+        <Icon
+          className="h-[calc(var(--WIDTHPERCENTAGE)*12)] w-[calc(var(--WIDTHPERCENTAGE)*12)]"
+          color={accentColor}
+        />
       </span>
       <span className="break-words text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
         {text}

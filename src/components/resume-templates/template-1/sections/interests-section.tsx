@@ -1,8 +1,7 @@
-"use client";
-
 import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
 import { useInterests } from "@/store/resume-data-store";
+import { useAccentColor } from "@/store/custom-styles-store";
 
 const defaultInterest = [
   {
@@ -38,13 +37,13 @@ export default function InterestsSection() {
 }
 
 function InterestText({ text }: { Icon?: LucideIcon; text: string }) {
+  const accentColor = useAccentColor();
   return (
     <p className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
-      <span className="text-[rgb(var(--ACCENT-COLOR))]">
-        {
-          <Heart className="h-[calc(var(--WIDTHPERCENTAGE)*15)] w-[calc(var(--WIDTHPERCENTAGE)*15)]" />
-        }
-      </span>
+      <Heart
+        className="h-[calc(var(--WIDTHPERCENTAGE)*15)] w-[calc(var(--WIDTHPERCENTAGE)*15)]"
+        color={accentColor}
+      />
       <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] capitalize leading-snug">
         {text}
       </span>

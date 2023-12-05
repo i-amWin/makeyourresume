@@ -1,8 +1,7 @@
-"use client";
-
 import { usePersonalProfiles } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
+import { useAccentColor } from "@/store/custom-styles-store";
 
 const defaultPersonalProfiles = [
   {
@@ -18,6 +17,7 @@ const defaultPersonalProfiles = [
 ];
 
 export default function PersonalProfileSection() {
+  const accentColor = useAccentColor();
   const personalProfiles = usePersonalProfiles();
 
   return (
@@ -36,18 +36,23 @@ export default function PersonalProfileSection() {
             className="flex w-4/5 gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
           >
             <Circle
-              fill="currentColor"
-              style={{
-                color: "rgb(var(--ACCENT-COLOR))",
-              }}
+              fill={accentColor}
+              color={accentColor}
               className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
             <p className="grid w-full grid-cols-3">
-              <span className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold">
+              <span
+                className="text-[calc(var(--WIDTHPERCENTAGE)*9)] font-semibold"
+                style={{
+                  color: accentColor,
+                }}
+              >
                 {personalProfile.fieldName}
               </span>
               <span className="col-span-2 flex text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                <span className="mx-[calc(var(--WIDTHPERCENTAGE)*4)]">:</span>
+                <span className="mx-[calc(var(--WIDTHPERCENTAGE)*4)] font-semibold">
+                  :
+                </span>
                 {personalProfile.fieldValue}
               </span>
             </p>

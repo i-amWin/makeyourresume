@@ -1,5 +1,4 @@
-"use client";
-
+import { useAccentColor } from "@/store/custom-styles-store";
 import {
   useAbout,
   useFirstName,
@@ -8,8 +7,12 @@ import {
 } from "@/store/resume-data-store";
 
 export default function AboutSection() {
+  const accentColor = useAccentColor();
   return (
-    <div className="bg-[rgb(var(--ACCENT-COLOR))] px-[calc(var(--WIDTHPERCENTAGE)*15)] py-[calc(var(--WIDTHPERCENTAGE)*8)] text-white">
+    <div
+      className="px-[calc(var(--WIDTHPERCENTAGE)*15)] py-[calc(var(--WIDTHPERCENTAGE)*8)] text-white"
+      style={{ backgroundColor: accentColor }}
+    >
       <Name />
       <ProfessionalTitle />
       <About />

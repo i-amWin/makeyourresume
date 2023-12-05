@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef } from "react";
 
 import TemplateWrapper from "@/components/resume-templates/components/template-wrapper";
@@ -10,10 +12,17 @@ import ExperienceSection from "./sections/experience-section";
 import ProjectsSection from "./sections/projects-section";
 import EducationSection from "./sections/education-section";
 import PersonalProfileSection from "./sections/personal-profile-section";
+import {
+  useLeftColumnGap,
+  useRightColumnGap,
+} from "@/store/custom-styles-store";
 
 // calc(var(--WIDTHPERCENTAGE)*122)
 
 const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
+  const leftColumnGap = useLeftColumnGap();
+  const rightColumnGap = useRightColumnGap();
+
   return (
     <section className="overflow-x-scroll shadow-2xl dark:shadow-white/[.25]">
       <TemplateWrapper>
@@ -34,7 +43,12 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               {/* IMAGE SECTION */}
               <ImageSection />
 
-              <div className="grid flex-1 gap-[calc(var(--WIDTHPERCENTAGE)*var(--LEFT-COLUMN-GAP))]">
+              <div
+                className="grid flex-1"
+                style={{
+                  gap: `calc(var(--WIDTHPERCENTAGE)*${leftColumnGap})`,
+                }}
+              >
                 {/* CONTACTS AND SOCIAL SECTION */}
                 <ContactAndSocialSection />
 
@@ -50,7 +64,12 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               {/* NAME, TITLE & ABOUT SECTION */}
               <AboutSection />
 
-              <div className="grid gap-[calc(var(--WIDTHPERCENTAGE)*var(--RIGHT-COLUMN-GAP))]">
+              <div
+                className="grid"
+                style={{
+                  gap: `calc(var(--WIDTHPERCENTAGE)*${rightColumnGap})`,
+                }}
+              >
                 {/* EXPERIENCE SECTION */}
                 <ExperienceSection />
 

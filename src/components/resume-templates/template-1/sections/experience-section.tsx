@@ -1,8 +1,7 @@
-"use client";
-
 import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
+import { useAccentColor } from "@/store/custom-styles-store";
 
 const defaultWorkExperiences = [
   {
@@ -52,6 +51,7 @@ const defaultWorkExperiences = [
 ];
 
 export default function ExperienceSection() {
+  const accentColor = useAccentColor();
   const workExperiences = useWorkExperiences();
 
   return (
@@ -70,26 +70,33 @@ export default function ExperienceSection() {
             className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
           >
             <Circle
-              fill="currentColor"
-              style={{
-                color: "rgb(var(--ACCENT-COLOR))",
-              }}
+              color={accentColor}
+              fill={accentColor}
               className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
             />
 
             <div className="grid flex-1">
-              <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1] text-[rgb(var(--ACCENT-COLOR))]">
+              <h3
+                className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
+                style={{ color: accentColor }}
+              >
                 {experience.jobTitle}
               </h3>
-              <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-snug">
+              <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
                 {experience.companyName}
               </p>
               <div className="flex justify-between">
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug text-[rgb(var(--ACCENT-COLOR))]">
+                <p
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                  style={{ color: accentColor }}
+                >
                   {experience.joiningDate + " - " + experience.leavingDate}
                 </p>
 
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug text-[rgb(var(--ACCENT-COLOR))]">
+                <p
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                  style={{ color: accentColor }}
+                >
                   {experience.location}
                 </p>
               </div>
@@ -102,9 +109,7 @@ export default function ExperienceSection() {
                       className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]"
                     >
                       <Square
-                        style={{
-                          color: "rgb(var(--ACCENT-COLOR))",
-                        }}
+                        color={accentColor}
                         className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
                       />
                       <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">

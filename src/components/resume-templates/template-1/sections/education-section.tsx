@@ -1,8 +1,7 @@
-"use client";
-
 import { useEducations } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
+import { useAccentColor } from "@/store/custom-styles-store";
 
 const defaultEducations = [
   {
@@ -16,7 +15,7 @@ const defaultEducations = [
     id: "education-2",
     courseName: "Bachelor of Science in Computer Science",
     collegeName: "University of Technology",
-    from: "22018",
+    from: "2018",
     to: "2022",
   },
   {
@@ -29,6 +28,7 @@ const defaultEducations = [
 ];
 
 export default function EducationSection() {
+  const accentColor = useAccentColor();
   const educations = useEducations();
 
   return (
@@ -45,20 +45,26 @@ export default function EducationSection() {
               className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
             >
               <Circle
-                fill="currentColor"
-                style={{
-                  color: "rgb(var(--ACCENT-COLOR))",
-                }}
+                fill={accentColor}
+                color={accentColor}
                 className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
-                <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-semibold leading-[1.1] text-[rgb(var(--ACCENT-COLOR))]">
+                <h3
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
+                  style={{
+                    color: accentColor,
+                  }}
+                >
                   {education.courseName}
                 </h3>
                 <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
                   {education.collegeName}
                 </p>
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic text-[rgb(var(--ACCENT-COLOR))]">
+                <p
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
+                  style={{ color: accentColor }}
+                >
                   {education.from + " - " + education.to}
                 </p>
               </div>
