@@ -33,8 +33,7 @@ function Name() {
     <h1 className="text-[calc(var(--WIDTHPERCENTAGE)*22)] font-medium leading-none">
       {isDoubleUnderscores(firstName) ? null : (
         <span>{firstName || "John"}</span>
-      )}
-
+      )}{" "}
       {isDoubleUnderscores(lastName) ? null : <span>{lastName || "Doe"}</span>}
     </h1>
   );
