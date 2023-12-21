@@ -2,6 +2,8 @@ import { useProjects } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
+import { useGetSkippedSection } from "@/store/skipped-section-store";
+import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 
 const defaultProjects = [
   {
@@ -25,8 +27,12 @@ const defaultProjects = [
 ];
 
 export default function ProjectsSection() {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
   const projects = useProjects();
+
+  const shouldSkip = useGetSkippedSection("projects");
+
+  if (shouldSkip) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -52,28 +58,42 @@ export default function ProjectsSection() {
                   color: accentColor,
                 }}
               >
-                <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
-                  {project.projectName}
-                </h3>
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                  ({project.liveLink})
-                </p>
+                {isDoubleUnderscores(project.projectName) ? null : (
+                  <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
+                    {project.projectName}
+                  </h3>
+                )}
+
+                {isDoubleUnderscores(project.liveLink) ? null : (
+                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
+                    ({project.liveLink})
+                  </p>
+                )}
               </div>
-              <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-                {project.projectDescription}
-              </p>
-              <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
-                <span className="font-semibold">Source Code: </span>
-                <span className="text-blue-500">{project.sourceLink}</span>
-              </p>
-              <p
-                className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
-                style={{
-                  color: accentColor,
-                }}
-              >
-                {project.tags}
-              </p>
+
+              {isDoubleUnderscores(project.projectDescription) ? null : (
+                <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+                  {project.projectDescription}
+                </p>
+              )}
+
+              {isDoubleUnderscores(project.sourceLink) ? null : (
+                <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+                  <span className="font-semibold">Source Code: </span>
+                  <span className="text-blue-500">{project.sourceLink}</span>
+                </p>
+              )}
+
+              {isDoubleUnderscores(project.tags) ? null : (
+                <p
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
+                  style={{
+                    color: accentColor,
+                  }}
+                >
+                  {project.tags}
+                </p>
+              )}
             </div>
           </li>
         ))}

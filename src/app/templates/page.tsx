@@ -1,29 +1,35 @@
-import { templatesList } from "@/lib/data";
-import Image from "next/image";
+import EditAccentColors from "@/components/edit-accent-colors";
 import Link from "next/link";
+import { templatesList } from "@/lib/templateList";
+import Reset from "@/components/reset";
 
 export default function Templates() {
   return (
-    <section className="py-16">
-      <h2 className="text-center text-[clamp(1.5625rem,0.9643rem+2.9911vw,2.4rem)] font-bold">
-        Select a Template
-      </h2>
-      <p className="mb-6 text-center text-[clamp(0.7538rem,0.5899rem+0.8192vw,0.9831rem)]">
-        Select a template to get started.
-      </p>
-      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <section className="py-20">
+      <Reset />
+      <div className="mb-4 flex flex-wrap items-center gap-4">
+        <div>
+          <h2 className="text-3xl/tight font-bold text-accent">
+            Select a Template
+          </h2>
+          <p className="text-base">
+            Please select a resume template to get started.
+          </p>
+        </div>
+        <EditAccentColors />
+      </div>
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {templatesList.map((template) => {
           return (
             <li
               key={template.id}
-              className="origin-bottom overflow-hidden rounded border-2 transition-transform hover:scale-105"
+              className="aspect-[596/842] origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
             >
-              <Link href={`/templates/${template.id}/resume-form`}>
-                <Image
-                  src={template.previewImage}
-                  alt={template.name}
-                  sizes="(min-width: 1040px) 182px, (min-width: 780px) calc(25vw - 23px), (min-width: 640px) calc(33.33vw - 24px), calc(50vw - 27px)"
-                />
+              <Link href={`/templates/${template.id}/editor/profile`}>
+                <div aria-hidden>
+                  <template.component />
+                </div>
+                <span className="sr-only">{template.name}</span>
               </Link>
             </li>
           );

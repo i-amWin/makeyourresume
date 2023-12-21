@@ -17,14 +17,12 @@ import {
   useRightColumnGap,
 } from "@/store/custom-styles-store";
 
-// calc(var(--WIDTHPERCENTAGE)*122)
-
 const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
-  const leftColumnGap = useLeftColumnGap();
-  const rightColumnGap = useRightColumnGap();
+  const leftColumnGap = useLeftColumnGap("template-1");
+  const rightColumnGap = useRightColumnGap("template-1");
 
   return (
-    <section className="overflow-x-scroll shadow-2xl dark:shadow-white/[.25]">
+    <section className="shadow-2xl dark:shadow-white/[.25]">
       <TemplateWrapper>
         <div
           ref={ref}
@@ -44,7 +42,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
               <ImageSection />
 
               <div
-                className="grid flex-1"
+                className="grid"
                 style={{
                   gap: `calc(var(--WIDTHPERCENTAGE)*${leftColumnGap})`,
                 }}
@@ -91,4 +89,5 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
 });
 
 Template1.displayName = "Template1";
+
 export default Template1;

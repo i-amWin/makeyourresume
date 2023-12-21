@@ -1,8 +1,11 @@
 import { useAccentColor } from "@/store/custom-styles-store";
 import { useFirstName, useImage, useLastName } from "@/store/resume-data-store";
+import { Image } from "lucide-react";
+import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { Frijole } from "next/font/google";
 
 export default function ImageSection() {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
 
   const image = useImage();
 
@@ -34,7 +37,12 @@ function ImagePlaceholder({ accentColor }: { accentColor: string }) {
         color: accentColor,
       }}
     >
-      {(firstName[0] || "J") + (lastName[0] || "D")}
+      {isDoubleUnderscores(firstName) || isDoubleUnderscores(lastName) ? (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <Image className="h-[calc(var(--WIDTHPERCENTAGE)*50)] w-[calc(var(--WIDTHPERCENTAGE)*50)] stroke-[calc(var(--WIDTHPERCENTAGE)*1.2)]" />
+      ) : (
+        (firstName[0] || "J") + (lastName[0] || "D")
+      )}
     </p>
   );
 }

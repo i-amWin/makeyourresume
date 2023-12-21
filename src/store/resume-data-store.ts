@@ -3,40 +3,44 @@ import { immer } from "zustand/middleware/immer";
 import { nanoid } from "nanoid";
 
 // LABEL: TYPES
-interface IWorkExperience {
+export type WorkResponsibility = {
+  id: string;
+  responsibility: string;
+};
+type WorkExperience = {
   id: string;
   companyName: string;
   jobTitle: string;
   location: string;
   joiningDate: string;
   leavingDate: string;
-  workResponsibilities: { id: string; responsibility: string }[];
-}
+  workResponsibilities: WorkResponsibility[];
+};
 
-interface IProject {
+type Project = {
   id: string;
   projectName: string;
   projectDescription: string;
-  liveLink?: string;
-  sourceLink?: string;
-  tags?: string;
-}
+  liveLink: string;
+  sourceLink: string;
+  tags: string;
+};
 
-interface IEducation {
+type Education = {
   id: string;
   courseName: string;
   collegeName: string;
   from: string;
   to: string;
-}
+};
 
-interface IPersonalProfile {
+type PersonalProfile = {
   id: string;
   fieldName: string;
   fieldValue: string;
-}
+};
 
-interface ResumeDataType {
+type ResumeDataType = {
   image: string;
   firstName: string;
   lastName: string;
@@ -48,17 +52,18 @@ interface ResumeDataType {
   socials: { id: string; name: string; url: string }[];
   skills: { id: string; name: string }[];
   interests: { id: string; name: string }[];
-  workExperiences: IWorkExperience[];
-  projects: IProject[];
-  educations: IEducation[];
-  personalProfiles: IPersonalProfile[];
-}
+  workExperiences: WorkExperience[];
+  projects: Project[];
+  educations: Education[];
+  personalProfiles: PersonalProfile[];
+};
 
-interface ResumeDataState {
+type ResumeDataState = {
   data: ResumeDataType;
-}
+};
 
-interface ResumeDataActions {
+type ResumeDataActions = {
+  setImage: (image: string) => void;
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
   setEmail: (email: string) => void;
@@ -66,14 +71,35 @@ interface ResumeDataActions {
   setProfessionalTitle: (professionalTitle: string) => void;
   setAbout: (about: string) => void;
   setAddress: (address: string) => void;
-  setSocial: (social: { name: string; url: string }) => void;
-  setSkill: (skill: string) => void;
-  setInterest: (interest: string) => void;
-  setWorkExperience: (workExperience: Omit<IWorkExperience, "id">) => void;
-  setProject: (project: Omit<IProject, "id">) => void;
-  setEducation: (education: Omit<IEducation, "id">) => void;
-  setPersonalProfile: (personalProfile: Omit<IPersonalProfile, "id">) => void;
-}
+  addSocial: () => void;
+  removeSocial: (id: string) => void;
+  setSocial: (social: { id: string; name: string; url: string }) => void;
+  addSkill: () => void;
+  removeSkill: (id: string) => void;
+  setSkill: (skill: { id: string; name: string }) => void;
+  addInterest: () => void;
+  removeInterest: (id: string) => void;
+  setInterest: (interest: { id: string; name: string }) => void;
+  addWorkExperience: () => void;
+  removeWorkExperience: (id: string) => void;
+  addWorkResponsibility: (id: string) => void;
+  removeWorkResponsibility: (id: string, responsibilityId: string) => void;
+  setWorkExperience: (workExperience: WorkExperience) => void;
+  setWorkResponsibility: (
+    id: string,
+    workResponsibility: WorkResponsibility,
+  ) => void;
+  addProject: () => void;
+  removeProject: (id: string) => void;
+  setProject: (project: Project) => void;
+  addEducation: () => void;
+  removeEducation: (id: string) => void;
+  setEducation: (education: Education) => void;
+  addPersonalProfile: () => void;
+  removePersonalProfile: (id: string) => void;
+  setPersonalProfile: (personalProfile: PersonalProfile) => void;
+  resetResumeData: () => void;
+};
 
 // LABEL: INITIAL STATE
 const initialState: ResumeDataType = {
@@ -101,176 +127,388 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
     data: initialState,
 
     // LABEL: ACTIONS
-    setFirstName: (firstName: string) => {
+    setImage(image) {
+      set((state) => {
+        state.data.image = image;
+      });
+    },
+    setFirstName: (firstName) => {
       set((state) => {
         state.data.firstName = firstName;
       });
     },
-    setLastName: (lastName: string) => {
+    setLastName: (lastName) => {
       set((state) => {
         state.data.lastName = lastName;
       });
     },
-    setEmail: (email: string) => {
+    setEmail: (email) => {
       set((state) => {
         state.data.email = email;
       });
     },
-    setPhone: (phone: string) => {
+    setPhone: (phone) => {
       set((state) => {
         state.data.phone = phone;
       });
     },
-    setProfessionalTitle: (professionalTitle: string) => {
+    setProfessionalTitle: (professionalTitle) => {
       set((state) => {
         state.data.professionalTitle = professionalTitle;
       });
     },
-    setAbout: (about: string) => {
+    setAbout: (about) => {
       set((state) => {
         state.data.about = about;
       });
     },
-    setAddress: (address: string) => {
+    setAddress: (address) => {
       set((state) => {
         state.data.address = address;
       });
     },
-    setSocial: (social: { name: string; url: string }) => {
+    addSocial() {
       set((state) => {
         state.data.socials.push({
           id: nanoid(),
-          ...social,
+          name: "",
+          url: "",
         });
       });
     },
-    setSkill: (skill: string) => {
+    removeSocial(id) {
+      set((state) => {
+        state.data.socials = state.data.socials.filter((s) => s.id !== id);
+      });
+    },
+    setSocial: (social) => {
+      set((state) => {
+        state.data.socials.map((s) => {
+          if (s.id === social.id) {
+            s.name = social.name;
+            s.url = social.url;
+          }
+        });
+      });
+    },
+    addSkill() {
       set((state) => {
         state.data.skills.push({
           id: nanoid(),
-          name: skill,
+          name: "",
         });
       });
     },
-    setInterest: (interest: string) => {
+    removeSkill(id) {
+      set((state) => {
+        state.data.skills = state.data.skills.filter((s) => s.id !== id);
+      });
+    },
+    setSkill: (skill) => {
+      set((state) => {
+        state.data.skills.map((s) => {
+          if (s.id === skill.id) {
+            s.name = skill.name;
+          }
+        });
+      });
+    },
+    addInterest() {
       set((state) => {
         state.data.interests.push({
           id: nanoid(),
-          name: interest,
+          name: "",
         });
       });
     },
-    setWorkExperience: (workExperience: Omit<IWorkExperience, "id">) => {
+    removeInterest(id) {
+      set((state) => {
+        state.data.interests = state.data.interests.filter((i) => i.id !== id);
+      });
+    },
+    setInterest: (interest) => {
+      set((state) => {
+        state.data.interests.map((i) => {
+          if (i.id === interest.id) {
+            i.name = interest.name;
+          }
+        });
+      });
+    },
+    addWorkExperience() {
       set((state) => {
         state.data.workExperiences.push({
           id: nanoid(),
-          ...workExperience,
+          companyName: "",
+          jobTitle: "",
+          location: "",
+          joiningDate: "",
+          leavingDate: "",
+          workResponsibilities: [{ id: nanoid(), responsibility: "" }],
         });
       });
     },
-    setProject: (project: Omit<IProject, "id">) => {
+    addWorkResponsibility(id) {
+      set((state) => {
+        state.data.workExperiences.map((w) => {
+          if (w.id === id) {
+            w.workResponsibilities.push({ id: nanoid(), responsibility: "" });
+          }
+        });
+      });
+    },
+    removeWorkExperience(id) {
+      set((state) => {
+        state.data.workExperiences = state.data.workExperiences.filter(
+          (w) => w.id !== id,
+        );
+      });
+    },
+    removeWorkResponsibility(id, responsibilityId) {
+      set((state) => {
+        state.data.workExperiences.map((w) => {
+          if (w.id === id) {
+            w.workResponsibilities = w.workResponsibilities.filter(
+              (r) => r.id !== responsibilityId,
+            );
+          }
+        });
+      });
+    },
+    setWorkExperience: (workExperience) => {
+      set((state) => {
+        state.data.workExperiences.map((w) => {
+          if ((w.id = workExperience.id)) {
+            w.companyName = workExperience.companyName;
+            w.jobTitle = workExperience.jobTitle;
+            w.location = workExperience.location;
+            w.joiningDate = workExperience.joiningDate;
+            w.leavingDate = workExperience.leavingDate;
+            w.workResponsibilities = workExperience.workResponsibilities;
+          }
+        });
+      });
+    },
+    setWorkResponsibility(id, workResponsibility) {
+      set((state) => {
+        state.data.workExperiences.map((w) => {
+          if (w.id === id) {
+            w.workResponsibilities.map((r) => {
+              if (r.id === workResponsibility.id) {
+                r.responsibility = workResponsibility.responsibility;
+              }
+            });
+          }
+        });
+      });
+    },
+    addProject() {
       set((state) => {
         state.data.projects.push({
           id: nanoid(),
-          ...project,
+          projectName: "",
+          projectDescription: "",
+          liveLink: "",
+          sourceLink: "",
+          tags: "",
         });
       });
     },
-    setEducation: (education: Omit<IEducation, "id">) => {
+    removeProject(id) {
+      set((state) => {
+        state.data.projects = state.data.projects.filter((p) => p.id !== id);
+      });
+    },
+    setProject: (project) => {
+      set((state) => {
+        state.data.projects.map((p) => {
+          if (p.id === project.id) {
+            p.projectName = project.projectName;
+            p.projectDescription = project.projectDescription;
+            p.liveLink = project.liveLink;
+            p.sourceLink = project.sourceLink;
+            p.tags = project.tags;
+          }
+        });
+      });
+    },
+    addEducation() {
       set((state) => {
         state.data.educations.push({
           id: nanoid(),
-          ...education,
+          courseName: "",
+          collegeName: "",
+          from: "",
+          to: "",
         });
       });
     },
-    setPersonalProfile: (personalProfile: Omit<IPersonalProfile, "id">) => {
+    removeEducation(id) {
+      set((state) => {
+        state.data.educations = state.data.educations.filter(
+          (e) => e.id !== id,
+        );
+      });
+    },
+    setEducation: (education) => {
+      set((state) => {
+        state.data.educations.map((e) => {
+          if (e.id === education.id) {
+            e.courseName = education.courseName;
+            e.collegeName = education.collegeName;
+            e.from = education.from;
+            e.to = education.to;
+          }
+        });
+      });
+    },
+    addPersonalProfile() {
       set((state) => {
         state.data.personalProfiles.push({
           id: nanoid(),
-          ...personalProfile,
+          fieldName: "",
+          fieldValue: "",
         });
+      });
+    },
+    removePersonalProfile(id) {
+      set((state) => {
+        state.data.personalProfiles = state.data.personalProfiles.filter(
+          (p) => p.id !== id,
+        );
+      });
+    },
+    setPersonalProfile: (personalProfile) => {
+      set((state) => {
+        state.data.personalProfiles.map((p) => {
+          if (p.id === personalProfile.id) {
+            p.fieldName = personalProfile.fieldName;
+            p.fieldValue = personalProfile.fieldValue;
+          }
+        });
+      });
+    },
+    resetResumeData() {
+      set((state) => {
+        state.data = initialState;
       });
     },
   })),
 );
 
-// LABEL: SELECTORS
+// IMAGE
 export const useImage = () => useResumeDataStore((state) => state.data.image);
+export const useSetImage = () => useResumeDataStore((state) => state.setImage);
 
+// FIRST NAME
 export const useFirstName = () =>
   useResumeDataStore((state) => state.data.firstName);
-
-export const useLastName = () =>
-  useResumeDataStore((state) => state.data.lastName);
-
-export const useEmail = () => useResumeDataStore((state) => state.data.email);
-
-export const usePhone = () => useResumeDataStore((state) => state.data.phone);
-
-export const useProfessionalTitle = () =>
-  useResumeDataStore((state) => state.data.professionalTitle);
-
-export const useAbout = () => useResumeDataStore((state) => state.data.about);
-
-export const useAddress = () =>
-  useResumeDataStore((state) => state.data.address);
-
-export const useSocials = () =>
-  useResumeDataStore((state) => state.data.socials);
-
-export const useSkills = () => useResumeDataStore((state) => state.data.skills);
-
-export const useInterests = () =>
-  useResumeDataStore((state) => state.data.interests);
-
-export const useWorkExperiences = () =>
-  useResumeDataStore((state) => state.data.workExperiences);
-
-export const useProjects = () =>
-  useResumeDataStore((state) => state.data.projects);
-
-export const useEducations = () =>
-  useResumeDataStore((state) => state.data.educations);
-
-export const usePersonalProfiles = () =>
-  useResumeDataStore((state) => state.data.personalProfiles);
-
-// LABEL: ACTIONS
 export const useSetFirstName = () =>
   useResumeDataStore((state) => state.setFirstName);
 
+// LAST NAME
+export const useLastName = () =>
+  useResumeDataStore((state) => state.data.lastName);
 export const useSetLastName = () =>
   useResumeDataStore((state) => state.setLastName);
 
+// EMAIL
+export const useEmail = () => useResumeDataStore((state) => state.data.email);
 export const useSetEmail = () => useResumeDataStore((state) => state.setEmail);
 
+// PHONE
+export const usePhone = () => useResumeDataStore((state) => state.data.phone);
 export const useSetPhone = () => useResumeDataStore((state) => state.setPhone);
 
+// PROFESSIONAL TITLE
+export const useProfessionalTitle = () =>
+  useResumeDataStore((state) => state.data.professionalTitle);
 export const useSetProfessionalTitle = () =>
   useResumeDataStore((state) => state.setProfessionalTitle);
 
+// ABOUT
+export const useAbout = () => useResumeDataStore((state) => state.data.about);
 export const useSetAbout = () => useResumeDataStore((state) => state.setAbout);
 
+// ADDRESS
+export const useAddress = () =>
+  useResumeDataStore((state) => state.data.address);
 export const useSetAddress = () =>
   useResumeDataStore((state) => state.setAddress);
 
+// SOCIALS
+export const useSocials = () =>
+  useResumeDataStore((state) => state.data.socials);
+export const useAddSocial = () =>
+  useResumeDataStore((state) => state.addSocial);
+export const useRemoveSocial = () =>
+  useResumeDataStore((state) => state.removeSocial);
 export const useSetSocial = () =>
   useResumeDataStore((state) => state.setSocial);
 
+// SKILLS
+export const useSkills = () => useResumeDataStore((state) => state.data.skills);
+export const useAddSkill = () => useResumeDataStore((state) => state.addSkill);
+export const useRemoveSkill = () =>
+  useResumeDataStore((state) => state.removeSkill);
 export const useSetSkill = () => useResumeDataStore((state) => state.setSkill);
 
+// INTERESTS
+export const useInterests = () =>
+  useResumeDataStore((state) => state.data.interests);
+export const useAddInterest = () =>
+  useResumeDataStore((state) => state.addInterest);
+export const useRemoveInterest = () =>
+  useResumeDataStore((state) => state.removeInterest);
 export const useSetInterest = () =>
   useResumeDataStore((state) => state.setInterest);
 
+// WORK EXPERIENCES
+export const useWorkExperiences = () =>
+  useResumeDataStore((state) => state.data.workExperiences);
+export const useAddWorkExperience = () =>
+  useResumeDataStore((state) => state.addWorkExperience);
+export const useRemoveWorkExperience = () =>
+  useResumeDataStore((state) => state.removeWorkExperience);
+export const useAddWorkResponsibility = () =>
+  useResumeDataStore((state) => state.addWorkResponsibility);
+export const useRemoveWorkResponsibility = () =>
+  useResumeDataStore((state) => state.removeWorkResponsibility);
 export const useSetWorkExperience = () =>
   useResumeDataStore((state) => state.setWorkExperience);
+export const useSetWorkResponsibility = () =>
+  useResumeDataStore((state) => state.setWorkResponsibility);
 
+// PROJECTS
+export const useProjects = () =>
+  useResumeDataStore((state) => state.data.projects);
+export const useAddProject = () =>
+  useResumeDataStore((state) => state.addProject);
+export const useRemoveProject = () =>
+  useResumeDataStore((state) => state.removeProject);
 export const useSetProject = () =>
   useResumeDataStore((state) => state.setProject);
 
+// EDUCATIONS
+export const useEducations = () =>
+  useResumeDataStore((state) => state.data.educations);
+export const useAddEducation = () =>
+  useResumeDataStore((state) => state.addEducation);
+export const useRemoveEducation = () =>
+  useResumeDataStore((state) => state.removeEducation);
 export const useSetEducation = () =>
   useResumeDataStore((state) => state.setEducation);
 
+// PERSONAL PROFILES
+export const usePersonalProfiles = () =>
+  useResumeDataStore((state) => state.data.personalProfiles);
+export const useAddPersonalProfile = () =>
+  useResumeDataStore((state) => state.addPersonalProfile);
+export const useRemovePersonalProfile = () =>
+  useResumeDataStore((state) => state.removePersonalProfile);
 export const useSetPersonalProfile = () =>
   useResumeDataStore((state) => state.setPersonalProfile);
+
+// RESET DATA
+export const useResetResumeData = () =>
+  useResumeDataStore((state) => state.resetResumeData);

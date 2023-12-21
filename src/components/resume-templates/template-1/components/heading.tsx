@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import { useAccentColor } from "@/store/custom-styles-store";
 
 export default function Heading({
@@ -13,7 +13,7 @@ export default function Heading({
   mb?: number;
   className?: string;
 }) {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
 
   return (
     <h2
@@ -30,7 +30,7 @@ export default function Heading({
       {children}
       {bottomLine && (
         <span
-          className="absolute left-0 top-[105%] block h-[calc(var(--WIDTHPERCENTAGE)*1.1)] w-full"
+          className="absolute left-0 top-[105%] block h-[max(calc(var(--WIDTHPERCENTAGE)*1.1),.6pt)] w-full"
           style={{
             backgroundColor: accentColor,
           }}

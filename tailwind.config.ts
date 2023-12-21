@@ -15,6 +15,17 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontSize: {
+      xs: "clamp(0.6075rem, 0.5962rem + 0.0565vw, 0.64rem)",
+      sm: "clamp(0.7294rem, 0.7048rem + 0.1228vw, 0.8rem)",
+      base: "clamp(0.875rem, 0.8315rem + 0.2174vw, 1rem)",
+      lg: "clamp(1.05rem, 0.9804rem + 0.3478vw, 1.25rem)",
+      xl: "clamp(1.26rem, 1.1548rem + 0.5261vw, 1.5625rem)",
+      "2xl": "clamp(1.5119rem, 1.3584rem + 0.7674vw, 1.9531rem)",
+      "3xl": "clamp(1.8144rem, 1.5963rem + 1.0902vw, 2.4413rem)",
+      "4xl": "clamp(2.1775rem, 1.8734rem + 1.5207vw, 3.0519rem)",
+      "5xl": "clamp(2.6125rem, 2.1942rem + 2.0913vw, 3.815rem)",
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -25,22 +36,27 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          dark: "hsl(var(--secondary-dark))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+          dark: "hsl(var(--destructive-dark))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+          dark: "hsl(var(--muted-dark))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          dark: "hsl(var(--accent-dark))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -49,32 +65,6 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        },
-        "my-neutral": {
-          "50": "#F4F2F5",
-          "100": "#E9E8EB",
-          "200": "#C8C6CC",
-          "300": "#A9A6AD",
-          "400": "#6B6A73",
-          "500": "#303036",
-          "600": "#272730",
-          "700": "#1B1B29",
-          "800": "#121221",
-          "900": "#090917",
-          "950": "#04040F",
-        },
-        "my-primary": {
-          "50": "#FFFBF5",
-          "100": "#FFF6EB",
-          "200": "#FFE5CC",
-          "300": "#FFCFAD",
-          "400": "#FC986D",
-          "500": "#FC5130",
-          "600": "#E34627",
-          "700": "#BD331A",
-          "800": "#962211",
-          "900": "#73170A",
-          "950": "#4A0B04",
         },
       },
       borderRadius: {

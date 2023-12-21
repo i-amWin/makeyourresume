@@ -2,6 +2,8 @@ import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
+import { useGetSkippedSection } from "@/store/skipped-section-store";
+import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 
 const defaultWorkExperiences = [
   {
@@ -51,8 +53,12 @@ const defaultWorkExperiences = [
 ];
 
 export default function ExperienceSection() {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
   const workExperiences = useWorkExperiences();
+
+  const shouldSkip = useGetSkippedSection("workExperiences");
+
+  if (shouldSkip) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -76,47 +82,62 @@ export default function ExperienceSection() {
             />
 
             <div className="grid flex-1">
-              <h3
-                className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
-                style={{ color: accentColor }}
-              >
-                {experience.jobTitle}
-              </h3>
-              <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
-                {experience.companyName}
-              </p>
-              <div className="flex justify-between">
-                <p
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+              {isDoubleUnderscores(experience.jobTitle) ? null : (
+                <h3
+                  className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
                   style={{ color: accentColor }}
                 >
-                  {experience.joiningDate + " - " + experience.leavingDate}
-                </p>
+                  {experience.jobTitle}
+                </h3>
+              )}
 
-                <p
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
-                  style={{ color: accentColor }}
-                >
-                  {experience.location}
+              {isDoubleUnderscores(experience.companyName) ? null : (
+                <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
+                  {experience.companyName}
                 </p>
+              )}
+
+              <div className="flex justify-between">
+                {isDoubleUnderscores(experience.joiningDate) &&
+                isDoubleUnderscores(experience.leavingDate) ? null : (
+                  <p
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                    style={{ color: accentColor }}
+                  >
+                    {experience.joiningDate + " - " + experience.leavingDate}
+                  </p>
+                )}
+
+                {isDoubleUnderscores(experience.location) ? null : (
+                  <p
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                    style={{ color: accentColor }}
+                  >
+                    {experience.location}
+                  </p>
+                )}
               </div>
 
               <ul>
                 {experience.workResponsibilities.map(
-                  ({ responsibility, id }) => (
-                    <li
-                      key={id}
-                      className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]"
-                    >
-                      <Square
-                        color={accentColor}
-                        className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
-                      />
-                      <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                        {responsibility}
-                      </p>
-                    </li>
-                  ),
+                  ({ responsibility, id }) => {
+                    if (isDoubleUnderscores(responsibility)) return null;
+
+                    return (
+                      <li
+                        key={id}
+                        className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]"
+                      >
+                        <Square
+                          color={accentColor}
+                          className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
+                        />
+                        <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
+                          {responsibility}
+                        </p>
+                      </li>
+                    );
+                  },
                 )}
               </ul>
             </div>

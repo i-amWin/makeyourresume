@@ -2,6 +2,7 @@ import { usePersonalProfiles } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
+import { useGetSkippedSection } from "@/store/skipped-section-store";
 
 const defaultPersonalProfiles = [
   {
@@ -17,8 +18,12 @@ const defaultPersonalProfiles = [
 ];
 
 export default function PersonalProfileSection() {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
   const personalProfiles = usePersonalProfiles();
+
+  const shouldSkip = useGetSkippedSection("personalProfile");
+
+  if (shouldSkip) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -33,7 +38,7 @@ export default function PersonalProfileSection() {
         ).map((personalProfile) => (
           <li
             key={personalProfile.id}
-            className="flex w-4/5 gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
+            className="flex gap-[calc(var(--WIDTHPERCENTAGE)*12)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
           >
             <Circle
               fill={accentColor}

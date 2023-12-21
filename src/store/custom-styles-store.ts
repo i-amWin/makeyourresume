@@ -7,19 +7,19 @@ import {
   leftColumnGaps,
   rightColumnGaps,
 } from "@/lib/data";
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 type CustomStylesState = {
-  accentColors: Record<string, string>;
-  leftColumnGaps: Record<string, number>;
-  rightColumnGaps: Record<string, number>;
+  accentColors: Record<TemplateId, string>;
+  leftColumnGaps: Record<TemplateId, number>;
+  rightColumnGaps: Record<TemplateId, number>;
 };
 
 type CustomStylesActions = {
-  setAccentColor: (templateId: string, color: string) => void;
-  setLeftColumnGap: (templateId: string, gap: number) => void;
-  setRightColumnGap: (templateId: string, gap: number) => void;
-  resetStyles: (TemplateId: string) => void;
+  setLeftColumnGap: (templateId: TemplateId, gap: number) => void;
+  setRightColumnGap: (templateId: TemplateId, gap: number) => void;
+  resetStyles: (templateId?: TemplateId) => void;
+  setAccentColors: (color: string, templateId?: TemplateId) => void;
+  resetAccentColors: (templateId?: TemplateId) => void;
 };
 
 const useCustomStylesStore = create<CustomStylesState & CustomStylesActions>()(
@@ -28,12 +28,7 @@ const useCustomStylesStore = create<CustomStylesState & CustomStylesActions>()(
     leftColumnGaps,
     rightColumnGaps,
 
-    //
-    setAccentColor: (templateId, color) => {
-      set((state) => {
-        state.accentColors[templateId] = color;
-      });
-    },
+    // Actions
     setLeftColumnGap(templateId, gap) {
       set((state) => {
         state.leftColumnGaps[templateId] = gap;
@@ -46,31 +41,60 @@ const useCustomStylesStore = create<CustomStylesState & CustomStylesActions>()(
     },
     resetStyles(templateId) {
       set((state) => {
-        state.accentColors[templateId] = accentColors[templateId];
-        state.leftColumnGaps[templateId] = leftColumnGaps[templateId];
-        state.rightColumnGaps[templateId] = rightColumnGaps[templateId];
+        if (templateId) {
+          state.leftColumnGaps[templateId] = leftColumnGaps[templateId];
+          state.rightColumnGaps[templateId] = rightColumnGaps[templateId];
+          state.accentColors[templateId] = accentColors[templateId];
+          return;
+        } else {
+          Object.keys(state.leftColumnGaps).forEach((templateId) => {
+            state.leftColumnGaps[templateId as TemplateId] =
+              leftColumnGaps[templateId as TemplateId];
+            state.rightColumnGaps[templateId as TemplateId] =
+              rightColumnGaps[templateId as TemplateId];
+            state.accentColors[templateId as TemplateId] =
+              accentColors[templateId as TemplateId];
+          });
+        }
+      });
+    },
+    setAccentColors(color, templateId) {
+      set((state) => {
+        if (templateId) {
+          state.accentColors[templateId] = color;
+        } else {
+          Object.keys(state.accentColors).forEach((templateId) => {
+            state.accentColors[templateId as TemplateId] = color;
+          });
+        }
+      });
+    },
+    resetAccentColors(templateId) {
+      set((state) => {
+        if (templateId) {
+          state.accentColors[templateId] = accentColors[templateId];
+        } else {
+          Object.keys(state.accentColors).forEach((templateId) => {
+            state.accentColors[templateId as TemplateId] =
+              accentColors[templateId as TemplateId];
+          });
+        }
       });
     },
   })),
 );
 
-export const useAccentColor = () => {
-  const templateId = useTemplateIdParam();
+export const useAccentColor = (templateId: TemplateId) => {
   return useCustomStylesStore((state) => state.accentColors[templateId]);
 };
 
-export const useLeftColumnGap = () => {
-  const templateId = useTemplateIdParam();
+export const useLeftColumnGap = (templateId: TemplateId) => {
   return useCustomStylesStore((state) => state.leftColumnGaps[templateId]);
 };
 
-export const useRightColumnGap = () => {
-  const templateId = useTemplateIdParam();
+export const useRightColumnGap = (templateId: TemplateId) => {
   return useCustomStylesStore((state) => state.rightColumnGaps[templateId]);
 };
-
-export const useSetAccentColor = () =>
-  useCustomStylesStore((state) => state.setAccentColor);
 
 export const useSetLeftColumnGap = () =>
   useCustomStylesStore((state) => state.setLeftColumnGap);
@@ -80,3 +104,9 @@ export const useSetRightColumnGap = () =>
 
 export const useResetStyles = () =>
   useCustomStylesStore((state) => state.resetStyles);
+
+export const useSetAccentColors = () =>
+  useCustomStylesStore((state) => state.setAccentColors);
+
+export const useResetAccentColors = () =>
+  useCustomStylesStore((state) => state.resetAccentColors);

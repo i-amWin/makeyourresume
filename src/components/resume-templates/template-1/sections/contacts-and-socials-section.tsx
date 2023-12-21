@@ -5,32 +5,10 @@ import {
   usePhone,
   useSocials,
 } from "@/store/resume-data-store";
-import {
-  Facebook,
-  Github,
-  Instagram,
-  Linkedin,
-  LucideIcon,
-  Mail,
-  MapPin,
-  Paperclip,
-  Phone,
-  User2,
-  Twitter,
-} from "lucide-react";
-
-export const icons: Record<string, LucideIcon> = {
-  mail: Mail,
-  mapPin: MapPin,
-  phone: Phone,
-  linkedin: Linkedin,
-  github: Github,
-  portfolio: User2,
-  facebook: Facebook,
-  instagram: Instagram,
-  twitter: Twitter,
-  other: Paperclip,
-};
+import { icons } from "@/lib/data";
+import { LucideIcon } from "lucide-react";
+import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { useGetSkippedSection } from "@/store/skipped-section-store";
 
 export default function ContactAndSocialSection() {
   return (
@@ -46,6 +24,8 @@ export default function ContactAndSocialSection() {
 function Email() {
   const email = useEmail();
 
+  if (isDoubleUnderscores(email)) return null;
+
   return (
     <ContactAndSocialText icon="mail" text={email || "john.doe@gmail.com"} />
   );
@@ -53,6 +33,9 @@ function Email() {
 
 function PhoneNumber() {
   const phone = usePhone();
+
+  if (isDoubleUnderscores(phone)) return null;
+
   return (
     <ContactAndSocialText icon="phone" text={phone || "+1 123-456-7890"} />
   );
@@ -60,6 +43,8 @@ function PhoneNumber() {
 
 function Address() {
   const address = useAddress();
+
+  if (isDoubleUnderscores(address)) return null;
 
   return (
     <ContactAndSocialText
@@ -90,63 +75,29 @@ const defaultSocials = [
 function Socials() {
   const socials = useSocials();
 
+  const shouldSkip = useGetSkippedSection("socials");
+
+  if (shouldSkip) return null;
+
   return (
     <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      {(socials.length === 0 ? defaultSocials : socials).map((social) => (
-        <li key={social.id}>
-          <ContactAndSocialText icon={social.name} text={social.url} />
-        </li>
-      ))}
+      {(socials.length === 0 ? defaultSocials : socials).map((social) => {
+        if (isDoubleUnderscores(social.url)) return null;
+
+        return (
+          <li key={social.id}>
+            <ContactAndSocialText icon={social.name} text={social.url} />
+          </li>
+        );
+      })}
     </ul>
   );
 }
 
 function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
 
   let Icon: LucideIcon = icons[icon] || icons.other;
-
-  // switch (icon) {
-  //   case "mail":
-  //     Icon = icons.mail;
-  //     break;
-
-  //   case "mapPin":
-  //     Icon = icons.mapPin;
-  //     break;
-
-  //   case "phone":
-  //     Icon = icons.phone;
-  //     break;
-
-  //   case "linkedin":
-  //     Icon = icons.linkedin;
-  //     break;
-
-  //   case "github":
-  //     Icon = icons.github;
-  //     break;
-
-  //   case "portfolio":
-  //     Icon = icons.portfolio;
-  //     break;
-
-  //   case "facebook":
-  //     Icon = icons.facebook;
-  //     break;
-
-  //   case "instagram":
-  //     Icon = icons.instagram;
-  //     break;
-
-  //   case "twitter":
-  //     Icon = icons.twitter;
-  //     break;
-
-  //   default:
-  //     Icon = icons.other;
-  //     break;
-  // }
 
   return (
     <p className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*1)]">
@@ -156,7 +107,7 @@ function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
           color={accentColor}
         />
       </span>
-      <span className="break-words text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
+      <span className="break-all text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
         {text}
       </span>
     </p>

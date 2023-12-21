@@ -2,6 +2,8 @@ import { useEducations } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
+import { useGetSkippedSection } from "@/store/skipped-section-store";
+import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 
 const defaultEducations = [
   {
@@ -28,8 +30,12 @@ const defaultEducations = [
 ];
 
 export default function EducationSection() {
-  const accentColor = useAccentColor();
+  const accentColor = useAccentColor("template-1");
   const educations = useEducations();
+
+  const shouldSkip = useGetSkippedSection("educations");
+
+  if (shouldSkip) return null;
 
   return (
     <div className="ml-[calc(var(--WIDTHPERCENTAGE)*24)]">
@@ -50,23 +56,32 @@ export default function EducationSection() {
                 className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
-                <h3
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
-                  style={{
-                    color: accentColor,
-                  }}
-                >
-                  {education.courseName}
-                </h3>
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
-                  {education.collegeName}
-                </p>
-                <p
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
-                  style={{ color: accentColor }}
-                >
-                  {education.from + " - " + education.to}
-                </p>
+                {isDoubleUnderscores(education.courseName) ? null : (
+                  <h3
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
+                    style={{
+                      color: accentColor,
+                    }}
+                  >
+                    {education.courseName}
+                  </h3>
+                )}
+
+                {isDoubleUnderscores(education.collegeName) ? null : (
+                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
+                    {education.collegeName}
+                  </p>
+                )}
+
+                {isDoubleUnderscores(education.from) &&
+                isDoubleUnderscores(education.to) ? null : (
+                  <p
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
+                    style={{ color: accentColor }}
+                  >
+                    {education.from + " - " + education.to}
+                  </p>
+                )}
               </div>
             </li>
           ),

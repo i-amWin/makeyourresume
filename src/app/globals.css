@@ -5,46 +5,30 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 0 0% 7%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 0 0% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 42 100% 50%;
+    --primary-dark: 42 100% 45%;
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 7%;
+    --secondary-dark: 0 0% 18%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 210 100% 14%;
+    --accent-dark: 210 100% 11.7%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 218.6 14.3% 80%;
+    --muted-dark: 218.6 14.3% 75%;
+    --muted-foreground: 0 0% 20%;
     --destructive: 0 84.2% 60.2%;
+    --destructive-dark: 0 84.2% 50.2%;
     --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
+    --border: 220 13% 89%;
+    --input: 220 13% 89%;
+    --ring: 42 100% 50%;
     --radius: 0.5rem;
-  }
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
   }
 }
 
@@ -56,101 +40,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-.bg-overlay {
-  --opacity: 50%;
-
-  z-index: -99;
-  filter: blur(1px);
-  opacity: var(--opacity);
-  position: absolute;
-
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 100svh;
-  height: 100%;
-  --s: max(27vw, 200px); /* control the size */
-
-  --c1: #ddd6fe;
-  --c2: #ede9fe;
-  --c3: #f5f3ff;
-
-  background:
-    repeating-conic-gradient(from 30deg, #0000 0 120deg, var(--c3) 0 180deg)
-      calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
-    repeating-conic-gradient(
-      from 30deg,
-      var(--c1) 0 60deg,
-      var(--c2) 0 120deg,
-      var(--c3) 0 180deg
-    );
-  background-size: var(--s) calc(var(--s) * 0.577);
-}
-
-.dark .bg-overlay {
-  --opacity: 12%;
-  --c1: #2e1065;
-  --c2: #4c1d95;
-  --c3: #5b21b6;
-}
-
-.blob {
-  animation: rotate 2s ease-in-out infinite;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    scale: 1 1.5;
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 'picton-blue': {
-  '50': '#F5FEFF', 
-  '100': '#E8F9FC', 
-  '200': '#C8F2FA', 
-  '300': '#A8E9F7', 
-  '400': '#6BD3F2', 
-  '500': '#30BCED', 
-  '600': '#27A2D6', 
-  '700': '#1B7BB3', 
-  '800': '#115A8F', 
-  '900': '#0A3E6B', 
-  '950': '#042245'
-} */
-
-/* 'pomegranate': {
-'50': '#FFFBF5', 
-'100': '#FFF6EB', 
-'200': '#FFE5CC', 
-'300': '#FFCFAD', 
-'400': '#FC986D', 
-'500': '#FC5130', 
-'600': '#E34627', 
-'700': '#BD331A', 
-'800': '#962211', 
-'900': '#73170A', 
-'950': '#4A0B04'
-} */
-
-/* "neutral": {
-  'mine-shaft': {
-  '50': '#F4F2F5', 
-  '100': '#E9E8EB', 
-  '200': '#C8C6CC', 
-  '300': '#A9A6AD', 
-  '400': '#6B6A73', 
-  '500': '#303036', 
-  '600': '#272730', 
-  '700': '#1B1B29', 
-  '800': '#121221', 
-  '900': '#090917', 
-  '950': '#04040F'
-}
-} */
