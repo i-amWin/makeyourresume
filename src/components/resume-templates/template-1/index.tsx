@@ -17,12 +17,18 @@ import {
   useRightColumnGap,
 } from "@/store/custom-styles-store";
 
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
+
 const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
   const leftColumnGap = useLeftColumnGap("template-1");
   const rightColumnGap = useRightColumnGap("template-1");
 
   return (
-    <section className="shadow-2xl dark:shadow-white/[.25]">
+    <section
+      className={`${inter.className} shadow-2xl dark:shadow-white/[.25]`}
+    >
       <TemplateWrapper>
         <div
           ref={ref}
