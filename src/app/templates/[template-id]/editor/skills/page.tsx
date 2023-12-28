@@ -2,7 +2,6 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
@@ -10,6 +9,7 @@ import {
   useAddSkill,
   useRemoveSkill,
   useSetSkill,
+  useSetSkills,
 } from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,10 @@ import SectionHeading from "@/components/form/section-heading";
 import FormInput from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
+
+import { arrayMove } from "@dnd-kit/sortable";
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import DNDContexts from "@/components/form/dnd-contexts";
 
 export default function Skills() {
   const templateId = useTemplateIdParam();
@@ -53,7 +57,7 @@ export default function Skills() {
         clicking on the trash icon.
       </p>
 
-      <form className="space-y-2">
+      <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">Add your Skills.</p>
 
         <SkillsGroup />
@@ -65,15 +69,25 @@ export default function Skills() {
 function SkillsGroup() {
   const addSkill = useAddSkill();
   const skills = useSkills();
+  const setSkills = useSetSkills();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setSkills(arrayMove(skills, oldIndex, newIndex));
+  };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
-        {skills.map((skill) => (
-          <Fragment key={skill.id}>
-            <SkillEditor {...skill} />
-          </Fragment>
-        ))}
+        <DNDContexts
+          items={skills.map((skill) => ({ id: skill.id }))}
+          setItems={setItems}
+        >
+          {skills.map((skill) => (
+            <Fragment key={skill.id}>
+              <SkillEditor {...skill} />
+            </Fragment>
+          ))}
+        </DNDContexts>
       </ul>
 
       <Button
@@ -95,18 +109,26 @@ function SkillEditor({ id, name }: SkillEditorProps) {
   const removeSkill = useRemoveSkill();
 
   return (
-    <li className="flex flex-wrap items-end gap-2">
+    <DraggableItemWrapper
+      id={id}
+      preview={<SkillPreview name={name} />}
+      onRemoveClick={() => removeSkill(id)}
+      removeSrOnlyLabel={`Remove ${name} skill`}
+    >
       <FormInput
         label="Skill Name"
         placeholder="Enter your skill name"
         useValue={() => name}
         useSetValue={() => (value: string) => setSkill({ id, name: value })}
       />
+    </DraggableItemWrapper>
+  );
+}
 
-      <Button size="icon" variant="destructive" onClick={() => removeSkill(id)}>
-        <Trash2 />
-        <span className="sr-only">Remove {name} skill</span>
-      </Button>
-    </li>
+function SkillPreview({ name }: { name: string }) {
+  return (
+    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
+      <p className="text-sm uppercase">{name}</p>
+    </div>
   );
 }

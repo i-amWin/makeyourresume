@@ -2,7 +2,6 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
@@ -10,6 +9,7 @@ import {
   useAddEducation,
   useRemoveEducation,
   useSetEducation,
+  useSetEductions,
 } from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,9 @@ import SectionHeading from "@/components/form/section-heading";
 import FormInput from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { Separator } from "@/components/ui/separator";
+import { arrayMove } from "@dnd-kit/sortable";
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import DNDContexts from "@/components/form/dnd-contexts";
 
 export default function Educations() {
   const templateId = useTemplateIdParam();
@@ -54,7 +56,7 @@ export default function Educations() {
         clicking on the trash icon.
       </p>
 
-      <form className="space-y-2">
+      <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">
           Add your Educational Qualifications.
         </p>
@@ -68,15 +70,25 @@ export default function Educations() {
 function EducationsGroup() {
   const addEducation = useAddEducation();
   const educations = useEducations();
+  const setEducations = useSetEductions();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setEducations(arrayMove(educations, oldIndex, newIndex));
+  };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
-        {educations.map((education) => (
-          <Fragment key={education.id}>
-            <EducationEditor {...education} />
-          </Fragment>
-        ))}
+        <DNDContexts
+          items={educations.map((education) => ({ id: education.id }))}
+          setItems={setItems}
+        >
+          {educations.map((education) => (
+            <Fragment key={education.id}>
+              <EducationEditor {...education} />
+            </Fragment>
+          ))}
+        </DNDContexts>
       </ul>
 
       <Button
@@ -98,59 +110,75 @@ function EducationEditor(education: EducationEditorProps) {
   const removeEducation = useRemoveEducation();
 
   return (
-    <li className="grid items-end gap-2">
-      <FormInput
-        label="Degree / Course Name"
-        placeholder="Enter your course name"
-        useValue={() => education.courseName}
-        useSetValue={() => (value) => {
-          setEducation({ ...education, courseName: value });
-        }}
-      />
-
-      <FormInput
-        label="Institute / College Name"
-        placeholder="Enter your college name"
-        useValue={() => education.collegeName}
-        useSetValue={() => (value) => {
-          setEducation({ ...education, collegeName: value });
-        }}
-      />
-
-      <div className="flex flex-wrap items-end justify-between gap-2">
+    <DraggableItemWrapper
+      id={education.id}
+      preview={<EducationPreview {...education} />}
+      onRemoveClick={() => removeEducation(education.id)}
+      removeSrOnlyLabel={`Remove ${education.courseName} from your resume`}
+    >
+      <div className="grid items-end gap-2">
         <FormInput
-          label="Start Date"
-          placeholder="Enter your start date"
-          useValue={() => education.from}
+          label="Degree / Course Name"
+          placeholder="Enter your course name"
+          useValue={() => education.courseName}
           useSetValue={() => (value) => {
-            setEducation({ ...education, from: value });
+            setEducation({ ...education, courseName: value });
           }}
-          className="min-w-[10rem] flex-1"
         />
 
         <FormInput
-          label="End Date"
-          placeholder="Enter your end date"
-          useValue={() => education.to}
+          label="Institute / College Name"
+          placeholder="Enter your college name"
+          useValue={() => education.collegeName}
           useSetValue={() => (value) => {
-            setEducation({ ...education, to: value });
+            setEducation({ ...education, collegeName: value });
           }}
-          className="min-w-[10rem] flex-1"
         />
 
-        <Button
-          size="icon"
-          variant="destructive"
-          onClick={() => removeEducation(education.id)}
-        >
-          <Trash2 />
-          <span className="sr-only">
-            Remove {education.courseName} from your resume
-          </span>
-        </Button>
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <FormInput
+            label="Start Date"
+            placeholder="Enter your start date"
+            useValue={() => education.from}
+            useSetValue={() => (value) => {
+              setEducation({ ...education, from: value });
+            }}
+            className="min-w-[10rem] flex-1"
+          />
+
+          <FormInput
+            label="End Date"
+            placeholder="Enter your end date"
+            useValue={() => education.to}
+            useSetValue={() => (value) => {
+              setEducation({ ...education, to: value });
+            }}
+            className="min-w-[10rem] flex-1"
+          />
+        </div>
       </div>
+    </DraggableItemWrapper>
+  );
+}
 
-      <Separator className="mt-2" />
-    </li>
+function EducationPreview({
+  courseName,
+  collegeName,
+  from,
+  to,
+}: EducationEditorProps) {
+  return (
+    <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
+      <div className="flex gap-2">
+        <p>{courseName}</p>
+        {collegeName && <span>|</span>}
+        <p>{collegeName}</p>
+      </div>
+      <div className="flex gap-2">
+        <p>{from}</p>
+        {to && <span>-</span>}
+        <p>{to}</p>
+      </div>
+    </div>
   );
 }

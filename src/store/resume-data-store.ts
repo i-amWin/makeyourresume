@@ -74,12 +74,15 @@ type ResumeDataActions = {
   addSocial: () => void;
   removeSocial: (id: string) => void;
   setSocial: (social: { id: string; name: string; url: string }) => void;
+  setSocials: (socials: { id: string; name: string; url: string }[]) => void;
   addSkill: () => void;
   removeSkill: (id: string) => void;
   setSkill: (skill: { id: string; name: string }) => void;
+  setSkills: (skills: { id: string; name: string }[]) => void;
   addInterest: () => void;
   removeInterest: (id: string) => void;
   setInterest: (interest: { id: string; name: string }) => void;
+  setInterests: (interests: { id: string; name: string }[]) => void;
   addWorkExperience: () => void;
   removeWorkExperience: (id: string) => void;
   addWorkResponsibility: (id: string) => void;
@@ -89,15 +92,23 @@ type ResumeDataActions = {
     id: string,
     workResponsibility: WorkResponsibility,
   ) => void;
+  setWorkExperiences: (workExperiences: WorkExperience[]) => void;
+  setWorkResponsibilities: (
+    id: string,
+    workResponsibilities: WorkResponsibility[],
+  ) => void;
   addProject: () => void;
   removeProject: (id: string) => void;
   setProject: (project: Project) => void;
+  setProjects: (projects: Project[]) => void;
   addEducation: () => void;
   removeEducation: (id: string) => void;
   setEducation: (education: Education) => void;
+  setEducations: (educations: Education[]) => void;
   addPersonalProfile: () => void;
   removePersonalProfile: (id: string) => void;
   setPersonalProfile: (personalProfile: PersonalProfile) => void;
+  setPersonalProfiles: (personalProfiles: PersonalProfile[]) => void;
   resetResumeData: () => void;
 };
 
@@ -191,6 +202,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
         });
       });
     },
+    setSocials(socials) {
+      set((state) => {
+        state.data.socials = socials;
+      });
+    },
     addSkill() {
       set((state) => {
         state.data.skills.push({
@@ -213,6 +229,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
         });
       });
     },
+    setSkills(skills) {
+      set((state) => {
+        state.data.skills = skills;
+      });
+    },
     addInterest() {
       set((state) => {
         state.data.interests.push({
@@ -233,6 +254,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
             i.name = interest.name;
           }
         });
+      });
+    },
+    setInterests(interests) {
+      set((state) => {
+        state.data.interests = interests;
       });
     },
     addWorkExperience() {
@@ -302,6 +328,20 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
         });
       });
     },
+    setWorkExperiences(workExperiences) {
+      set((state) => {
+        state.data.workExperiences = workExperiences;
+      });
+    },
+    setWorkResponsibilities(id, workResponsibilities) {
+      set((state) => {
+        state.data.workExperiences.map((w) => {
+          if (w.id === id) {
+            w.workResponsibilities = workResponsibilities;
+          }
+        });
+      });
+    },
     addProject() {
       set((state) => {
         state.data.projects.push({
@@ -330,6 +370,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
             p.tags = project.tags;
           }
         });
+      });
+    },
+    setProjects(projects) {
+      set((state) => {
+        state.data.projects = projects;
       });
     },
     addEducation() {
@@ -362,6 +407,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
         });
       });
     },
+    setEducations(educations) {
+      set((state) => {
+        state.data.educations = educations;
+      });
+    },
     addPersonalProfile() {
       set((state) => {
         state.data.personalProfiles.push({
@@ -386,6 +436,11 @@ const useResumeDataStore = create<ResumeDataState & ResumeDataActions>()(
             p.fieldValue = personalProfile.fieldValue;
           }
         });
+      });
+    },
+    setPersonalProfiles(personalProfiles) {
+      set((state) => {
+        state.data.personalProfiles = personalProfiles;
       });
     },
     resetResumeData() {
@@ -445,6 +500,8 @@ export const useRemoveSocial = () =>
   useResumeDataStore((state) => state.removeSocial);
 export const useSetSocial = () =>
   useResumeDataStore((state) => state.setSocial);
+export const useSetSocials = () =>
+  useResumeDataStore((state) => state.setSocials);
 
 // SKILLS
 export const useSkills = () => useResumeDataStore((state) => state.data.skills);
@@ -452,6 +509,8 @@ export const useAddSkill = () => useResumeDataStore((state) => state.addSkill);
 export const useRemoveSkill = () =>
   useResumeDataStore((state) => state.removeSkill);
 export const useSetSkill = () => useResumeDataStore((state) => state.setSkill);
+export const useSetSkills = () =>
+  useResumeDataStore((state) => state.setSkills);
 
 // INTERESTS
 export const useInterests = () =>
@@ -462,6 +521,8 @@ export const useRemoveInterest = () =>
   useResumeDataStore((state) => state.removeInterest);
 export const useSetInterest = () =>
   useResumeDataStore((state) => state.setInterest);
+export const useSetInterests = () =>
+  useResumeDataStore((state) => state.setInterests);
 
 // WORK EXPERIENCES
 export const useWorkExperiences = () =>
@@ -478,6 +539,10 @@ export const useSetWorkExperience = () =>
   useResumeDataStore((state) => state.setWorkExperience);
 export const useSetWorkResponsibility = () =>
   useResumeDataStore((state) => state.setWorkResponsibility);
+export const useSetWorkExperiences = () =>
+  useResumeDataStore((state) => state.setWorkExperiences);
+export const useSetWorkResponsibilities = () =>
+  useResumeDataStore((state) => state.setWorkResponsibilities);
 
 // PROJECTS
 export const useProjects = () =>
@@ -488,6 +553,8 @@ export const useRemoveProject = () =>
   useResumeDataStore((state) => state.removeProject);
 export const useSetProject = () =>
   useResumeDataStore((state) => state.setProject);
+export const useSetProjects = () =>
+  useResumeDataStore((state) => state.setProjects);
 
 // EDUCATIONS
 export const useEducations = () =>
@@ -498,6 +565,8 @@ export const useRemoveEducation = () =>
   useResumeDataStore((state) => state.removeEducation);
 export const useSetEducation = () =>
   useResumeDataStore((state) => state.setEducation);
+export const useSetEductions = () =>
+  useResumeDataStore((state) => state.setEducations);
 
 // PERSONAL PROFILES
 export const usePersonalProfiles = () =>
@@ -508,6 +577,8 @@ export const useRemovePersonalProfile = () =>
   useResumeDataStore((state) => state.removePersonalProfile);
 export const useSetPersonalProfile = () =>
   useResumeDataStore((state) => state.setPersonalProfile);
+export const useSetPersonalProfiles = () =>
+  useResumeDataStore((state) => state.setPersonalProfiles);
 
 // RESET DATA
 export const useResetResumeData = () =>

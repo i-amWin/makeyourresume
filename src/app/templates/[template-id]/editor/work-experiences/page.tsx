@@ -2,7 +2,6 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
@@ -14,6 +13,8 @@ import {
   useRemoveWorkResponsibility,
   useSetWorkExperience,
   useSetWorkResponsibility,
+  useSetWorkExperiences,
+  useSetWorkResponsibilities,
 } from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
@@ -21,9 +22,11 @@ import SectionHeading from "@/components/form/section-heading";
 import FormInput from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { arrayMove } from "@dnd-kit/sortable";
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import DNDContexts from "@/components/form/dnd-contexts";
 
 export default function WorkExperiences() {
   const templateId = useTemplateIdParam();
@@ -59,7 +62,7 @@ export default function WorkExperiences() {
         clicking the trash icon.
       </p>
 
-      <form className="space-y-2">
+      <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">
           Add your Work Experiences.
         </p>
@@ -73,15 +76,27 @@ export default function WorkExperiences() {
 function WorkExperiencesGroup() {
   const addWorkExperience = useAddWorkExperience();
   const workExperiences = useWorkExperiences();
+  const setWorkExperiences = useSetWorkExperiences();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setWorkExperiences(arrayMove(workExperiences, oldIndex, newIndex));
+  };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
-        {workExperiences.map((workExperience) => (
-          <Fragment key={workExperience.id}>
-            <WorkExperienceEditor {...workExperience} />
-          </Fragment>
-        ))}
+        <DNDContexts
+          items={workExperiences.map((workExperience) => ({
+            id: workExperience.id,
+          }))}
+          setItems={setItems}
+        >
+          {workExperiences.map((workExperience) => (
+            <Fragment key={workExperience.id}>
+              <WorkExperienceEditor {...workExperience} />
+            </Fragment>
+          ))}
+        </DNDContexts>
       </ul>
 
       <Button
@@ -103,9 +118,23 @@ function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
   const removeWorkExperience = useRemoveWorkExperience();
   const addWorkResponsibility = useAddWorkResponsibility();
 
+  const setWorkResponsibilities = useSetWorkResponsibilities();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setWorkResponsibilities(
+      workExperience.id,
+      arrayMove(workExperience.workResponsibilities, oldIndex, newIndex),
+    );
+  };
+
   return (
-    <li className="grid items-end gap-2">
-      <div className="flex gap-2">
+    <DraggableItemWrapper
+      id={workExperience.id}
+      preview={<WorkExperiencePreview {...workExperience} />}
+      onRemoveClick={() => removeWorkExperience(workExperience.id)}
+      removeSrOnlyLabel={`Remove ${workExperience.companyName} from your resume`}
+    >
+      <div className="grid items-end gap-2">
         <FormInput
           label="Company Name"
           placeholder="Enter your company name"
@@ -113,91 +142,87 @@ function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
           useSetValue={() => (value) => {
             setWorkExperience({ ...workExperience, companyName: value });
           }}
-          className="flex-1"
-        />
-        <Button
-          size="icon"
-          variant="destructive"
-          onClick={() => removeWorkExperience(workExperience.id)}
-          className="self-end"
-        >
-          <Trash2 />
-          <span className="sr-only">
-            Remove {workExperience.companyName} from your resume
-          </span>
-        </Button>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        <FormInput
-          label="Job Title"
-          placeholder="Enter your job title"
-          useValue={() => workExperience.jobTitle}
-          useSetValue={() => (value) => {
-            setWorkExperience({ ...workExperience, jobTitle: value });
-          }}
-          className="col-span-2 sm:col-span-1"
         />
 
-        <FormInput
-          label="Location"
-          placeholder="Enter the job location"
-          useValue={() => workExperience.location}
-          useSetValue={() => (value) => {
-            setWorkExperience({ ...workExperience, location: value });
-          }}
-          className="col-span-2 sm:col-span-1"
-        />
-      </div>
+        <div className="grid grid-cols-2 gap-2">
+          <FormInput
+            label="Job Title"
+            placeholder="Enter your job title"
+            useValue={() => workExperience.jobTitle}
+            useSetValue={() => (value) => {
+              setWorkExperience({ ...workExperience, jobTitle: value });
+            }}
+            className="col-span-2 sm:col-span-1"
+          />
 
-      <div className="grid grid-cols-2 gap-2">
-        <FormInput
-          label="Joining Date"
-          placeholder="Enter the joining date"
-          useValue={() => workExperience.joiningDate}
-          useSetValue={() => (value) => {
-            setWorkExperience({ ...workExperience, joiningDate: value });
-          }}
-          className="col-span-2 sm:col-span-1"
-        />
-
-        <FormInput
-          label="Leaving Date"
-          placeholder="Enter the leaving date"
-          useValue={() => workExperience.leavingDate}
-          useSetValue={() => (value) => {
-            setWorkExperience({ ...workExperience, leavingDate: value });
-          }}
-          className="col-span-2 sm:col-span-1"
-        />
-      </div>
-
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <Label>Work Responsibilities</Label>
-          <ul className="space-y-2">
-            {workExperience.workResponsibilities.map((workResponsibility) => (
-              <Fragment key={workResponsibility.id}>
-                <WorkResponsibilityEditor
-                  id={workExperience.id}
-                  workResponsibility={workResponsibility}
-                />
-              </Fragment>
-            ))}
-          </ul>
+          <FormInput
+            label="Location"
+            placeholder="Enter the job location"
+            useValue={() => workExperience.location}
+            useSetValue={() => (value) => {
+              setWorkExperience({ ...workExperience, location: value });
+            }}
+            className="col-span-2 sm:col-span-1"
+          />
         </div>
 
-        <Button
-          type="button"
-          variant="accent"
-          size="sm"
-          onClick={() => addWorkResponsibility(workExperience.id)}
-        >
-          Add Work Responsibility
-        </Button>
-      </div>
+        <div className="grid grid-cols-2 gap-2">
+          <FormInput
+            label="Joining Date"
+            placeholder="Enter the joining date"
+            useValue={() => workExperience.joiningDate}
+            useSetValue={() => (value) => {
+              setWorkExperience({ ...workExperience, joiningDate: value });
+            }}
+            className="col-span-2 sm:col-span-1"
+          />
 
-      <Separator className="mt-2" />
-    </li>
+          <FormInput
+            label="Leaving Date"
+            placeholder="Enter the leaving date"
+            useValue={() => workExperience.leavingDate}
+            useSetValue={() => (value) => {
+              setWorkExperience({ ...workExperience, leavingDate: value });
+            }}
+            className="col-span-2 sm:col-span-1"
+          />
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <Label>Work Responsibilities</Label>
+            <ul className="space-y-2">
+              <DNDContexts
+                items={workExperience.workResponsibilities.map(
+                  (workResponsibility) => ({ id: workResponsibility.id }),
+                )}
+                setItems={setItems}
+              >
+                {workExperience.workResponsibilities.map(
+                  (workResponsibility) => (
+                    <Fragment key={workResponsibility.id}>
+                      <WorkResponsibilityEditor
+                        id={workExperience.id}
+                        workResponsibility={workResponsibility}
+                      />
+                    </Fragment>
+                  ),
+                )}
+              </DNDContexts>
+            </ul>
+          </div>
+
+          <Button
+            type="button"
+            variant="accent"
+            size="sm"
+            onClick={() => addWorkResponsibility(workExperience.id)}
+          >
+            Add Work Responsibility
+          </Button>
+        </div>
+      </div>
+    </DraggableItemWrapper>
   );
 }
 
@@ -214,7 +239,16 @@ function WorkResponsibilityEditor({
   const removeWorkResponsibility = useRemoveWorkResponsibility();
 
   return (
-    <li className="flex items-end gap-2">
+    <DraggableItemWrapper
+      id={workResponsibility.id}
+      preview={
+        <div className="flex min-h-full items-center text-sm font-medium text-accent">
+          <p>{workResponsibility.responsibility}</p>
+        </div>
+      }
+      onRemoveClick={() => removeWorkResponsibility(id, workResponsibility.id)}
+      removeSrOnlyLabel={`Remove ${workResponsibility.responsibility} from your resume`}
+    >
       <Textarea
         placeholder="Enter your work responsibility"
         value={workResponsibility.responsibility}
@@ -225,19 +259,30 @@ function WorkResponsibilityEditor({
           })
         }
       />
+    </DraggableItemWrapper>
+  );
+}
 
-      <div className="flex items-end gap-2">
-        <Button
-          size="icon"
-          variant="destructive"
-          onClick={() => removeWorkResponsibility(id, workResponsibility.id)}
-        >
-          <Trash2 />
-          <span className="sr-only">
-            Remove {workResponsibility.responsibility} from your resume
-          </span>
-        </Button>
+function WorkExperiencePreview({
+  companyName,
+  jobTitle,
+  location,
+  joiningDate,
+  leavingDate,
+}: WorkExperienceEditorProps) {
+  return (
+    <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
+      <div className="flex gap-2">
+        <p>{companyName}</p>
+        {jobTitle && <span>|</span>}
+        <p>{jobTitle}</p>
       </div>
-    </li>
+      <p>{location}</p>
+      <div className="flex gap-2">
+        <p>{joiningDate}</p>
+        {leavingDate && <span>-</span>}
+        <p>{leavingDate}</p>
+      </div>
+    </div>
   );
 }

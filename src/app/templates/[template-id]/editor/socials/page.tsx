@@ -2,7 +2,6 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
@@ -10,6 +9,7 @@ import {
   useAddSocial,
   useRemoveSocial,
   useSetSocial,
+  useSetSocials,
 } from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,9 @@ import FormInput from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import FormSelect from "@/components/form/form-select";
+import { arrayMove } from "@dnd-kit/sortable";
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import DNDContexts from "@/components/form/dnd-contexts";
 
 export default function Socials() {
   const templateId = useTemplateIdParam();
@@ -54,7 +57,7 @@ export default function Socials() {
         clicking on the trash icon.
       </p>
 
-      <form className="space-y-2">
+      <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">
           Add your Socials Accounts.
         </p>
@@ -68,15 +71,25 @@ export default function Socials() {
 function SocialsGroup() {
   const addSocial = useAddSocial();
   const socials = useSocials();
+  const setSocials = useSetSocials();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setSocials(arrayMove(socials, oldIndex, newIndex));
+  };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
-        {socials.map((social) => (
-          <Fragment key={social.id}>
-            <SocialEditor {...social} />
-          </Fragment>
-        ))}
+        <DNDContexts
+          items={socials.map((social) => ({ id: social.id }))}
+          setItems={setItems}
+        >
+          {socials.map((social) => (
+            <Fragment key={social.id}>
+              <SocialEditor {...social} />
+            </Fragment>
+          ))}
+        </DNDContexts>
       </ul>
 
       <Button
@@ -98,32 +111,38 @@ function SocialEditor({ id, name, url }: SocialEditorProps) {
   const removeSocial = useRemoveSocial();
 
   return (
-    <li className="flex flex-wrap items-end gap-2">
-      <FormSelect
-        label="Social Name"
-        placeholder="Select an Option"
-        defaultValue={name}
-        onValueChange={(value) => setSocial({ id, url, name: value })}
-      />
+    <DraggableItemWrapper
+      id={id}
+      preview={<SocialPreview name={name} url={url} />}
+      onRemoveClick={() => removeSocial(id)}
+      removeSrOnlyLabel={`Remove ${name} social with url ${url}`}
+    >
+      <div className="flex flex-wrap items-end gap-2">
+        <FormSelect
+          label="Social Name"
+          placeholder="Select an Option"
+          defaultValue={name}
+          onValueChange={(value) => setSocial({ id, url, name: value })}
+        />
 
-      <FormInput
-        label="Social URL"
-        placeholder="Enter your social link"
-        useValue={() => url}
-        useSetValue={() => (value) => setSocial({ id, name, url: value })}
-        className=""
-      />
+        <FormInput
+          label="Social URL"
+          placeholder="Enter your social link"
+          useValue={() => url}
+          useSetValue={() => (value) => setSocial({ id, name, url: value })}
+          className=""
+        />
+      </div>
+    </DraggableItemWrapper>
+  );
+}
 
-      <Button
-        size="icon"
-        variant="destructive"
-        onClick={() => removeSocial(id)}
-      >
-        <Trash2 />
-        <span className="sr-only">
-          Remove {name} social with url {url}
-        </span>
-      </Button>
-    </li>
+function SocialPreview({ name, url }: { name: string; url: string }) {
+  return (
+    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
+      <p className="capitalize">{name}</p>
+      {url && <span>|</span>}
+      <p className="break-all">{url}</p>
+    </div>
   );
 }

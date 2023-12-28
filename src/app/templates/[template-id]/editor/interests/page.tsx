@@ -2,7 +2,6 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
@@ -10,6 +9,7 @@ import {
   useAddInterest,
   useRemoveInterest,
   useSetInterest,
+  useSetInterests,
 } from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,9 @@ import SectionHeading from "@/components/form/section-heading";
 import FormInput from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
+import { arrayMove } from "@dnd-kit/sortable";
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import DNDContexts from "@/components/form/dnd-contexts";
 
 export default function Interests() {
   const templateId = useTemplateIdParam();
@@ -53,7 +56,7 @@ export default function Interests() {
         clicking on the trash icon.
       </p>
 
-      <form className="space-y-2">
+      <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">Add your Interests.</p>
 
         <InterestsGroup />
@@ -65,15 +68,25 @@ export default function Interests() {
 function InterestsGroup() {
   const addInterest = useAddInterest();
   const interests = useInterests();
+  const setInterests = useSetInterests();
+
+  const setItems = (oldIndex: number, newIndex: number) => {
+    setInterests(arrayMove(interests, oldIndex, newIndex));
+  };
 
   return (
     <div className="space-y-4">
       <ul className="space-y-2">
-        {interests.map((interest) => (
-          <Fragment key={interest.id}>
-            <InterestEditor {...interest} />
-          </Fragment>
-        ))}
+        <DNDContexts
+          items={interests.map((interest) => ({ id: interest.id }))}
+          setItems={setItems}
+        >
+          {interests.map((interest) => (
+            <Fragment key={interest.id}>
+              <InterestEditor {...interest} />
+            </Fragment>
+          ))}
+        </DNDContexts>
       </ul>
       <Button
         type="button"
@@ -94,22 +107,28 @@ function InterestEditor({ id, name }: InterestEditorProps) {
   const removeInterest = useRemoveInterest();
 
   return (
-    <li className="flex flex-wrap items-end gap-2">
-      <FormInput
-        label="Interest Name"
-        placeholder="Enter your interest"
-        useValue={() => name}
-        useSetValue={() => (value) => setInterest({ id, name: value })}
-      />
+    <DraggableItemWrapper
+      id={id}
+      preview={<InterestPreview name={name} />}
+      onRemoveClick={() => removeInterest(id)}
+      removeSrOnlyLabel={`Remove ${name} interest`}
+    >
+      <div className="flex flex-wrap items-end gap-2">
+        <FormInput
+          label="Interest Name"
+          placeholder="Enter your interest"
+          useValue={() => name}
+          useSetValue={() => (value) => setInterest({ id, name: value })}
+        />
+      </div>
+    </DraggableItemWrapper>
+  );
+}
 
-      <Button
-        size="icon"
-        variant="destructive"
-        onClick={() => removeInterest(id)}
-      >
-        <Trash2 />
-        <span className="sr-only">Remove {name} interest</span>
-      </Button>
-    </li>
+function InterestPreview({ name }: { name: string }) {
+  return (
+    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
+      <p className="capitalize">{name}</p>
+    </div>
   );
 }
