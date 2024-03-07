@@ -32,11 +32,11 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
       <TemplateWrapper>
         <div
           ref={ref}
-          className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/596)] print:![--WIDTHPERCENTAGE:1pt]"
+          className="[--WIDTHPERCENTAGE:calc(var(--WIDTH)/595.27584)] print:![--WIDTHPERCENTAGE:1pt]"
         >
           <div
             className="
-              flex aspect-[596/842] w-full 
+              flex aspect-[595.27584/88976] w-full 
               gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
               py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
               text-black
