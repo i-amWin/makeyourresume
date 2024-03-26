@@ -58,7 +58,7 @@ export default function ExperienceSection() {
   const workExperiences = useWorkExperiences();
 
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "workExperiences"),
   );
 
   if (shouldSkip) return null;

@@ -2,11 +2,12 @@ import { Button } from "../ui/button";
 
 import Link from "next/link";
 
-import {
-  type Section,
-  useGetSkippedSection,
-} from "@/store/skipped-section-store";
 import SkipButton from "./skip-button";
+import { useAppSelector } from "@/redux/hooks";
+import {
+  selectSkippedSection,
+  type Section,
+} from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 type NextButtonProps = {
   label: string;
@@ -22,7 +23,9 @@ export default function NextButton({
   href,
 }: NextButtonProps) {
   const length = useData().length;
-  const isSkipped = useGetSkippedSection(sectionName);
+  const isSkipped = useAppSelector((state) =>
+    selectSkippedSection(state, sectionName),
+  );
 
   if (length === 0 && !isSkipped) {
     return (

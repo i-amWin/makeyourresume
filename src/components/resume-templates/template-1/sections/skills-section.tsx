@@ -57,7 +57,7 @@ export default function SkillsSection() {
   const skills = useSkills();
 
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "skills"),
   );
 
   if (shouldSkip) return null;

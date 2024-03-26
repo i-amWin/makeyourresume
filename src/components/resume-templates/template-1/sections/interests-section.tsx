@@ -23,7 +23,7 @@ const defaultInterest = [
 
 export default function InterestsSection() {
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "interests"),
   );
   const interests = useInterests();
 

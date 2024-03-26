@@ -35,7 +35,7 @@ export default function EducationSection() {
   const educations = useEducations();
 
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "educations"),
   );
 
   if (shouldSkip) return null;

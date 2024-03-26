@@ -23,7 +23,7 @@ export default function PersonalProfileSection() {
   const personalProfiles = usePersonalProfiles();
 
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "personalProfile"),
   );
 
   if (shouldSkip) return null;

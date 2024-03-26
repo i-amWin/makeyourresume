@@ -24,7 +24,9 @@ const skippedSectionSlice = createSlice({
       state[action.payload.section] = action.payload.value;
     },
     resetSkippedSections: (state) => {
-      state = initialSkippedSectionState;
+      for (const key of Object.keys(state)) {
+        state[key as Section] = false;
+      }
     },
   },
 });

@@ -32,7 +32,7 @@ export default function ProjectsSection() {
   const projects = useProjects();
 
   const shouldSkip = useAppSelector((state) =>
-    selectSkippedSection(state, "socials"),
+    selectSkippedSection(state, "projects"),
   );
 
   if (shouldSkip) return null;
