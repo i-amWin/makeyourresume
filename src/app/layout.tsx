@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className} relative`}>
-        <NextJSTopLoader color="#ffb300" />
+        <NextJSTopLoader color="#ffb300" showSpinner={false} />
         <Header />
         <main className="mx-auto max-w-[77.5rem] px-4">
           <StoreProvider>{children}</StoreProvider>
