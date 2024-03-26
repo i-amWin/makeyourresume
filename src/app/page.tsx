@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <section className="flex min-h-[100svh] flex-col gap-4 py-20 sm:flex-row sm:items-center">
+    <section className="flex min-h-[100svh] flex-col gap-8 py-20 sm:flex-row sm:items-center">
       <div className="flex-1 space-y-6">
         <h1 className="text-5xl font-bold leading-[1.1] text-accent">
           Build Your Resume for&nbsp;<span className="text-primary">Free!</span>
