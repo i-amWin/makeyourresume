@@ -2,8 +2,9 @@ import { useProjects } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
-import { useGetSkippedSection } from "@/store/skipped-section-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { useAppSelector } from "@/redux/hooks";
+import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 const defaultProjects = [
   {
@@ -30,7 +31,9 @@ export default function ProjectsSection() {
   const accentColor = useAccentColor("template-1");
   const projects = useProjects();
 
-  const shouldSkip = useGetSkippedSection("projects");
+  const shouldSkip = useAppSelector((state) =>
+    selectSkippedSection(state, "socials"),
+  );
 
   if (shouldSkip) return null;
 

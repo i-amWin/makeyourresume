@@ -2,8 +2,9 @@ import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
-import { useGetSkippedSection } from "@/store/skipped-section-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { useAppSelector } from "@/redux/hooks";
+import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 const defaultWorkExperiences = [
   {
@@ -56,7 +57,9 @@ export default function ExperienceSection() {
   const accentColor = useAccentColor("template-1");
   const workExperiences = useWorkExperiences();
 
-  const shouldSkip = useGetSkippedSection("workExperiences");
+  const shouldSkip = useAppSelector((state) =>
+    selectSkippedSection(state, "socials"),
+  );
 
   if (shouldSkip) return null;
 

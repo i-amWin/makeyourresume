@@ -2,8 +2,9 @@ import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
 import { useInterests } from "@/store/resume-data-store";
 import { useAccentColor } from "@/store/custom-styles-store";
-import { useGetSkippedSection } from "@/store/skipped-section-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { useAppSelector } from "@/redux/hooks";
+import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 const defaultInterest = [
   {
@@ -21,7 +22,9 @@ const defaultInterest = [
 ];
 
 export default function InterestsSection() {
-  const shouldSkip = useGetSkippedSection("interests");
+  const shouldSkip = useAppSelector((state) =>
+    selectSkippedSection(state, "socials"),
+  );
   const interests = useInterests();
 
   if (shouldSkip) return null;

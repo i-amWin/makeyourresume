@@ -11,11 +11,13 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
-  useGetSkippedSection,
+  selectSkippedSection,
+  toggleSkippedSection,
   type Section,
-  useSetSkippedSection,
-} from "@/store/skipped-section-store";
+} from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 type SkipButtonProps = {
   sectionName: Section;
@@ -30,15 +32,22 @@ export default function SkipButton({
   buttonLabel = "Skip",
   buttonVariant = "outline",
 }: SkipButtonProps) {
-  const isSkipped = useGetSkippedSection(sectionName);
-  const setSkippedSection = useSetSkippedSection();
+  const isSkipped = useAppSelector((state) =>
+    selectSkippedSection(state, sectionName),
+  );
+
+  const dispatch = useAppDispatch();
+
+  const handleToggleSkippedSection = (value: boolean) => {
+    dispatch(toggleSkippedSection({ section: sectionName, value }));
+  };
 
   if (isSkipped) {
     return (
       <Button
         size="sm"
         variant={buttonVariant}
-        onClick={() => setSkippedSection(sectionName, false)}
+        onClick={() => handleToggleSkippedSection(false)}
       >
         Add
       </Button>
@@ -68,7 +77,7 @@ export default function SkipButton({
             <Button asChild size="sm">
               <Link
                 href={href}
-                onClick={() => setSkippedSection(sectionName, true)}
+                onClick={() => handleToggleSkippedSection(true)}
               >
                 Continue
               </Link>

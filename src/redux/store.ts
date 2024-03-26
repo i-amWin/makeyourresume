@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import SkippedSectionsReducer from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 export const makeStore = () =>
   configureStore({
     reducer: {
-      // TODO: Add reducers here
+      skippedSections: SkippedSectionsReducer,
     },
   });
 

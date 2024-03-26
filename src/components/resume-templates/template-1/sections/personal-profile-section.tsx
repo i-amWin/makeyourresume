@@ -2,7 +2,8 @@ import { usePersonalProfiles } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { useAccentColor } from "@/store/custom-styles-store";
-import { useGetSkippedSection } from "@/store/skipped-section-store";
+import { useAppSelector } from "@/redux/hooks";
+import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 const defaultPersonalProfiles = [
   {
@@ -21,7 +22,9 @@ export default function PersonalProfileSection() {
   const accentColor = useAccentColor("template-1");
   const personalProfiles = usePersonalProfiles();
 
-  const shouldSkip = useGetSkippedSection("personalProfile");
+  const shouldSkip = useAppSelector((state) =>
+    selectSkippedSection(state, "socials"),
+  );
 
   if (shouldSkip) return null;
 

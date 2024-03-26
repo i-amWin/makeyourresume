@@ -8,7 +8,8 @@ import {
 import { icons } from "@/lib/data";
 import { LucideIcon } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
-import { useGetSkippedSection } from "@/store/skipped-section-store";
+import { useAppSelector } from "@/redux/hooks";
+import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 export default function ContactAndSocialSection() {
   return (
@@ -75,7 +76,9 @@ const defaultSocials = [
 function Socials() {
   const socials = useSocials();
 
-  const shouldSkip = useGetSkippedSection("socials");
+  const shouldSkip = useAppSelector((state) =>
+    selectSkippedSection(state, "socials"),
+  );
 
   if (shouldSkip) return null;
 
