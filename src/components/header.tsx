@@ -1,5 +1,4 @@
 import Link from "next/link";
-import GetStarted from "./get-started";
 
 export default function Header() {
   return (
@@ -34,8 +33,6 @@ export default function Header() {
             Make Your Resume
           </span>
         </Link>
-
-        <GetStarted />
       </div>
     </header>
   );
