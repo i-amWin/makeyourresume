@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import NextJSTopLoader from "nextjs-toploader";
+import { StoreProvider } from "@/redux/store-provider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={`${montserrat.className} relative`}>
         <NextJSTopLoader color="#ffb300" />
         <Header />
-        <main className="mx-auto max-w-[77.5rem] px-4">{children}</main>
+        <main className="mx-auto max-w-[77.5rem] px-4">
+          <StoreProvider>{children}</StoreProvider>
+        </main>
       </body>
     </html>
   );
