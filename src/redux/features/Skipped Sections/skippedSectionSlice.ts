@@ -1,5 +1,5 @@
-import { RootState } from "@/redux/store";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
 
 const initialSkippedSectionState = {
   socials: false,
@@ -31,11 +31,11 @@ const skippedSectionSlice = createSlice({
   },
 });
 
-// Custom selector
-export const selectSkippedSection = (state: RootState, section: Section) =>
-  state.skippedSections[section];
-
 export const { toggleSkippedSection, resetSkippedSections } =
   skippedSectionSlice.actions;
 
 export default skippedSectionSlice.reducer;
+
+// Custom selector
+export const selectSkippedSection = (state: RootState, section: Section) =>
+  state.skippedSections[section];

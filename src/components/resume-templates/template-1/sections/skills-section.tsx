@@ -1,9 +1,9 @@
 import { useSkills } from "@/store/resume-data-store";
 import Heading from "../components/heading";
-import { useAccentColor } from "@/store/custom-styles-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 const defaultSkills = [
   {
@@ -53,7 +53,9 @@ const defaultSkills = [
 ];
 
 export default function SkillsSection() {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
   const skills = useSkills();
 
   const shouldSkip = useAppSelector((state) =>

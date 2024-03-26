@@ -1,10 +1,10 @@
 import { useProjects } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
-import { useAccentColor } from "@/store/custom-styles-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 const defaultProjects = [
   {
@@ -28,7 +28,9 @@ const defaultProjects = [
 ];
 
 export default function ProjectsSection() {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
   const projects = useProjects();
 
   const shouldSkip = useAppSelector((state) =>

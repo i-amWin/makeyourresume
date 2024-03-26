@@ -1,11 +1,13 @@
-import { useAccentColor } from "@/store/custom-styles-store";
 import { useFirstName, useImage, useLastName } from "@/store/resume-data-store";
 import { Image } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
-import { Frijole } from "next/font/google";
+import { useAppSelector } from "@/redux/hooks";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 export default function ImageSection() {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
 
   const image = useImage();
 

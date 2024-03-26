@@ -1,10 +1,10 @@
 import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
 import { useInterests } from "@/store/resume-data-store";
-import { useAccentColor } from "@/store/custom-styles-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 const defaultInterest = [
   {
@@ -49,7 +49,9 @@ export default function InterestsSection() {
 }
 
 function InterestText({ text }: { Icon?: LucideIcon; text: string }) {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
   return (
     <p className="flex items-center gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
       <Heart

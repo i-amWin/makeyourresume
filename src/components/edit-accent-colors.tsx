@@ -1,13 +1,14 @@
 "use client";
 
-import {
-  useResetAccentColors,
-  useSetAccentColors,
-} from "@/store/custom-styles-store";
 import { useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { TemplateId } from "@/lib/data";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  resetAccentColors,
+  setAccentColors,
+} from "@/redux/features/Custom Styles/customStyleSlice";
 
 const predefinedColors = ["#cd6060", "#00856d", "#006e85", "#730779"];
 
@@ -18,8 +19,7 @@ interface EditAccentColorsProps {
 export default function EditAccentColors({
   templateId,
 }: EditAccentColorsProps) {
-  const setAccentColors = useSetAccentColors();
-  const resetAccentColors = useResetAccentColors();
+  const dispatch = useAppDispatch();
 
   const [customColor, setCustomColor] = useState("#0fa560");
 
@@ -30,7 +30,7 @@ export default function EditAccentColors({
           <button
             type="button"
             className="relative h-10 w-10 overflow-hidden rounded border-2 border-accent/30"
-            onClick={() => resetAccentColors(templateId)}
+            onClick={() => dispatch(resetAccentColors({ templateId }))}
           >
             <span className="sr-only">Reset Colors</span>
             <span className="absolute -left-[25%] inline-block h-[2px] w-14 rotate-45 bg-accent/30"></span>
@@ -42,7 +42,7 @@ export default function EditAccentColors({
               type="button"
               className="h-10 w-10 rounded"
               style={{ backgroundColor: color }}
-              onClick={() => setAccentColors(color, templateId)}
+              onClick={() => dispatch(setAccentColors({ color, templateId }))}
             >
               <span className="sr-only">Set {color} color</span>
             </button>
@@ -68,7 +68,7 @@ export default function EditAccentColors({
                 color={customColor}
                 onChange={(color) => {
                   setCustomColor(color);
-                  setAccentColors(color);
+                  dispatch(setAccentColors({ color, templateId }));
                 }}
               />
             </PopoverContent>
@@ -81,7 +81,7 @@ export default function EditAccentColors({
               color={customColor}
               onChange={(color) => {
                 setCustomColor(color);
-                setAccentColors(color);
+                dispatch(setAccentColors({ color, templateId }));
               }}
             />
           </div>

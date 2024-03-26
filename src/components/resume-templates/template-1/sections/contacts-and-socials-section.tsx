@@ -1,4 +1,3 @@
-import { useAccentColor } from "@/store/custom-styles-store";
 import {
   useAddress,
   useEmail,
@@ -10,6 +9,7 @@ import { LucideIcon } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 export default function ContactAndSocialSection() {
   return (
@@ -98,7 +98,9 @@ function Socials() {
 }
 
 function ContactAndSocialText({ icon, text }: { icon: string; text: string }) {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
 
   let Icon: LucideIcon = icons[icon] || icons.other;
 

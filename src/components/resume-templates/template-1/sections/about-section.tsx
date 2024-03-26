@@ -1,4 +1,5 @@
-import { useAccentColor } from "@/store/custom-styles-store";
+import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
+import { useAppSelector } from "@/redux/hooks";
 import {
   useAbout,
   useFirstName,
@@ -9,7 +10,10 @@ import {
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 
 export default function AboutSection() {
-  const accentColor = useAccentColor("template-1");
+  const accentColor = useAppSelector((state) =>
+    selectAccentColor(state, "template-1"),
+  );
+
   return (
     <div
       className="px-[calc(var(--WIDTHPERCENTAGE)*15)] py-[calc(var(--WIDTHPERCENTAGE)*8)] text-white"

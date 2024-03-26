@@ -1,18 +1,19 @@
 "use client";
 import { Button } from "./ui/button";
-import {
-  useLeftColumnGap,
-  useSetLeftColumnGap,
-  useRightColumnGap,
-  useSetRightColumnGap,
-  useResetStyles,
-} from "@/store/custom-styles-store";
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import { Slider } from "./ui/slider";
 import { Label } from "./ui/label";
 import { TemplateId } from "@/lib/data";
 import EditAccentColors from "./edit-accent-colors";
 import { cn } from "@/utils/cn";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  resetStyles,
+  selectLeftColumnGap,
+  selectRightColumnGap,
+  setLeftColumnGap,
+  setRightColumnGap,
+} from "@/redux/features/Custom Styles/customStyleSlice";
 
 interface EditStylesProps {
   className?: string;
@@ -21,13 +22,14 @@ interface EditStylesProps {
 export default function EditStyles({ className }: EditStylesProps) {
   const templateId = useTemplateIdParam() as TemplateId;
 
-  const leftColumnGap = useLeftColumnGap(templateId);
-  const setLeftColumnGap = useSetLeftColumnGap();
+  const leftColumnGap = useAppSelector((state) =>
+    selectLeftColumnGap(state, templateId),
+  );
+  const rightColumnGap = useAppSelector((state) =>
+    selectRightColumnGap(state, templateId),
+  );
 
-  const rightColumnGap = useRightColumnGap(templateId);
-  const setRightColumnGap = useSetRightColumnGap();
-
-  const resetStyles = useResetStyles();
+  const dispatch = useAppDispatch();
 
   return (
     <div className={cn("flex flex-col gap-2 sm:gap-4", className)}>
@@ -40,7 +42,9 @@ export default function EditStyles({ className }: EditStylesProps) {
           value={[leftColumnGap]}
           max={100}
           min={5}
-          onValueChange={(values) => setLeftColumnGap(templateId, values[0])}
+          onValueChange={(values) =>
+            dispatch(setLeftColumnGap({ templateId, gap: values[0] }))
+          }
         />
       </div>
 
@@ -51,14 +55,16 @@ export default function EditStyles({ className }: EditStylesProps) {
           value={[rightColumnGap]}
           max={100}
           min={5}
-          onValueChange={(values) => setRightColumnGap(templateId, values[0])}
+          onValueChange={(values) =>
+            dispatch(setRightColumnGap({ templateId, gap: values[0] }))
+          }
         />
       </div>
 
       <Button
         className="ml-auto mt-2 sm:mt-4"
         variant="accent"
-        onClick={() => resetStyles(templateId)}
+        onClick={() => dispatch(resetStyles({ templateId }))}
       >
         Reset Styles
       </Button>
