@@ -45,7 +45,7 @@ const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
         >
           <div
             className="
-              flex aspect-[595.27584/88976] w-full 
+              flex aspect-[595.27584/889.76] w-full 
               gap-[calc(var(--WIDTHPERCENTAGE)*12)] bg-white 
               py-[calc(var(--WIDTHPERCENTAGE)*21)] pl-[calc(var(--WIDTHPERCENTAGE)*15)]
               text-black
