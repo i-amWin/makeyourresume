@@ -1,25 +1,27 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  useInterests,
-  useAddInterest,
-  useRemoveInterest,
-  useSetInterest,
-  useSetInterests,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
+import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  Interest,
+  addField,
+  removeField,
+  selectInterests,
+  setField,
+  setFields,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Interests() {
   const templateId = useTemplateIdParam();
@@ -42,7 +44,7 @@ export default function Interests() {
           <NextButton
             label="Next (Educations)"
             href={`/templates/${templateId}/editor/educations`}
-            useData={useInterests}
+            selectFunction={selectInterests}
             sectionName="interests"
           />
         </div>
@@ -66,12 +68,16 @@ export default function Interests() {
 }
 
 function InterestsGroup() {
-  const addInterest = useAddInterest();
-  const interests = useInterests();
-  const setInterests = useSetInterests();
+  const dispatch = useAppDispatch();
+  const interests = useAppSelector(selectInterests);
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setInterests(arrayMove(interests, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "interests",
+        value: arrayMove(interests, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -92,7 +98,7 @@ function InterestsGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addInterest()}
+        onClick={() => dispatch(addField("interests"))}
       >
         Add Interest
       </Button>
@@ -100,11 +106,18 @@ function InterestsGroup() {
   );
 }
 
-type InterestEditorProps = ReturnType<typeof useInterests>[number];
+type InterestEditorProps = Interest;
 
-function InterestEditor({ id, name }: InterestEditorProps) {
-  const setInterest = useSetInterest();
-  const removeInterest = useRemoveInterest();
+const InterestEditor = memo(({ id, name }: InterestEditorProps) => {
+  const dispatch = useAppDispatch();
+
+  const removeInterest = (id: string) => {
+    dispatch(removeField({ fieldName: "interests", id }));
+  };
+
+  const setInterest = (social: Interest) => {
+    dispatch(setField({ fieldName: "interests", value: social }));
+  };
 
   return (
     <DraggableItemWrapper
@@ -114,16 +127,18 @@ function InterestEditor({ id, name }: InterestEditorProps) {
       removeSrOnlyLabel={`Remove ${name} interest`}
     >
       <div className="flex flex-wrap items-end gap-2">
-        <FormInput
+        <TextInput
           label="Interest Name"
           placeholder="Enter your interest"
-          useValue={() => name}
-          useSetValue={() => (value) => setInterest({ id, name: value })}
+          value={name}
+          setValue={(value) => setInterest({ id, name: value })}
         />
       </div>
     </DraggableItemWrapper>
   );
-}
+});
+
+InterestEditor.displayName = "InterestEditor";
 
 function InterestPreview({ name }: { name: string }) {
   return (

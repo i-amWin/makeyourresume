@@ -1,26 +1,28 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  useSocials,
-  useAddSocial,
-  useRemoveSocial,
-  useSetSocial,
-  useSetSocials,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
+import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import FormSelect from "@/components/form/form-select";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  Social,
+  addField,
+  removeField,
+  selectSocials,
+  setField,
+  setFields,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Socials() {
   const templateId = useTemplateIdParam();
@@ -43,7 +45,7 @@ export default function Socials() {
           <NextButton
             label="Next (Skills)"
             href={`/templates/${templateId}/editor/skills`}
-            useData={useSocials}
+            selectFunction={selectSocials}
             sectionName="socials"
           />
         </div>
@@ -69,12 +71,16 @@ export default function Socials() {
 }
 
 function SocialsGroup() {
-  const addSocial = useAddSocial();
-  const socials = useSocials();
-  const setSocials = useSetSocials();
+  const dispatch = useAppDispatch();
+  const socials = useAppSelector(selectSocials);
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setSocials(arrayMove(socials, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "socials",
+        value: arrayMove(socials, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -96,7 +102,7 @@ function SocialsGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addSocial()}
+        onClick={() => dispatch(addField("socials"))}
       >
         Add Social
       </Button>
@@ -104,11 +110,18 @@ function SocialsGroup() {
   );
 }
 
-type SocialEditorProps = ReturnType<typeof useSocials>[number];
+type SocialEditorProps = Social;
 
-function SocialEditor({ id, name, url }: SocialEditorProps) {
-  const setSocial = useSetSocial();
-  const removeSocial = useRemoveSocial();
+const SocialEditor = memo(({ id, name, url }: SocialEditorProps) => {
+  const dispatch = useAppDispatch();
+
+  const removeSocial = (id: string) => {
+    dispatch(removeField({ fieldName: "socials", id }));
+  };
+
+  const setSocial = (social: Social) => {
+    dispatch(setField({ fieldName: "socials", value: social }));
+  };
 
   return (
     <DraggableItemWrapper
@@ -125,17 +138,18 @@ function SocialEditor({ id, name, url }: SocialEditorProps) {
           onValueChange={(value) => setSocial({ id, url, name: value })}
         />
 
-        <FormInput
+        <TextInput
           label="Social URL"
           placeholder="Enter your social link"
-          useValue={() => url}
-          useSetValue={() => (value) => setSocial({ id, name, url: value })}
-          className=""
+          value={url}
+          setValue={(value) => setSocial({ id, name, url: value })}
         />
       </div>
     </DraggableItemWrapper>
   );
-}
+});
+
+SocialEditor.displayName = "SocialEditor";
 
 function SocialPreview({ name, url }: { name: string; url: string }) {
   return (

@@ -2,26 +2,24 @@ import { useId } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { cn } from "@/utils/cn";
+import { memo } from "react";
 
 interface FormInputProps {
   label: string;
   placeholder: string;
-  useValue: () => string;
-  useSetValue: () => (value: string) => void;
+  value: string;
+  setValue: (value: string) => void;
   className?: string;
 }
 
-export default function FormInput({
+export const TextInput = ({
   label,
   placeholder,
-  useValue,
-  useSetValue,
+  value,
+  setValue,
   className,
-}: FormInputProps) {
+}: FormInputProps) => {
   const id = useId();
-
-  const value = useValue();
-  const setValue = useSetValue();
 
   return (
     <div className={cn("space-y-1", className)}>
@@ -34,4 +32,6 @@ export default function FormInput({
       />
     </div>
   );
-}
+};
+
+export const MemoizedTextInput = memo(TextInput);

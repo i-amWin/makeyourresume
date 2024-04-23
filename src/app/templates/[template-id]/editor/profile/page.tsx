@@ -1,33 +1,69 @@
 "use client";
 
 import Link from "next/link";
-
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import {
-  useAbout,
-  useAddress,
-  useEmail,
-  useFirstName,
-  useLastName,
-  usePhone,
-  useProfessionalTitle,
-  useSetAbout,
-  useSetAddress,
-  useSetEmail,
-  useSetFirstName,
-  useSetLastName,
-  useSetPhone,
-  useSetProfessionalTitle,
-} from "@/store/resume-data-store";
+  setProfile,
+  selectProfile,
+} from "@/redux/features/Resume Data/resumeDataSlice";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
 import ImageInput from "@/components/form/image-input";
-import FormInput from "@/components/form/form-input";
-import FormTextArea from "@/components/form/form-textarea";
+import { MemoizedTextInput } from "@/components/form/form-input";
+import { MemoizedTextArea } from "@/components/form/form-textarea";
+import { useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Profile() {
   const templateId = useTemplateIdParam();
+  const dispatch = useAppDispatch();
+
+  const {
+    firstName,
+    lastName,
+    professionalTitle,
+    phone,
+    email,
+    address,
+    about,
+  } = useAppSelector(selectProfile);
+
+  const setFirstName = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "firstName", value })),
+    [dispatch],
+  );
+
+  const setLastName = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "lastName", value })),
+    [dispatch],
+  );
+
+  const setProfessionalTitle = useCallback(
+    (value: string) =>
+      dispatch(setProfile({ fieldName: "professionalTitle", value })),
+    [dispatch],
+  );
+
+  const setPhone = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "phone", value })),
+    [dispatch],
+  );
+
+  const setEmail = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "email", value })),
+    [dispatch],
+  );
+
+  const setAddress = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "address", value })),
+    [dispatch],
+  );
+
+  const setAbout = useCallback(
+    (value: string) => dispatch(setProfile({ fieldName: "about", value })),
+    [dispatch],
+  );
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -45,65 +81,67 @@ export default function Profile() {
 
       <SectionHeading>Profile</SectionHeading>
 
-      <form className="grid grid-cols-2 gap-4">
+      <div
+        className="grid grid-cols-2 gap-4"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <ImageInput className="col-span-2 row-span-2" />
 
-        <FormInput
+        <MemoizedTextInput
           label="First Name"
           placeholder="Enter your first name"
-          useValue={useFirstName}
-          useSetValue={useSetFirstName}
+          value={firstName}
           className="col-span-2 sm:col-span-1"
+          setValue={setFirstName}
         />
 
-        <FormInput
+        <MemoizedTextInput
           label="Last Name"
           placeholder="Enter your last name"
-          useValue={useLastName}
-          useSetValue={useSetLastName}
+          value={lastName}
           className="col-span-2 sm:col-span-1"
+          setValue={setLastName}
         />
 
-        <FormInput
+        <MemoizedTextInput
           label="Profession Title"
           placeholder="Enter your profession title"
-          useValue={useProfessionalTitle}
-          useSetValue={useSetProfessionalTitle}
           className="col-span-2 sm:col-span-1"
+          value={professionalTitle}
+          setValue={setProfessionalTitle}
         />
 
-        <FormInput
+        <MemoizedTextInput
           label="Phone Number"
           placeholder="Enter your phone number"
-          useValue={usePhone}
-          useSetValue={useSetPhone}
-          className="col-span-2 sm:col-span-1"
+          value={phone}
+          setValue={setPhone}
         />
 
-        <FormInput
+        <MemoizedTextInput
           label="Email Address"
           placeholder="Enter your email address"
-          useValue={useEmail}
-          useSetValue={useSetEmail}
           className="col-span-2"
+          value={email}
+          setValue={setEmail}
         />
 
-        <FormInput
+        <MemoizedTextInput
           label="Address"
           placeholder="Enter your address"
-          useValue={useAddress}
-          useSetValue={useSetAddress}
           className="col-span-2"
+          value={address}
+          setValue={setAddress}
         />
 
-        <FormTextArea
+        <MemoizedTextArea
           label="About You"
           placeholder="Write a brief about yourself"
-          useValue={useAbout}
-          useSetValue={useSetAbout}
           className="col-span-2"
+          value={about}
+          setValue={setAbout}
         />
-      </form>
+      </div>
     </div>
   );
 }

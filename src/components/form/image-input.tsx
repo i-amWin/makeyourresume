@@ -1,12 +1,15 @@
 import { cn } from "@/utils/cn";
-import { useImage, useSetImage } from "@/store/resume-data-store";
+// import { useImage, useSetImage } from "@/store/resume-data-store";
+import { useSelector, useDispatch } from "react-redux";
 import Dropzone from "react-dropzone";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { setProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function ImageInput({ className }: { className?: string }) {
-  const image = useImage();
-  const setImage = useSetImage();
+  const image = useAppSelector((state) => state.resumeData.profile.image);
+  const dispatch = useAppDispatch();
 
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -18,7 +21,12 @@ export default function ImageInput({ className }: { className?: string }) {
           }}
           multiple={false}
           onDrop={(acceptedFiles) => {
-            setImage(URL.createObjectURL(acceptedFiles[0]));
+            dispatch(
+              setProfile({
+                fieldName: "image",
+                value: URL.createObjectURL(acceptedFiles[0]),
+              }),
+            );
           }}
         >
           {({ getRootProps, getInputProps, isDragActive, isDragReject }) => (
@@ -59,7 +67,14 @@ export default function ImageInput({ className }: { className?: string }) {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => setImage("")}
+              onClick={() =>
+                dispatch(
+                  setProfile({
+                    fieldName: "image",
+                    value: "",
+                  }),
+                )
+              }
             >
               Remove Image
             </Button>
