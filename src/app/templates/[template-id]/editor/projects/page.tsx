@@ -4,23 +4,25 @@ import { Fragment } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  useProjects,
-  useAddProject,
-  useRemoveProject,
-  useSetProject,
-  useSetProjects,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
-import FormTextArea from "@/components/form/form-textarea";
+import { TextInput } from "@/components/form/form-input";
+import { FormTextArea } from "@/components/form/form-textarea";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  Project,
+  addField,
+  removeField,
+  selectProjects,
+  setField,
+  setFields,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Projects() {
   const templateId = useTemplateIdParam();
@@ -43,7 +45,7 @@ export default function Projects() {
           <NextButton
             label="Next (Work Experiences)"
             href={`/templates/${templateId}/editor/work-experiences`}
-            useData={useProjects}
+            selectFunction={selectProjects}
             sectionName="projects"
           />
         </div>
@@ -67,12 +69,16 @@ export default function Projects() {
 }
 
 function ProjectsGroup() {
-  const addProject = useAddProject();
-  const projects = useProjects();
-  const setProjects = useSetProjects();
+  const dispatch = useAppDispatch();
+  const projects = useAppSelector(selectProjects);
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setProjects(arrayMove(projects, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "projects",
+        value: arrayMove(projects, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -94,7 +100,7 @@ function ProjectsGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addProject()}
+        onClick={() => dispatch(addField("projects"))}
       >
         Add Project
       </Button>
@@ -102,11 +108,23 @@ function ProjectsGroup() {
   );
 }
 
-type ProjectEditorProps = ReturnType<typeof useProjects>[number];
+type ProjectEditorProps = Project;
 
 function ProjectEditor(project: ProjectEditorProps) {
-  const setProject = useSetProject();
-  const removeProject = useRemoveProject();
+  const dispatch = useAppDispatch();
+
+  const setProject = (project: Project) => {
+    dispatch(
+      setField({
+        fieldName: "projects",
+        value: project,
+      }),
+    );
+  };
+
+  const removeProject = (id: string) => {
+    dispatch(removeField({ fieldName: "projects", id }));
+  };
 
   return (
     <DraggableItemWrapper
@@ -116,11 +134,11 @@ function ProjectEditor(project: ProjectEditorProps) {
       removeSrOnlyLabel={`Remove ${project.projectName} project from your resume`}
     >
       <div className="grid items-end gap-2">
-        <FormInput
+        <TextInput
           label="Project Name"
           placeholder="Enter your project name"
-          useValue={() => project.projectName}
-          useSetValue={() => (value) => {
+          value={project.projectName}
+          setValue={(value) => {
             setProject({ ...project, projectName: value });
           }}
         />
@@ -128,40 +146,40 @@ function ProjectEditor(project: ProjectEditorProps) {
         <FormTextArea
           label="Project Description"
           placeholder="Enter your project description"
-          useValue={() => project.projectDescription}
-          useSetValue={() => (value) => {
+          value={project.projectDescription}
+          setValue={(value) => {
             setProject({ ...project, projectDescription: value });
           }}
           rows={5}
         />
 
         <div className="grid grid-cols-2 gap-2">
-          <FormInput
+          <TextInput
             label="Source Code Link"
             placeholder="Enter your source code link"
-            useValue={() => project.sourceLink}
-            useSetValue={() => (value) => {
+            value={project.sourceLink}
+            setValue={(value) => {
               setProject({ ...project, sourceLink: value });
             }}
             className="col-span-2 sm:col-span-1"
           />
 
-          <FormInput
+          <TextInput
             label="Live Demo Link"
             placeholder="Enter your live demo link"
-            useValue={() => project.liveLink}
-            useSetValue={() => (value) => {
+            value={project.liveLink}
+            setValue={(value) => {
               setProject({ ...project, liveLink: value });
             }}
             className="col-span-2 sm:col-span-1"
           />
         </div>
 
-        <FormInput
+        <TextInput
           label="Tags"
           placeholder="Enter your project tags, eg: HTML, CSS, JS"
-          useValue={() => project.tags}
-          useSetValue={() => (value) => {
+          value={project.tags}
+          setValue={(value) => {
             setProject({ ...project, tags: value });
           }}
           className="flex-1"
@@ -190,7 +208,7 @@ function ProjectPreview({
         {liveLink && <span>-</span>}
         <p className="break-all">{liveLink}</p>
       </div>
-      <p className="text-accent/60">{projectDescription}</p>
+      <p className="line-clamp-1 text-accent/60">{projectDescription}</p>
     </div>
   );
 }

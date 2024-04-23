@@ -2,23 +2,34 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { nanoid } from "nanoid";
 
-type Social = {
+export type Profile = {
+  image: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  professionalTitle: string;
+  about: string;
+  address: string;
+};
+
+export type Social = {
   id: string;
   name: string;
   url: string;
 };
 
-type Skill = {
+export type Skill = {
   id: string;
   name: string;
 };
 
-type Interest = {
+export type Interest = {
   id: string;
   name: string;
 };
 
-type WorkExperience = {
+export type WorkExperience = {
   id: string;
   companyName: string;
   jobTitle: string;
@@ -33,7 +44,7 @@ export type WorkResponsibility = {
   responsibility: string;
 };
 
-type Project = {
+export type Project = {
   id: string;
   projectName: string;
   projectDescription: string;
@@ -42,7 +53,7 @@ type Project = {
   tags: string;
 };
 
-type Education = {
+export type Education = {
   id: string;
   courseName: string;
   collegeName: string;
@@ -50,21 +61,14 @@ type Education = {
   to: string;
 };
 
-type PersonalProfile = {
+export type PersonalProfile = {
   id: string;
   fieldName: string;
   fieldValue: string;
 };
 
-type ResumeDataType = {
-  image: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  professionalTitle: string;
-  about: string;
-  address: string;
+export type ResumeDataType = {
+  profile: Profile;
   socials: Social[];
   skills: Skill[];
   interests: Interest[];
@@ -74,15 +78,17 @@ type ResumeDataType = {
   personalProfiles: PersonalProfile[];
 };
 
-const initialResumeDataState: ResumeDataType = {
-  image: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  professionalTitle: "",
-  about: "",
-  address: "",
+export const initialResumeDataState: ResumeDataType = {
+  profile: {
+    image: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    professionalTitle: "",
+    about: "",
+    address: "",
+  },
   socials: [],
   skills: [],
   interests: [],
@@ -92,110 +98,184 @@ const initialResumeDataState: ResumeDataType = {
   personalProfiles: [],
 };
 
+type SetFieldPayload =
+  | {
+      fieldName: "socials";
+      value: Social;
+    }
+  | {
+      fieldName: "skills";
+      value: Skill;
+    }
+  | {
+      fieldName: "interests";
+      value: Interest;
+    }
+  | {
+      fieldName: "workExperiences";
+      value: WorkExperience;
+    }
+  | {
+      fieldName: "projects";
+      value: Project;
+    }
+  | {
+      fieldName: "educations";
+      value: Education;
+    }
+  | {
+      fieldName: "personalProfiles";
+      value: PersonalProfile;
+    };
+
+type SetFieldsPayload =
+  | {
+      fieldName: "socials";
+      value: Social[];
+    }
+  | {
+      fieldName: "skills";
+      value: Skill[];
+    }
+  | {
+      fieldName: "interests";
+      value: Interest[];
+    }
+  | {
+      fieldName: "workExperiences";
+      value: WorkExperience[];
+    }
+  | {
+      fieldName: "projects";
+      value: Project[];
+    }
+  | {
+      fieldName: "educations";
+      value: Education[];
+    }
+  | {
+      fieldName: "personalProfiles";
+      value: PersonalProfile[];
+    };
+
+const emptySocial: Omit<Social, "id"> = {
+  name: "",
+  url: "",
+};
+
+const emptySkill: Omit<Skill, "id"> = {
+  name: "",
+};
+
+const emptyInterest: Omit<Interest, "id"> = {
+  name: "",
+};
+
 const resumeDataSlice = createSlice({
   name: "resumeData",
   initialState: initialResumeDataState,
   reducers: {
-    setImage: (state, action: PayloadAction<string>) => {
-      state.image = action.payload;
+    setProfile: (
+      state,
+      action: PayloadAction<{
+        fieldName: keyof Profile;
+        value: string;
+      }>,
+    ) => {
+      const { fieldName, value } = action.payload;
+      state.profile[fieldName] = value;
     },
-    setFirstName: (state, action: PayloadAction<string>) => {
-      state.firstName = action.payload;
-    },
-    setLastName: (state, action: PayloadAction<string>) => {
-      state.lastName = action.payload;
-    },
-    setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
-    },
-    setPhone: (state, action: PayloadAction<string>) => {
-      state.phone = action.payload;
-    },
-    setProfessionalTitle: (state, action: PayloadAction<string>) => {
-      state.professionalTitle = action.payload;
-    },
-    setAbout: (state, action: PayloadAction<string>) => {
-      state.about = action.payload;
-    },
-    setAddress: (state, action: PayloadAction<string>) => {
-      state.address = action.payload;
-    },
-    addSocial: (state) => {
-      state.socials.push({
-        id: nanoid(),
-        name: "",
-        url: "",
-      });
-    },
-    removeSocial: (state, action: PayloadAction<string>) => {
-      state.socials = state.socials.filter(
-        (social) => social.id !== action.payload,
-      );
-    },
-    setSocial: (state, action: PayloadAction<Social>) => {
-      const index = state.socials.findIndex(
-        (social) => social.id === action.payload.id,
-      );
-      state.socials[index] = action.payload;
-    },
-    setSocials: (state, action: PayloadAction<Social[]>) => {
-      state.socials = action.payload;
-    },
-    addSkill: (state) => {
-      state.skills.push({
-        id: nanoid(),
-        name: "",
-      });
-    },
-    removeSkill: (state, action: PayloadAction<string>) => {
-      state.skills = state.skills.filter(
-        (skill) => skill.id !== action.payload,
-      );
-    },
-    setSkill: (state, action: PayloadAction<Skill>) => {
-      const index = state.skills.findIndex(
-        (skill) => skill.id === action.payload.id,
-      );
-      state.skills[index] = action.payload;
-    },
-    setSkills: (state, action: PayloadAction<Skill[]>) => {
-      state.skills = action.payload;
-    },
-    addInterest: (state) => {
-      state.interests.push({
-        id: nanoid(),
-        name: "",
-      });
-    },
-    removeInterest: (state, action: PayloadAction<string>) => {
-      state.interests = state.interests.filter(
-        (interest) => interest.id !== action.payload,
-      );
-    },
-    setInterest: (state, action: PayloadAction<Interest>) => {
-      const index = state.interests.findIndex(
-        (interest) => interest.id === action.payload.id,
-      );
-      state.interests[index] = action.payload;
-    },
-    setInterests: (state, action: PayloadAction<Interest[]>) => {
-      state.interests = action.payload;
-    },
-    addWorkExperience: (state) => {
-      state.workExperiences.push({
-        id: nanoid(),
-        companyName: "",
-        jobTitle: "",
-        location: "",
-        joiningDate: "",
-        leavingDate: "",
-        workResponsibilities: [
-          {
+    addField: (
+      state,
+      action: PayloadAction<Exclude<keyof ResumeDataType, "profile">>,
+    ) => {
+      const fieldName = action.payload;
+
+      switch (fieldName) {
+        case "socials":
+          state[fieldName].push({ id: nanoid(), ...emptySocial });
+          break;
+
+        case "skills":
+          state[fieldName].push({ id: nanoid(), ...emptySkill });
+          break;
+
+        case "interests":
+          state[fieldName].push({ id: nanoid(), ...emptyInterest });
+          break;
+
+        case "educations":
+          state[fieldName].push({
             id: nanoid(),
-            responsibility: "",
-          },
-        ],
-      });
+            courseName: "",
+            collegeName: "",
+            from: "",
+            to: "",
+          });
+          break;
+
+        case "workExperiences":
+          state[fieldName].push({
+            id: nanoid(),
+            companyName: "",
+            jobTitle: "",
+            location: "",
+            joiningDate: "",
+            leavingDate: "",
+            workResponsibilities: [
+              {
+                id: nanoid(),
+                responsibility: "",
+              },
+            ],
+          });
+          break;
+
+        case "projects":
+          state[fieldName].push({
+            id: nanoid(),
+            projectName: "",
+            projectDescription: "",
+            liveLink: "",
+            sourceLink: "",
+            tags: "",
+          });
+          break;
+
+        case "personalProfiles":
+          state[fieldName].push({
+            id: nanoid(),
+            fieldName: "",
+            fieldValue: "",
+          });
+          break;
+      }
+    },
+
+    removeField: (
+      state,
+      action: PayloadAction<{
+        fieldName: Exclude<keyof ResumeDataType, "profile">;
+        id: string;
+      }>,
+    ) => {
+      const { fieldName, id } = action.payload;
+      const index = state[fieldName].findIndex((field) => field.id === id);
+      state[fieldName].splice(index, 1);
+    },
+
+    setField: (state, action: PayloadAction<SetFieldPayload>) => {
+      const { fieldName, value } = action.payload;
+
+      const index = state[fieldName].findIndex(
+        (field) => field.id === value.id,
+      );
+      state[fieldName][index] = value;
+    },
+
+    setFields: (state, action: PayloadAction<SetFieldsPayload>) => {
+      const { fieldName, value } = action.payload;
+      state[fieldName] = value as any;
     },
     addWorkResponsibility: (state, action: PayloadAction<string>) => {
       const index = state.workExperiences.findIndex(
@@ -206,59 +286,41 @@ const resumeDataSlice = createSlice({
         responsibility: "",
       });
     },
-    removeWorkExperience: (state, action: PayloadAction<string>) => {
-      state.workExperiences = state.workExperiences.filter(
-        (workExperience) => workExperience.id !== action.payload,
-      );
-    },
-    removeWorkResponsibility: (
+    removeWorkResponsibilityField: (
       state,
       action: PayloadAction<{
         workExperienceId: string;
-        responsibilityId: string;
+        workResponsibilityId: string;
       }>,
     ) => {
-      const workExperienceIndex = state.workExperiences.findIndex(
-        (workExperience) =>
-          workExperience.id === action.payload.workExperienceId,
-      );
-      state.workExperiences[workExperienceIndex].workResponsibilities =
-        state.workExperiences[workExperienceIndex].workResponsibilities.filter(
-          (workResponsibility) =>
-            workResponsibility.id !== action.payload.responsibilityId,
-        );
+      const { workExperienceId, workResponsibilityId } = action.payload;
+
+      state.workExperiences.map((w) => {
+        if (w.id === workExperienceId) {
+          w.workResponsibilities = w.workResponsibilities.filter(
+            (r) => r.id !== workResponsibilityId,
+          );
+        }
+      });
     },
-    setWorkExperience: (state, action: PayloadAction<WorkExperience>) => {
-      const index = state.workExperiences.findIndex(
-        (workExperience) => workExperience.id === action.payload.id,
-      );
-      state.workExperiences[index] = action.payload;
-    },
-    setWorkResponsibility: (
+    setWorkResponsibilityField: (
       state,
       action: PayloadAction<{
         workExperienceId: string;
         workResponsibility: WorkResponsibility;
       }>,
     ) => {
-      const workExperienceIndex = state.workExperiences.findIndex(
-        (workExperience) =>
-          workExperience.id === action.payload.workExperienceId,
-      );
+      const { workExperienceId, workResponsibility } = action.payload;
 
-      const workResponsibilityIndex = state.workExperiences[
-        workExperienceIndex
-      ].workResponsibilities.findIndex(
-        (workResponsibility) =>
-          workResponsibility.id === action.payload.workResponsibility.id,
-      );
-
-      state.workExperiences[workExperienceIndex].workResponsibilities[
-        workResponsibilityIndex
-      ] = action.payload.workResponsibility;
-    },
-    setWorkExperiences: (state, action: PayloadAction<WorkExperience[]>) => {
-      state.workExperiences = action.payload;
+      state.workExperiences.map((w) => {
+        if (w.id === workExperienceId) {
+          w.workResponsibilities.map((wr) => {
+            if (wr.id === workResponsibility.id) {
+              wr.responsibility = workResponsibility.responsibility;
+            }
+          });
+        }
+      });
     },
     setWorkResponsibilities: (
       state,
@@ -271,76 +333,9 @@ const resumeDataSlice = createSlice({
         (workExperience) =>
           workExperience.id === action.payload.workExperienceId,
       );
+
       state.workExperiences[index].workResponsibilities =
         action.payload.workResponsibilities;
-    },
-    addProject: (state) => {
-      state.projects.push({
-        id: nanoid(),
-        projectName: "",
-        projectDescription: "",
-        liveLink: "",
-        sourceLink: "",
-        tags: "",
-      });
-    },
-    removeProject: (state, action: PayloadAction<string>) => {
-      state.projects = state.projects.filter(
-        (project) => project.id !== action.payload,
-      );
-    },
-    setProject: (state, action: PayloadAction<Project>) => {
-      const index = state.projects.findIndex(
-        (project) => project.id === action.payload.id,
-      );
-      state.projects[index] = action.payload;
-    },
-    setProjects: (state, action: PayloadAction<Project[]>) => {
-      state.projects = action.payload;
-    },
-    addEducation: (state) => {
-      state.educations.push({
-        id: nanoid(),
-        courseName: "",
-        collegeName: "",
-        from: "",
-        to: "",
-      });
-    },
-    removeEducation: (state, action: PayloadAction<string>) => {
-      state.educations = state.educations.filter(
-        (education) => education.id !== action.payload,
-      );
-    },
-    setEducation: (state, action: PayloadAction<Education>) => {
-      const index = state.educations.findIndex(
-        (education) => education.id === action.payload.id,
-      );
-      state.educations[index] = action.payload;
-    },
-    setEducations: (state, action: PayloadAction<Education[]>) => {
-      state.educations = action.payload;
-    },
-    addPersonalProfile: (state) => {
-      state.personalProfiles.push({
-        id: nanoid(),
-        fieldName: "",
-        fieldValue: "",
-      });
-    },
-    removePersonalProfile: (state, action: PayloadAction<string>) => {
-      state.personalProfiles = state.personalProfiles.filter(
-        (personalProfile) => personalProfile.id !== action.payload,
-      );
-    },
-    setPersonalProfile: (state, action: PayloadAction<PersonalProfile>) => {
-      const index = state.personalProfiles.findIndex(
-        (personalProfile) => personalProfile.id === action.payload.id,
-      );
-      state.personalProfiles[index] = action.payload;
-    },
-    setPersonalProfiles: (state, action: PayloadAction<PersonalProfile[]>) => {
-      state.personalProfiles = action.payload;
     },
     resetResumeData: (state) => {
       return initialResumeDataState;
@@ -349,51 +344,39 @@ const resumeDataSlice = createSlice({
 });
 
 export const {
-  setImage,
-  setFirstName,
-  setLastName,
-  setEmail,
-  setPhone,
-  setProfessionalTitle,
-  setAbout,
-  setAddress,
-  addSocial,
-  removeSocial,
-  setSocial,
-  setSocials,
-  addSkill,
-  removeSkill,
-  setSkill,
-  setSkills,
-  addInterest,
-  removeInterest,
-  setInterest,
-  setInterests,
-  addWorkExperience,
+  setProfile,
+  addField,
+  removeField,
+  setField,
+  setFields,
   addWorkResponsibility,
-  removeWorkExperience,
-  removeWorkResponsibility,
-  setWorkExperience,
-  setWorkResponsibility,
-  setWorkExperiences,
+  removeWorkResponsibilityField,
+  setWorkResponsibilityField,
   setWorkResponsibilities,
-  addProject,
-  removeProject,
-  setProject,
-  setProjects,
-  addEducation,
-  removeEducation,
-  setEducation,
-  setEducations,
-  addPersonalProfile,
-  removePersonalProfile,
-  setPersonalProfile,
-  setPersonalProfiles,
   resetResumeData,
 } = resumeDataSlice.actions;
 
 export default resumeDataSlice.reducer;
 
-export const selectResumeData =
-  (fieldName: keyof ResumeDataType) => (state: RootState) =>
-    state.resumeData[fieldName];
+export const selectProfileField =
+  (fieldName: keyof Profile) => (state: RootState) =>
+    state.resumeData.profile[fieldName];
+
+export const selectProfile = (state: RootState) => state.resumeData.profile;
+
+export const selectSocials = (state: RootState) => state.resumeData.socials;
+
+export const selectSkills = (state: RootState) => state.resumeData.skills;
+
+export const selectInterests = (state: RootState) => state.resumeData.interests;
+
+export const selectEducations = (state: RootState) =>
+  state.resumeData.educations;
+
+export const selectWorkExperiences = (state: RootState) =>
+  state.resumeData.workExperiences;
+
+export const selectProjects = (state: RootState) => state.resumeData.projects;
+
+export const selectPersonalProfiles = (state: RootState) =>
+  state.resumeData.personalProfiles;

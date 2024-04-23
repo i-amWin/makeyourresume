@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { memo, useId } from "react";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { cn } from "@/utils/cn";
@@ -6,24 +6,21 @@ import { cn } from "@/utils/cn";
 interface FormTextAreaProps {
   label: string;
   placeholder: string;
-  useValue: () => string;
-  useSetValue: () => (value: string) => void;
+  value: string;
+  setValue: (value: string) => void;
   className?: string;
   rows?: number;
 }
 
-export default function FormTextArea({
+export const FormTextArea = ({
   label,
   placeholder,
-  useValue,
-  useSetValue,
+  value,
+  setValue,
   className,
   rows = 9,
-}: FormTextAreaProps) {
+}: FormTextAreaProps) => {
   const id = useId();
-
-  const value = useValue();
-  const setValue = useSetValue();
 
   return (
     <div className={cn("space-y-1", className)}>
@@ -38,4 +35,6 @@ export default function FormTextArea({
       />
     </div>
   );
-}
+};
+
+export const MemoizedTextArea = memo(FormTextArea);

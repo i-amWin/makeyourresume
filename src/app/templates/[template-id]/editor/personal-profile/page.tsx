@@ -4,22 +4,24 @@ import { Fragment } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  usePersonalProfiles,
-  useAddPersonalProfile,
-  useRemovePersonalProfile,
-  useSetPersonalProfile,
-  useSetPersonalProfiles,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
+import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  type PersonalProfile,
+  addField,
+  removeField,
+  selectPersonalProfiles,
+  setField,
+  setFields,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function PersonalProfile() {
   const templateId = useTemplateIdParam();
@@ -42,7 +44,7 @@ export default function PersonalProfile() {
           <NextButton
             label="Download Resume"
             href={`/templates/${templateId}/resume`}
-            useData={usePersonalProfiles}
+            selectFunction={selectPersonalProfiles}
             sectionName="personalProfile"
           />
         </div>
@@ -68,13 +70,16 @@ export default function PersonalProfile() {
 }
 
 function PersonalProfilesGroup() {
-  const addPersonalProfile = useAddPersonalProfile();
-  const personalProfiles = usePersonalProfiles();
-
-  const setPersonalProfiles = useSetPersonalProfiles();
+  const personalProfiles = useAppSelector(selectPersonalProfiles);
+  const dispatch = useAppDispatch();
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setPersonalProfiles(arrayMove(personalProfiles, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "personalProfiles",
+        value: arrayMove(personalProfiles, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -97,7 +102,7 @@ function PersonalProfilesGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addPersonalProfile()}
+        onClick={() => dispatch(addField("personalProfiles"))}
       >
         Add Personal Profile
       </Button>
@@ -105,17 +110,26 @@ function PersonalProfilesGroup() {
   );
 }
 
-type PersonalProfileEditorProps = ReturnType<
-  typeof usePersonalProfiles
->[number];
-
+type PersonalProfileEditorProps = PersonalProfile;
 function PersonalProfileEditor({
   id,
   fieldName,
   fieldValue,
 }: PersonalProfileEditorProps) {
-  const setPersonalProfile = useSetPersonalProfile();
-  const removePersonalProfile = useRemovePersonalProfile();
+  // const setPersonalProfile = useSetPersonalProfile();
+  // const removePersonalProfile = useRemovePersonalProfile();
+
+  const dispatch = useAppDispatch();
+
+  const setPersonalProfile = (personalProfile: PersonalProfile) => {
+    dispatch(
+      setField({ fieldName: "personalProfiles", value: personalProfile }),
+    );
+  };
+
+  const removePersonalProfile = (id: string) => {
+    dispatch(removeField({ fieldName: "personalProfiles", id }));
+  };
 
   return (
     <DraggableItemWrapper
@@ -127,20 +141,20 @@ function PersonalProfileEditor({
       removeSrOnlyLabel={`Remove field ${fieldName} with value ${fieldValue}`}
     >
       <div className="flex flex-wrap items-end gap-2">
-        <FormInput
+        <TextInput
           label="Field Name"
           placeholder="Enter the field name"
-          useValue={() => fieldName}
-          useSetValue={() => (value) =>
+          value={fieldName}
+          setValue={(value) =>
             setPersonalProfile({ id, fieldValue, fieldName: value })
           }
         />
 
-        <FormInput
+        <TextInput
           label="Field Value"
           placeholder="Enter the field value"
-          useValue={() => fieldValue}
-          useSetValue={() => (value) =>
+          value={fieldValue}
+          setValue={(value) =>
             setPersonalProfile({ id, fieldName, fieldValue: value })
           }
         />

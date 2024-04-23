@@ -4,29 +4,31 @@ import { Fragment } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  type WorkResponsibility,
-  useWorkExperiences,
-  useAddWorkExperience,
-  useAddWorkResponsibility,
-  useRemoveWorkExperience,
-  useRemoveWorkResponsibility,
-  useSetWorkExperience,
-  useSetWorkResponsibility,
-  useSetWorkExperiences,
-  useSetWorkResponsibilities,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
+import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  WorkExperience,
+  WorkResponsibility,
+  addField,
+  addWorkResponsibility,
+  removeField,
+  removeWorkResponsibilityField,
+  selectWorkExperiences,
+  setField,
+  setFields,
+  setWorkResponsibilities,
+  setWorkResponsibilityField,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function WorkExperiences() {
   const templateId = useTemplateIdParam();
@@ -36,7 +38,7 @@ export default function WorkExperiences() {
       <div className="flex flex-wrap gap-2">
         <Button asChild size="sm" variant="secondary">
           <Link href={`/templates/${templateId}/editor/projects`}>
-            Previous (Projects))
+            Previous (Projects)
           </Link>
         </Button>
         <div className="ml-auto flex flex-wrap justify-end gap-2">
@@ -48,7 +50,7 @@ export default function WorkExperiences() {
           <NextButton
             label="Next (Personal Profile)"
             href={`/templates/${templateId}/editor/personal-profile`}
-            useData={useWorkExperiences}
+            selectFunction={selectWorkExperiences}
             sectionName="workExperiences"
           />
         </div>
@@ -74,12 +76,16 @@ export default function WorkExperiences() {
 }
 
 function WorkExperiencesGroup() {
-  const addWorkExperience = useAddWorkExperience();
-  const workExperiences = useWorkExperiences();
-  const setWorkExperiences = useSetWorkExperiences();
+  const dispatch = useAppDispatch();
+  const workExperiences = useAppSelector(selectWorkExperiences);
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setWorkExperiences(arrayMove(workExperiences, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "workExperiences",
+        value: arrayMove(workExperiences, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -103,7 +109,7 @@ function WorkExperiencesGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addWorkExperience()}
+        onClick={() => dispatch(addField("workExperiences"))}
       >
         Add Work Experience
       </Button>
@@ -111,19 +117,37 @@ function WorkExperiencesGroup() {
   );
 }
 
-type WorkExperienceEditorProps = ReturnType<typeof useWorkExperiences>[number];
+type WorkExperienceEditorProps = WorkExperience;
 
 function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
-  const setWorkExperience = useSetWorkExperience();
-  const removeWorkExperience = useRemoveWorkExperience();
-  const addWorkResponsibility = useAddWorkResponsibility();
-
-  const setWorkResponsibilities = useSetWorkResponsibilities();
+  // const setWorkExperience = useSetWorkExperience();
+  // const removeWorkExperience = useRemoveWorkExperience();
+  // const addWorkResponsibility = useAddWorkResponsibility();
+  const dispatch = useAppDispatch();
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setWorkResponsibilities(
-      workExperience.id,
-      arrayMove(workExperience.workResponsibilities, oldIndex, newIndex),
+    dispatch(
+      setWorkResponsibilities({
+        workExperienceId: workExperience.id,
+        workResponsibilities: arrayMove(
+          workExperience.workResponsibilities,
+          oldIndex,
+          newIndex,
+        ),
+      }),
+    );
+  };
+
+  const removeWorkExperience = (id: string) => {
+    dispatch(removeField({ fieldName: "workExperiences", id }));
+  };
+
+  const setWorkExperience = (workExperience: WorkExperience) => {
+    dispatch(
+      setField({
+        fieldName: "workExperiences",
+        value: workExperience,
+      }),
     );
   };
 
@@ -135,31 +159,31 @@ function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
       removeSrOnlyLabel={`Remove ${workExperience.companyName} from your resume`}
     >
       <div className="grid items-end gap-2">
-        <FormInput
+        <TextInput
           label="Company Name"
           placeholder="Enter your company name"
-          useValue={() => workExperience.companyName}
-          useSetValue={() => (value) => {
+          value={workExperience.companyName}
+          setValue={(value) => {
             setWorkExperience({ ...workExperience, companyName: value });
           }}
         />
 
         <div className="grid grid-cols-2 gap-2">
-          <FormInput
+          <TextInput
             label="Job Title"
             placeholder="Enter your job title"
-            useValue={() => workExperience.jobTitle}
-            useSetValue={() => (value) => {
+            value={workExperience.jobTitle}
+            setValue={(value) => {
               setWorkExperience({ ...workExperience, jobTitle: value });
             }}
             className="col-span-2 sm:col-span-1"
           />
 
-          <FormInput
+          <TextInput
             label="Location"
             placeholder="Enter the job location"
-            useValue={() => workExperience.location}
-            useSetValue={() => (value) => {
+            value={workExperience.location}
+            setValue={(value) => {
               setWorkExperience({ ...workExperience, location: value });
             }}
             className="col-span-2 sm:col-span-1"
@@ -167,21 +191,21 @@ function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          <FormInput
+          <TextInput
             label="Joining Date"
             placeholder="Enter the joining date"
-            useValue={() => workExperience.joiningDate}
-            useSetValue={() => (value) => {
+            value={workExperience.joiningDate}
+            setValue={(value) => {
               setWorkExperience({ ...workExperience, joiningDate: value });
             }}
             className="col-span-2 sm:col-span-1"
           />
 
-          <FormInput
+          <TextInput
             label="Leaving Date"
             placeholder="Enter the leaving date"
-            useValue={() => workExperience.leavingDate}
-            useSetValue={() => (value) => {
+            value={workExperience.leavingDate}
+            setValue={(value) => {
               setWorkExperience({ ...workExperience, leavingDate: value });
             }}
             className="col-span-2 sm:col-span-1"
@@ -216,7 +240,7 @@ function WorkExperienceEditor(workExperience: WorkExperienceEditorProps) {
             type="button"
             variant="accent"
             size="sm"
-            onClick={() => addWorkResponsibility(workExperience.id)}
+            onClick={() => dispatch(addWorkResponsibility(workExperience.id))}
           >
             Add Work Responsibility
           </Button>
@@ -235,8 +259,34 @@ function WorkResponsibilityEditor({
   id,
   workResponsibility,
 }: WorkResponsibilityEditorProps) {
-  const setWorkResponsibility = useSetWorkResponsibility();
-  const removeWorkResponsibility = useRemoveWorkResponsibility();
+  // const setWorkResponsibility = useSetWorkResponsibility();
+  // const removeWorkResponsibility = useRemoveWorkResponsibility();
+  const dispatch = useAppDispatch();
+
+  const setWorkResponsibility = (
+    id: string,
+    newWorkResponsibility: WorkResponsibility,
+  ) => {
+    dispatch(
+      setWorkResponsibilityField({
+        workExperienceId: id,
+        workResponsibility: newWorkResponsibility,
+      }),
+    );
+  };
+
+  const removeWorkResponsibility = (
+    id: string,
+    workResponsibilityId: string,
+  ) => {
+    console.log({ id, workResponsibilityId });
+    dispatch(
+      removeWorkResponsibilityField({
+        workExperienceId: id,
+        workResponsibilityId,
+      }),
+    );
+  };
 
   return (
     <DraggableItemWrapper

@@ -1,26 +1,28 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
-import {
-  useSkills,
-  useAddSkill,
-  useRemoveSkill,
-  useSetSkill,
-  useSetSkills,
-} from "@/store/resume-data-store";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import FormInput from "@/components/form/form-input";
+import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import DNDContexts from "@/components/form/dnd-contexts";
+import {
+  Skill,
+  addField,
+  removeField,
+  selectSkills,
+  setField,
+  setFields,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Skills() {
   const templateId = useTemplateIdParam();
@@ -43,7 +45,7 @@ export default function Skills() {
           <NextButton
             label="Next (Interests)"
             href={`/templates/${templateId}/editor/interests`}
-            useData={useSkills}
+            selectFunction={selectSkills}
             sectionName="skills"
           />
         </div>
@@ -67,12 +69,16 @@ export default function Skills() {
 }
 
 function SkillsGroup() {
-  const addSkill = useAddSkill();
-  const skills = useSkills();
-  const setSkills = useSetSkills();
+  const dispatch = useAppDispatch();
+  const skills = useAppSelector(selectSkills);
 
   const setItems = (oldIndex: number, newIndex: number) => {
-    setSkills(arrayMove(skills, oldIndex, newIndex));
+    dispatch(
+      setFields({
+        fieldName: "skills",
+        value: arrayMove(skills, oldIndex, newIndex),
+      }),
+    );
   };
 
   return (
@@ -94,7 +100,7 @@ function SkillsGroup() {
         type="button"
         variant="accent"
         size="sm"
-        onClick={() => addSkill()}
+        onClick={() => dispatch(addField("skills"))}
       >
         Add Skill
       </Button>
@@ -102,11 +108,18 @@ function SkillsGroup() {
   );
 }
 
-type SkillEditorProps = ReturnType<typeof useSkills>[number];
+type SkillEditorProps = Skill;
 
-function SkillEditor({ id, name }: SkillEditorProps) {
-  const setSkill = useSetSkill();
-  const removeSkill = useRemoveSkill();
+const SkillEditor = memo(({ id, name }: SkillEditorProps) => {
+  const dispatch = useAppDispatch();
+
+  const removeSkill = (id: string) => {
+    dispatch(removeField({ fieldName: "skills", id }));
+  };
+
+  const setSkill = (social: Skill) => {
+    dispatch(setField({ fieldName: "skills", value: social }));
+  };
 
   return (
     <DraggableItemWrapper
@@ -115,15 +128,17 @@ function SkillEditor({ id, name }: SkillEditorProps) {
       onRemoveClick={() => removeSkill(id)}
       removeSrOnlyLabel={`Remove ${name} skill`}
     >
-      <FormInput
+      <TextInput
         label="Skill Name"
         placeholder="Enter your skill name"
-        useValue={() => name}
-        useSetValue={() => (value: string) => setSkill({ id, name: value })}
+        value={name}
+        setValue={(value) => setSkill({ id, name: value })}
       />
     </DraggableItemWrapper>
   );
-}
+});
+
+SkillEditor.displayName = "SkillEditor";
 
 function SkillPreview({ name }: { name: string }) {
   return (

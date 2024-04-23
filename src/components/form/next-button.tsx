@@ -8,21 +8,23 @@ import {
   selectSkippedSection,
   type Section,
 } from "@/redux/features/Skipped Sections/skippedSectionSlice";
+import { RootState } from "@/redux/store";
 
 type NextButtonProps = {
   label: string;
   sectionName: Section;
-  useData: () => unknown[];
+  // useData: () => unknown[];
+  selectFunction: (state: RootState) => unknown[];
   href: string;
 };
 
 export default function NextButton({
   label,
-  useData,
+  selectFunction,
   sectionName,
   href,
 }: NextButtonProps) {
-  const length = useData().length;
+  const length = useAppSelector(selectFunction).length;
   const isSkipped = useAppSelector((state) =>
     selectSkippedSection(state, sectionName),
   );
