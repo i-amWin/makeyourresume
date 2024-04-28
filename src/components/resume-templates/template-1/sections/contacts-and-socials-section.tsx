@@ -1,80 +1,55 @@
-import {
-  useAddress,
-  useEmail,
-  usePhone,
-  useSocials,
-} from "@/store/resume-data-store";
 import { icons } from "@/lib/data";
 import { LucideIcon } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
+import {
+  selectProfile,
+  selectSocials,
+} from "@/redux/features/Resume Data/resumeDataSlice";
+import { Show } from "@/components/control-flow/show";
+import { For } from "@/components/control-flow/for";
+import { dummyData } from "../../dummy-data";
 
 export default function ContactAndSocialSection() {
   return (
     <div className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      <Email />
-      <PhoneNumber />
-      <Address />
+      <Contacts />
       <Socials />
     </div>
   );
 }
 
-function Email() {
-  const email = useEmail();
-
-  if (isDoubleUnderscores(email)) return null;
+function Contacts() {
+  const { email, phone, address } = useAppSelector(selectProfile);
 
   return (
-    <ContactAndSocialText icon="mail" text={email || "john.doe@gmail.com"} />
+    <>
+      <Show when={!isDoubleUnderscores(email)}>
+        <ContactAndSocialText
+          icon="mail"
+          text={email || dummyData.profile.email}
+        />
+      </Show>
+      <Show when={!isDoubleUnderscores(phone)}>
+        <ContactAndSocialText
+          icon="phone"
+          text={phone || dummyData.profile.phone}
+        />
+      </Show>
+      <Show when={!isDoubleUnderscores(address)}>
+        <ContactAndSocialText
+          icon="mapPin"
+          text={address || dummyData.profile.address}
+        />
+      </Show>
+    </>
   );
 }
-
-function PhoneNumber() {
-  const phone = usePhone();
-
-  if (isDoubleUnderscores(phone)) return null;
-
-  return (
-    <ContactAndSocialText icon="phone" text={phone || "+1 123-456-7890"} />
-  );
-}
-
-function Address() {
-  const address = useAddress();
-
-  if (isDoubleUnderscores(address)) return null;
-
-  return (
-    <ContactAndSocialText
-      icon="mapPin"
-      text={address || "123 Main Street, Cityville, State, 12345"}
-    />
-  );
-}
-
-const defaultSocials = [
-  {
-    id: "social1",
-    name: "linkedin",
-    url: "https://www.linkedin.com/in/johndoe",
-  },
-  {
-    id: "social2",
-    name: "github",
-    url: "https://github.com/johndoe",
-  },
-  {
-    id: "social3",
-    name: "twitter",
-    url: "https://twitter.com/johndoe",
-  },
-];
 
 function Socials() {
-  const socials = useSocials();
+  const socials = useAppSelector(selectSocials);
 
   const shouldSkip = useAppSelector((state) =>
     selectSkippedSection(state, "socials"),
@@ -84,15 +59,15 @@ function Socials() {
 
   return (
     <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
-      {(socials.length === 0 ? defaultSocials : socials).map((social) => {
-        if (isDoubleUnderscores(social.url)) return null;
-
-        return (
-          <li key={social.id}>
-            <ContactAndSocialText icon={social.name} text={social.url} />
-          </li>
-        );
-      })}
+      <For each={socials.length === 0 ? dummyData.socials : socials}>
+        {({ id, name, url }) => (
+          <Show key={id} when={!isDoubleUnderscores(url)}>
+            <li>
+              <ContactAndSocialText icon={name} text={url} />
+            </li>
+          </Show>
+        )}
+      </For>
     </ul>
   );
 }

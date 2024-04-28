@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-// import { useImage, useSetImage } from "@/store/resume-data-store";
 import { useSelector, useDispatch } from "react-redux";
 import Dropzone from "react-dropzone";
 import { Label } from "../ui/label";

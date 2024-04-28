@@ -1,63 +1,19 @@
-import { useWorkExperiences } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-
-const defaultWorkExperiences = [
-  {
-    id: "work-experience-1",
-    companyName: "Tech Solutions Inc.",
-    jobTitle: "Software Engineer",
-    location: "Cityville, State",
-    joiningDate: "2022-06-01",
-    leavingDate: "2023-09-01",
-    workResponsibilities: [
-      {
-        id: "work-responsibility-1-1",
-        responsibility: "Developing and maintaining web applications",
-      },
-      {
-        id: "work-responsibility-1-2",
-        responsibility: "Collaborating with cross-functional teams",
-      },
-      {
-        id: "work-responsibility-1-3",
-        responsibility: "Troubleshooting and debugging issues",
-      },
-    ],
-  },
-  {
-    id: "work-experience-2",
-    companyName: "Code Innovators",
-    jobTitle: "Junior Developer",
-    location: "Cityville, State",
-    joiningDate: "2021-01-15",
-    leavingDate: "2022-05-30",
-    workResponsibilities: [
-      {
-        id: "work-responsibility-2-1",
-        responsibility: "Assisting in the development of new features",
-      },
-      {
-        id: "work-responsibility-2-2",
-        responsibility: "Conducting code reviews",
-      },
-      {
-        id: "work-responsibility-2-3",
-        responsibility: "Participating in agile development cycles",
-      },
-    ],
-  },
-];
+import { selectWorkExperiences } from "@/redux/features/Resume Data/resumeDataSlice";
+import { dummyData } from "../../dummy-data";
+import { For } from "@/components/control-flow/for";
+import { Show } from "@/components/control-flow/show";
 
 export default function ExperienceSection() {
   const accentColor = useAppSelector((state) =>
     selectAccentColor(state, "template-1"),
   );
-  const workExperiences = useWorkExperiences();
+  const workExperiences = useAppSelector(selectWorkExperiences);
 
   const shouldSkip = useAppSelector((state) =>
     selectSkippedSection(state, "workExperiences"),
@@ -72,82 +28,109 @@ export default function ExperienceSection() {
       </Heading>
 
       <ul className="grid gap-[calc(var(--WIDTHPERCENTAGE)*9)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(workExperiences.length === 0
-          ? defaultWorkExperiences
-          : workExperiences
-        ).map((experience) => (
-          <li
-            key={experience.id}
-            className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
-          >
-            <Circle
-              color={accentColor}
-              fill={accentColor}
-              className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
-            />
+        <For
+          each={
+            workExperiences.length === 0
+              ? dummyData.workExperiences
+              : workExperiences
+          }
+        >
+          {({
+            id,
+            jobTitle,
+            companyName,
+            joiningDate,
+            leavingDate,
+            location,
+            workResponsibilities,
+          }) => (
+            <li
+              key={id}
+              className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
+            >
+              <Circle
+                color={accentColor}
+                fill={accentColor}
+                className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
+              />
 
-            <div className="grid flex-1">
-              {isDoubleUnderscores(experience.jobTitle) ? null : (
-                <h3
-                  className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
-                  style={{ color: accentColor }}
-                >
-                  {experience.jobTitle}
-                </h3>
-              )}
-
-              {isDoubleUnderscores(experience.companyName) ? null : (
-                <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
-                  {experience.companyName}
-                </p>
-              )}
-
-              <div className="flex justify-between">
-                {isDoubleUnderscores(experience.joiningDate) &&
-                isDoubleUnderscores(experience.leavingDate) ? null : (
-                  <p
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+              <div className="grid flex-1">
+                <Show when={!isDoubleUnderscores(jobTitle)}>
+                  <h3
+                    className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
                     style={{ color: accentColor }}
                   >
-                    {experience.joiningDate + " - " + experience.leavingDate}
-                  </p>
-                )}
+                    {jobTitle}
+                  </h3>
+                </Show>
 
-                {isDoubleUnderscores(experience.location) ? null : (
-                  <p
-                    className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
-                    style={{ color: accentColor }}
+                <Show when={!isDoubleUnderscores(companyName)}>
+                  <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
+                    {companyName}
+                  </p>
+                </Show>
+
+                <div className="flex justify-between">
+                  <Show
+                    when={
+                      !isDoubleUnderscores(joiningDate) ||
+                      !isDoubleUnderscores(leavingDate)
+                    }
                   >
-                    {experience.location}
-                  </p>
-                )}
-              </div>
-
-              <ul>
-                {experience.workResponsibilities.map(
-                  ({ responsibility, id }) => {
-                    if (isDoubleUnderscores(responsibility)) return null;
-
-                    return (
-                      <li
-                        key={id}
-                        className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]"
+                    <p
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                      style={{ color: accentColor }}
+                    >
+                      <Show when={!isDoubleUnderscores(joiningDate)}>
+                        {joiningDate}
+                      </Show>
+                      <Show
+                        when={
+                          !isDoubleUnderscores(joiningDate) &&
+                          !isDoubleUnderscores(leavingDate)
+                        }
                       >
-                        <Square
-                          color={accentColor}
-                          className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
-                        />
-                        <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
-                          {responsibility}
-                        </p>
-                      </li>
-                    );
-                  },
-                )}
-              </ul>
-            </div>
-          </li>
-        ))}
+                        {" - "}
+                      </Show>
+                      <Show when={!isDoubleUnderscores(leavingDate)}>
+                        {leavingDate}
+                      </Show>
+                    </p>
+                  </Show>
+                  <Show when={!isDoubleUnderscores(location)}>
+                    <p
+                      className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
+                      style={{ color: accentColor }}
+                    >
+                      {location}
+                    </p>
+                  </Show>
+                </div>
+
+                <ul>
+                  <For each={workResponsibilities}>
+                    {({ id, responsibility }) => (
+                      <Show
+                        key={id}
+                        when={!isDoubleUnderscores(responsibility)}
+                      >
+                        <li className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
+                          <Square
+                            color={accentColor}
+                            className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*7)] w-[calc(var(--WIDTHPERCENTAGE)*7)]"
+                          />
+                          <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
+                            {responsibility}
+                          </p>
+                        </li>
+                      </Show>
+                    )}
+                  </For>
+                </ul>
+              </div>
+            </li>
+          )}
+        </For>
       </ul>
     </div>
   );
