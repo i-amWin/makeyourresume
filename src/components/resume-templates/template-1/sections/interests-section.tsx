@@ -1,31 +1,19 @@
 import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
-import { useInterests } from "@/store/resume-data-store";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-
-const defaultInterest = [
-  {
-    id: "interest1",
-    name: "Reading",
-  },
-  {
-    id: "interest2",
-    name: "Hiking",
-  },
-  {
-    id: "interest3",
-    name: "Coding Challenges",
-  },
-];
+import { selectInterests } from "@/redux/features/Resume Data/resumeDataSlice";
+import { For } from "@/components/control-flow/for";
+import { dummyData } from "../../dummy-data";
+import { Show } from "@/components/control-flow/show";
 
 export default function InterestsSection() {
   const shouldSkip = useAppSelector((state) =>
     selectSkippedSection(state, "interests"),
   );
-  const interests = useInterests();
+  const interests = useAppSelector(selectInterests);
 
   if (shouldSkip) return null;
 
@@ -33,16 +21,15 @@ export default function InterestsSection() {
     <div>
       <Heading>Interests</Heading>
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
-        {(interests.length === 0 ? defaultInterest : interests).map(
-          (interest) => {
-            if (isDoubleUnderscores(interest.name)) return null;
-            return (
-              <li key={interest.id}>
-                <InterestText text={interest.name} />
+        <For each={interests.length === 0 ? dummyData.interests : interests}>
+          {({ id, name }) => (
+            <Show key={id} when={!isDoubleUnderscores(name)}>
+              <li>
+                <InterestText text={name} />
               </li>
-            );
-          },
-        )}
+            </Show>
+          )}
+        </For>
       </ul>
     </div>
   );

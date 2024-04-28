@@ -7,7 +7,6 @@ import {
   leftColumnGaps,
   rightColumnGaps,
 } from "@/lib/data";
-import { useAppSelector } from "@/redux/hooks";
 
 const initialCustomStyleState = {
   accentColors: accentColors,

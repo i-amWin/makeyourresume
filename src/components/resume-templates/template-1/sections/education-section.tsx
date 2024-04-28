@@ -1,40 +1,19 @@
-import { useEducations } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-
-const defaultEducations = [
-  {
-    id: "education-1",
-    courseName: "Master of Web Development",
-    collegeName: "Digital University",
-    from: "2022",
-    to: "2024(Expected)",
-  },
-  {
-    id: "education-2",
-    courseName: "Bachelor of Science in Computer Science",
-    collegeName: "University of Technology",
-    from: "2018",
-    to: "2022",
-  },
-  {
-    id: "education-3",
-    courseName: "Diploma in Software Engineering",
-    collegeName: "Tech Institute",
-    from: "2016",
-    to: "2018",
-  },
-];
+import { selectEducations } from "@/redux/features/Resume Data/resumeDataSlice";
+import { For } from "@/components/control-flow/for";
+import { Show } from "@/components/control-flow/show";
+import { dummyData } from "../../dummy-data";
 
 export default function EducationSection() {
   const accentColor = useAppSelector((state) =>
     selectAccentColor(state, "template-1"),
   );
-  const educations = useEducations();
+  const educations = useAppSelector(selectEducations);
 
   const shouldSkip = useAppSelector((state) =>
     selectSkippedSection(state, "educations"),
@@ -49,10 +28,10 @@ export default function EducationSection() {
       </Heading>
 
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)] pr-[calc(var(--WIDTHPERCENTAGE)*25)]">
-        {(educations.length === 0 ? defaultEducations : educations).map(
-          (education) => (
+        <For each={educations.length === 0 ? dummyData.educations : educations}>
+          {({ id, courseName, collegeName, from, to }) => (
             <li
-              key={education.id}
+              key={id}
               className="flex gap-[calc(var(--WIDTHPERCENTAGE)*10)] pl-[calc(var(--WIDTHPERCENTAGE)*9)]"
             >
               <Circle
@@ -61,36 +40,45 @@ export default function EducationSection() {
                 className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
-                {isDoubleUnderscores(education.courseName) ? null : (
+                <Show when={!isDoubleUnderscores(courseName)}>
                   <h3
                     className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
                     style={{
                       color: accentColor,
                     }}
                   >
-                    {education.courseName}
+                    {courseName}
                   </h3>
-                )}
+                </Show>
 
-                {isDoubleUnderscores(education.collegeName) ? null : (
+                <Show when={!isDoubleUnderscores(collegeName)}>
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
-                    {education.collegeName}
+                    {collegeName}
                   </p>
-                )}
+                </Show>
 
-                {isDoubleUnderscores(education.from) &&
-                isDoubleUnderscores(education.to) ? null : (
+                <Show
+                  when={!isDoubleUnderscores(from) || !isDoubleUnderscores(to)}
+                >
                   <p
                     className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
                     style={{ color: accentColor }}
                   >
-                    {education.from + " - " + education.to}
+                    <Show when={!isDoubleUnderscores(from)}>{from}</Show>
+                    <Show
+                      when={
+                        !isDoubleUnderscores(from) && !isDoubleUnderscores(to)
+                      }
+                    >
+                      {" - "}
+                    </Show>
+                    <Show when={!isDoubleUnderscores(to)}>{to}</Show>
                   </p>
-                )}
+                </Show>
               </div>
             </li>
-          ),
-        )}
+          )}
+        </For>
       </ul>
     </div>
   );

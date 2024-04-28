@@ -1,88 +1,44 @@
-import { useSkills } from "@/store/resume-data-store";
 import Heading from "../components/heading";
 import { isDoubleUnderscores } from "@/utils/is-double-underscores";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
-
-const defaultSkills = [
-  {
-    id: "skill1",
-    name: "html5",
-  },
-  {
-    id: "skill2",
-    name: "css3",
-  },
-  {
-    id: "skill3",
-    name: "javascript",
-  },
-  {
-    id: "skill4",
-    name: "typescript",
-  },
-  {
-    id: "skill5",
-    name: "react",
-  },
-  {
-    id: "skill6",
-    name: "node.js",
-  },
-  {
-    id: "skill7",
-    name: "next js",
-  },
-  {
-    id: "skill8",
-    name: "tailwind css",
-  },
-  {
-    id: "skill9",
-    name: "sql",
-  },
-  {
-    id: "skill10",
-    name: "git & github",
-  },
-  {
-    id: "skill11",
-    name: "mongodb",
-  },
-];
+import { selectSkills } from "@/redux/features/Resume Data/resumeDataSlice";
+import { For } from "@/components/control-flow/for";
+import { Show } from "@/components/control-flow/show";
+import { dummyData } from "../../dummy-data";
 
 export default function SkillsSection() {
   const accentColor = useAppSelector((state) =>
     selectAccentColor(state, "template-1"),
   );
-  const skills = useSkills();
+  const skills = useAppSelector(selectSkills);
 
   const shouldSkip = useAppSelector((state) =>
     selectSkippedSection(state, "skills"),
   );
 
   if (shouldSkip) return null;
+
   return (
     <div>
       <Heading>Skills</Heading>
       <ul className="flex flex-wrap gap-[calc(var(--WIDTHPERCENTAGE)*6.5)]">
-        {(skills.length === 0 ? defaultSkills : skills).map((skill) => {
-          if (isDoubleUnderscores(skill.name)) return null;
-
-          return (
-            <li
-              key={skill.id}
-              className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border-[calc(var(--WIDTHPERCENTAGE)*.9562)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
-              style={{
-                borderColor: accentColor + "80",
-                backgroundColor: accentColor + "10",
-              }}
-            >
-              {skill.name}
-            </li>
-          );
-        })}
+        <For each={skills.length === 0 ? dummyData.skills : skills}>
+          {({ id, name }) => (
+            <Show key={id} when={!isDoubleUnderscores(name)}>
+              <li
+                className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border-[calc(var(--WIDTHPERCENTAGE)*.9562)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
+                style={{
+                  borderColor: accentColor + "80",
+                  backgroundColor: accentColor + "10",
+                }}
+              >
+                {name}
+              </li>
+            </Show>
+          )}
+        </For>
       </ul>
     </div>
   );
