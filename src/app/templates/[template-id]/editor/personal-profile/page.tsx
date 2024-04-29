@@ -1,29 +1,17 @@
 "use client";
 
-import { Fragment } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { arrayMove } from "@dnd-kit/sortable";
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import DNDContexts from "@/components/form/dnd-contexts";
-import {
-  type PersonalProfile,
-  addField,
-  removeField,
-  selectPersonalProfiles,
-  setField,
-  setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectPersonalProfiles } from "@/redux/features/Resume Data/resumeDataSlice";
+import { PersonalProfiles } from "./_components/personal-profiles";
 
-export default function PersonalProfile() {
+const PersonalProfilePage = () => {
   const templateId = useTemplateIdParam();
 
   return (
@@ -63,118 +51,10 @@ export default function PersonalProfile() {
           Add your Personal Profile.
         </p>
 
-        <PersonalProfilesGroup />
+        <PersonalProfiles />
       </form>
     </div>
   );
-}
+};
 
-function PersonalProfilesGroup() {
-  const personalProfiles = useAppSelector(selectPersonalProfiles);
-  const dispatch = useAppDispatch();
-
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "personalProfiles",
-        value: arrayMove(personalProfiles, oldIndex, newIndex),
-      }),
-    );
-  };
-
-  return (
-    <div className="space-y-4">
-      <ul className="space-y-2">
-        <DNDContexts
-          items={personalProfiles.map((personalProfile) => ({
-            id: personalProfile.id,
-          }))}
-          setItems={setItems}
-        >
-          {personalProfiles.map((personalProfile) => (
-            <Fragment key={personalProfile.id}>
-              <PersonalProfileEditor {...personalProfile} />
-            </Fragment>
-          ))}
-        </DNDContexts>
-      </ul>
-      <Button
-        type="button"
-        variant="accent"
-        size="sm"
-        onClick={() => dispatch(addField("personalProfiles"))}
-      >
-        Add Personal Profile
-      </Button>
-    </div>
-  );
-}
-
-type PersonalProfileEditorProps = PersonalProfile;
-function PersonalProfileEditor({
-  id,
-  fieldName,
-  fieldValue,
-}: PersonalProfileEditorProps) {
-  // const setPersonalProfile = useSetPersonalProfile();
-  // const removePersonalProfile = useRemovePersonalProfile();
-
-  const dispatch = useAppDispatch();
-
-  const setPersonalProfile = (personalProfile: PersonalProfile) => {
-    dispatch(
-      setField({ fieldName: "personalProfiles", value: personalProfile }),
-    );
-  };
-
-  const removePersonalProfile = (id: string) => {
-    dispatch(removeField({ fieldName: "personalProfiles", id }));
-  };
-
-  return (
-    <DraggableItemWrapper
-      id={id}
-      preview={
-        <PersonalProfilePreview fieldName={fieldName} fieldValue={fieldValue} />
-      }
-      onRemoveClick={() => removePersonalProfile(id)}
-      removeSrOnlyLabel={`Remove field ${fieldName} with value ${fieldValue}`}
-    >
-      <div className="flex flex-wrap items-end gap-2">
-        <TextInput
-          label="Field Name"
-          placeholder="Enter the field name"
-          value={fieldName}
-          setValue={(value) =>
-            setPersonalProfile({ id, fieldValue, fieldName: value })
-          }
-        />
-
-        <TextInput
-          label="Field Value"
-          placeholder="Enter the field value"
-          value={fieldValue}
-          setValue={(value) =>
-            setPersonalProfile({ id, fieldName, fieldValue: value })
-          }
-        />
-      </div>
-    </DraggableItemWrapper>
-  );
-}
-
-function PersonalProfilePreview({
-  fieldName,
-  fieldValue,
-}: {
-  fieldName: string;
-  fieldValue: string;
-}) {
-  return (
-    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
-      <p>{fieldName}</p>
-      {fieldValue && <span>|</span>}
-      <p>{fieldValue}</p>
-    </div>
-  );
-}
+export default PersonalProfilePage;

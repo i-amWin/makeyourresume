@@ -10,12 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
 import ImageInput from "@/components/form/image-input";
-import { MemoizedTextInput } from "@/components/form/form-input";
-import { MemoizedTextArea } from "@/components/form/form-textarea";
-import { useCallback } from "react";
+import { TextInput } from "@/components/form/form-input";
+import { TextArea } from "@/components/form/form-textarea";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-export default function Profile() {
+const ProfilePage = () => {
   const templateId = useTemplateIdParam();
   const dispatch = useAppDispatch();
 
@@ -29,41 +28,26 @@ export default function Profile() {
     about,
   } = useAppSelector(selectProfile);
 
-  const setFirstName = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "firstName", value })),
-    [dispatch],
-  );
+  const setFirstName = (value: string) =>
+    dispatch(setProfile({ fieldName: "firstName", value }));
 
-  const setLastName = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "lastName", value })),
-    [dispatch],
-  );
+  const setLastName = (value: string) =>
+    dispatch(setProfile({ fieldName: "lastName", value }));
 
-  const setProfessionalTitle = useCallback(
-    (value: string) =>
-      dispatch(setProfile({ fieldName: "professionalTitle", value })),
-    [dispatch],
-  );
+  const setProfessionalTitle = (value: string) =>
+    dispatch(setProfile({ fieldName: "professionalTitle", value }));
 
-  const setPhone = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "phone", value })),
-    [dispatch],
-  );
+  const setPhone = (value: string) =>
+    dispatch(setProfile({ fieldName: "phone", value }));
 
-  const setEmail = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "email", value })),
-    [dispatch],
-  );
+  const setEmail = (value: string) =>
+    dispatch(setProfile({ fieldName: "email", value }));
 
-  const setAddress = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "address", value })),
-    [dispatch],
-  );
+  const setAddress = (value: string) =>
+    dispatch(setProfile({ fieldName: "address", value }));
 
-  const setAbout = useCallback(
-    (value: string) => dispatch(setProfile({ fieldName: "about", value })),
-    [dispatch],
-  );
+  const setAbout = (value: string) =>
+    dispatch(setProfile({ fieldName: "about", value }));
 
   return (
     <div className="space-y-2 rounded border p-4">
@@ -87,7 +71,7 @@ export default function Profile() {
       >
         <ImageInput className="col-span-2 row-span-2" />
 
-        <MemoizedTextInput
+        <TextInput
           label="First Name"
           placeholder="Enter your first name"
           value={firstName}
@@ -95,7 +79,7 @@ export default function Profile() {
           setValue={setFirstName}
         />
 
-        <MemoizedTextInput
+        <TextInput
           label="Last Name"
           placeholder="Enter your last name"
           value={lastName}
@@ -103,7 +87,7 @@ export default function Profile() {
           setValue={setLastName}
         />
 
-        <MemoizedTextInput
+        <TextInput
           label="Profession Title"
           placeholder="Enter your profession title"
           className="col-span-2 sm:col-span-1"
@@ -111,14 +95,14 @@ export default function Profile() {
           setValue={setProfessionalTitle}
         />
 
-        <MemoizedTextInput
+        <TextInput
           label="Phone Number"
           placeholder="Enter your phone number"
           value={phone}
           setValue={setPhone}
         />
 
-        <MemoizedTextInput
+        <TextInput
           label="Email Address"
           placeholder="Enter your email address"
           className="col-span-2"
@@ -126,7 +110,7 @@ export default function Profile() {
           setValue={setEmail}
         />
 
-        <MemoizedTextInput
+        <TextInput
           label="Address"
           placeholder="Enter your address"
           className="col-span-2"
@@ -134,7 +118,7 @@ export default function Profile() {
           setValue={setAddress}
         />
 
-        <MemoizedTextArea
+        <TextArea
           label="About You"
           placeholder="Write a brief about yourself"
           className="col-span-2"
@@ -144,4 +128,6 @@ export default function Profile() {
       </div>
     </div>
   );
-}
+};
+
+export default ProfilePage;

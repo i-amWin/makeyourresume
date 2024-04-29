@@ -1,30 +1,18 @@
 "use client";
 
-import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
 
-import { arrayMove } from "@dnd-kit/sortable";
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import DNDContexts from "@/components/form/dnd-contexts";
-import {
-  Skill,
-  addField,
-  removeField,
-  selectSkills,
-  setField,
-  setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectSkills } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Skills } from "./_components/skills";
 
-export default function Skills() {
+const SkillsPage = () => {
   const templateId = useTemplateIdParam();
 
   return (
@@ -62,88 +50,10 @@ export default function Skills() {
       <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">Add your Skills.</p>
 
-        <SkillsGroup />
+        <Skills />
       </form>
     </div>
   );
-}
+};
 
-function SkillsGroup() {
-  const dispatch = useAppDispatch();
-  const skills = useAppSelector(selectSkills);
-
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "skills",
-        value: arrayMove(skills, oldIndex, newIndex),
-      }),
-    );
-  };
-
-  return (
-    <div className="space-y-4">
-      <ul className="space-y-2">
-        <DNDContexts
-          items={skills.map((skill) => ({ id: skill.id }))}
-          setItems={setItems}
-        >
-          {skills.map((skill) => (
-            <Fragment key={skill.id}>
-              <SkillEditor {...skill} />
-            </Fragment>
-          ))}
-        </DNDContexts>
-      </ul>
-
-      <Button
-        type="button"
-        variant="accent"
-        size="sm"
-        onClick={() => dispatch(addField("skills"))}
-      >
-        Add Skill
-      </Button>
-    </div>
-  );
-}
-
-type SkillEditorProps = Skill;
-
-const SkillEditor = memo(({ id, name }: SkillEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeSkill = (id: string) => {
-    dispatch(removeField({ fieldName: "skills", id }));
-  };
-
-  const setSkill = (social: Skill) => {
-    dispatch(setField({ fieldName: "skills", value: social }));
-  };
-
-  return (
-    <DraggableItemWrapper
-      id={id}
-      preview={<SkillPreview name={name} />}
-      onRemoveClick={() => removeSkill(id)}
-      removeSrOnlyLabel={`Remove ${name} skill`}
-    >
-      <TextInput
-        label="Skill Name"
-        placeholder="Enter your skill name"
-        value={name}
-        setValue={(value) => setSkill({ id, name: value })}
-      />
-    </DraggableItemWrapper>
-  );
-});
-
-SkillEditor.displayName = "SkillEditor";
-
-function SkillPreview({ name }: { name: string }) {
-  return (
-    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
-      <p className="text-sm uppercase">{name}</p>
-    </div>
-  );
-}
+export default SkillsPage;

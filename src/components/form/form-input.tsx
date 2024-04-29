@@ -2,9 +2,8 @@ import { useId } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { cn } from "@/utils/cn";
-import { memo } from "react";
 
-interface FormInputProps {
+interface TextInputProps {
   label: string;
   placeholder: string;
   value: string;
@@ -18,7 +17,7 @@ export const TextInput = ({
   value,
   setValue,
   className,
-}: FormInputProps) => {
+}: TextInputProps) => {
   const id = useId();
 
   return (
@@ -33,5 +32,3 @@ export const TextInput = ({
     </div>
   );
 };
-
-export const MemoizedTextInput = memo(TextInput);

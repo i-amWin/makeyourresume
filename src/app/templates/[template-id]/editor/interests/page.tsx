@@ -1,29 +1,17 @@
 "use client";
 
-import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { arrayMove } from "@dnd-kit/sortable";
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import DNDContexts from "@/components/form/dnd-contexts";
-import {
-  Interest,
-  addField,
-  removeField,
-  selectInterests,
-  setField,
-  setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectInterests } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Interests } from "./_components/interests";
 
-export default function Interests() {
+const InterestsPage = () => {
   const templateId = useTemplateIdParam();
 
   return (
@@ -61,89 +49,10 @@ export default function Interests() {
       <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
         <p className="text-sm font-bold text-accent">Add your Interests.</p>
 
-        <InterestsGroup />
+        <Interests />
       </form>
     </div>
   );
-}
+};
 
-function InterestsGroup() {
-  const dispatch = useAppDispatch();
-  const interests = useAppSelector(selectInterests);
-
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "interests",
-        value: arrayMove(interests, oldIndex, newIndex),
-      }),
-    );
-  };
-
-  return (
-    <div className="space-y-4">
-      <ul className="space-y-2">
-        <DNDContexts
-          items={interests.map((interest) => ({ id: interest.id }))}
-          setItems={setItems}
-        >
-          {interests.map((interest) => (
-            <Fragment key={interest.id}>
-              <InterestEditor {...interest} />
-            </Fragment>
-          ))}
-        </DNDContexts>
-      </ul>
-      <Button
-        type="button"
-        variant="accent"
-        size="sm"
-        onClick={() => dispatch(addField("interests"))}
-      >
-        Add Interest
-      </Button>
-    </div>
-  );
-}
-
-type InterestEditorProps = Interest;
-
-const InterestEditor = memo(({ id, name }: InterestEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeInterest = (id: string) => {
-    dispatch(removeField({ fieldName: "interests", id }));
-  };
-
-  const setInterest = (social: Interest) => {
-    dispatch(setField({ fieldName: "interests", value: social }));
-  };
-
-  return (
-    <DraggableItemWrapper
-      id={id}
-      preview={<InterestPreview name={name} />}
-      onRemoveClick={() => removeInterest(id)}
-      removeSrOnlyLabel={`Remove ${name} interest`}
-    >
-      <div className="flex flex-wrap items-end gap-2">
-        <TextInput
-          label="Interest Name"
-          placeholder="Enter your interest"
-          value={name}
-          setValue={(value) => setInterest({ id, name: value })}
-        />
-      </div>
-    </DraggableItemWrapper>
-  );
-});
-
-InterestEditor.displayName = "InterestEditor";
-
-function InterestPreview({ name }: { name: string }) {
-  return (
-    <div className="flex min-h-full items-center gap-2 text-sm font-medium text-accent">
-      <p className="capitalize">{name}</p>
-    </div>
-  );
-}
+export default InterestsPage;

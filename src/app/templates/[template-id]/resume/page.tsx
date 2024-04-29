@@ -9,7 +9,7 @@ import EditStyles from "@/components/edit-styles";
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 import { getTemplateComponentById } from "@/lib/templateList";
 
-export default function ResumeOutput() {
+const ResumeOutputPage = () => {
   const templateId = useTemplateIdParam();
 
   const componentRef = useRef(null);
@@ -66,4 +66,6 @@ export default function ResumeOutput() {
       </div>
     </div>
   );
-}
+};
+
+export default ResumeOutputPage;

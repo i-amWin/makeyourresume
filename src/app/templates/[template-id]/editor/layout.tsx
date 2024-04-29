@@ -1,13 +1,15 @@
 import PreviewTemplate from "@/components/preview-template";
 import { getTemplateComponentById } from "@/lib/templateList";
 
-export default function ResumeFormLayout({
-  children,
-  params: { "template-id": templateId },
-}: {
+type ResumeFormLayoutProps = {
   children: React.ReactNode;
   params: { "template-id": string };
-}) {
+};
+
+const ResumeFormLayout = ({
+  children,
+  params: { "template-id": templateId },
+}: ResumeFormLayoutProps) => {
   const Component = getTemplateComponentById(templateId);
   return (
     <section className="relative min-h-[100svh] py-20">
@@ -31,4 +33,6 @@ export default function ResumeFormLayout({
       </div>
     </section>
   );
-}
+};
+
+export default ResumeFormLayout;

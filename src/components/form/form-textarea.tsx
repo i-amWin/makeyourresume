@@ -1,9 +1,9 @@
-import { memo, useId } from "react";
+import { useId } from "react";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { cn } from "@/utils/cn";
 
-interface FormTextAreaProps {
+interface TextAreaProps {
   label: string;
   placeholder: string;
   value: string;
@@ -12,14 +12,14 @@ interface FormTextAreaProps {
   rows?: number;
 }
 
-export const FormTextArea = ({
+export const TextArea = ({
   label,
   placeholder,
   value,
   setValue,
   className,
   rows = 9,
-}: FormTextAreaProps) => {
+}: TextAreaProps) => {
   const id = useId();
 
   return (
@@ -36,5 +36,3 @@ export const FormTextArea = ({
     </div>
   );
 };
-
-export const MemoizedTextArea = memo(FormTextArea);

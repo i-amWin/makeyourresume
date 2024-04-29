@@ -1,29 +1,17 @@
 "use client";
 
-import { Fragment, memo } from "react";
 import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
-import { TextInput } from "@/components/form/form-input";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { arrayMove } from "@dnd-kit/sortable";
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import DNDContexts from "@/components/form/dnd-contexts";
-import {
-  Education,
-  addField,
-  removeField,
-  selectEducations,
-  setField,
-  setFields,
-} from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectEducations } from "@/redux/features/Resume Data/resumeDataSlice";
+import { Educations } from "./_components/educations";
 
-export default function Educations() {
+const EducationsPage = () => {
   const templateId = useTemplateIdParam();
 
   return (
@@ -63,137 +51,10 @@ export default function Educations() {
           Add your Educational Qualifications.
         </p>
 
-        <EducationsGroup />
+        <Educations />
       </form>
     </div>
   );
-}
+};
 
-function EducationsGroup() {
-  const dispatch = useAppDispatch();
-  const educations = useAppSelector(selectEducations);
-
-  const setItems = (oldIndex: number, newIndex: number) => {
-    dispatch(
-      setFields({
-        fieldName: "educations",
-        value: arrayMove(educations, oldIndex, newIndex),
-      }),
-    );
-  };
-
-  return (
-    <div className="space-y-4">
-      <ul className="space-y-2">
-        <DNDContexts
-          items={educations.map((education) => ({ id: education.id }))}
-          setItems={setItems}
-        >
-          {educations.map((education) => (
-            <Fragment key={education.id}>
-              <EducationEditor {...education} />
-            </Fragment>
-          ))}
-        </DNDContexts>
-      </ul>
-
-      <Button
-        type="button"
-        variant="accent"
-        size="sm"
-        onClick={() => dispatch(addField("educations"))}
-      >
-        Add Education
-      </Button>
-    </div>
-  );
-}
-
-type EducationEditorProps = Education;
-
-const EducationEditor = memo((education: EducationEditorProps) => {
-  const dispatch = useAppDispatch();
-
-  const removeEducation = (id: string) => {
-    dispatch(removeField({ fieldName: "educations", id }));
-  };
-
-  const setEducation = (education: Education) => {
-    dispatch(setField({ fieldName: "educations", value: education }));
-  };
-
-  return (
-    <DraggableItemWrapper
-      id={education.id}
-      preview={<EducationPreview {...education} />}
-      onRemoveClick={() => removeEducation(education.id)}
-      removeSrOnlyLabel={`Remove ${education.courseName} from your resume`}
-    >
-      <div className="grid items-end gap-2">
-        <TextInput
-          label="Degree / Course Name"
-          placeholder="Enter your course name"
-          value={education.courseName}
-          setValue={(value) => {
-            setEducation({ ...education, courseName: value });
-          }}
-        />
-
-        <TextInput
-          label="Institute / College Name"
-          placeholder="Enter your college name"
-          value={education.collegeName}
-          setValue={(value) => {
-            setEducation({ ...education, collegeName: value });
-          }}
-        />
-
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <TextInput
-            label="Start Date"
-            placeholder="Enter your start date"
-            value={education.from}
-            setValue={(value) => {
-              setEducation({ ...education, from: value });
-            }}
-            className="min-w-[10rem] flex-1"
-          />
-
-          <TextInput
-            label="End Date"
-            placeholder="Enter your end date"
-            value={education.to}
-            setValue={(value) => {
-              setEducation({ ...education, to: value });
-            }}
-            className="min-w-[10rem] flex-1"
-          />
-        </div>
-      </div>
-    </DraggableItemWrapper>
-  );
-});
-
-EducationEditor.displayName = "EducationEditor";
-
-function EducationPreview({
-  courseName,
-  collegeName,
-  from,
-  to,
-}: EducationEditorProps) {
-  return (
-    <div className="flex min-h-full flex-col justify-center text-sm font-medium text-accent">
-      <div className="flex gap-2">
-        <p>{courseName}</p>
-        {collegeName && <span>|</span>}
-        <p>{collegeName}</p>
-      </div>
-      <div className="flex gap-2">
-        <p>{from}</p>
-        {to && <span>-</span>}
-        <p>{to}</p>
-      </div>
-    </div>
-  );
-}
+export default EducationsPage;

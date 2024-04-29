@@ -3,7 +3,7 @@ import Link from "next/link";
 import { templatesList } from "@/lib/templateList";
 import Reset from "@/components/reset";
 
-export default function Templates() {
+const TemplatesPage = () => {
   return (
     <section className="py-20">
       <Reset />
@@ -37,4 +37,6 @@ export default function Templates() {
       </ul>
     </section>
   );
-}
+};
+
+export default TemplatesPage;
