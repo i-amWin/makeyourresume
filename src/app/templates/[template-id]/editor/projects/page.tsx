@@ -4,11 +4,12 @@ import Link from "next/link";
 
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
 
+import { selectProjects } from "@/redux/features/Resume Data/resumeDataSlice";
+
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/form/section-heading";
 import SkipButton from "@/components/form/skip-button";
 import NextButton from "@/components/form/next-button";
-import { selectProjects } from "@/redux/features/Resume Data/resumeDataSlice";
 import { Projects } from "./_components/projects";
 
 const ProjectsPage = () => {

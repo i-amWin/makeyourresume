@@ -1,19 +1,19 @@
-import { Button } from "../ui/button";
-
 import Link from "next/link";
 
-import SkipButton from "./skip-button";
 import { useAppSelector } from "@/redux/hooks";
+
+import { type RootState } from "@/redux/store";
 import {
   selectSkippedSection,
   type Section,
 } from "@/redux/features/Skipped Sections/skippedSectionSlice";
-import { RootState } from "@/redux/store";
+
+import { Button } from "../ui/button";
+import SkipButton from "./skip-button";
 
 type NextButtonProps = {
   label: string;
   sectionName: Section;
-  // useData: () => unknown[];
   selectFunction: (state: RootState) => unknown[];
   href: string;
 };

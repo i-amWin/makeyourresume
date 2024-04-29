@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/header";
 import NextJSTopLoader from "nextjs-toploader";
+
+import "./globals.css";
+
+import Header from "@/components/header";
 import { StoreProvider } from "@/redux/store-provider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });

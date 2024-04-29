@@ -1,7 +1,9 @@
 import { useId } from "react";
+
+import { cn } from "@/utils/cn";
+
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { cn } from "@/utils/cn";
 
 interface TextInputProps {
   label: string;

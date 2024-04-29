@@ -1,9 +1,13 @@
-import { cn } from "@/utils/cn";
 import Dropzone from "react-dropzone";
+
+import { cn } from "@/utils/cn";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
+import { setProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { setProfile } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function ImageInput({ className }: { className?: string }) {
   const image = useAppSelector((state) => state.resumeData.profile.image);

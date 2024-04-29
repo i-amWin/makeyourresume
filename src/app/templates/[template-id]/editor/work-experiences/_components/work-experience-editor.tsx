@@ -1,5 +1,9 @@
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { TextInput } from "@/components/form/form-input";
+import { memo } from "react";
+
+import { arrayMove } from "@dnd-kit/sortable";
+
+import { useAppDispatch } from "@/redux/hooks";
+
 import {
   WorkExperience,
   addWorkResponsibility,
@@ -7,14 +11,14 @@ import {
   setField,
   setWorkResponsibilities,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { arrayMove } from "@dnd-kit/sortable";
+
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { TextInput } from "@/components/form/form-input";
 import { WorkExperiencePreview } from "./work-experience-preview";
-import { Label } from "@radix-ui/react-label";
 import DNDContexts from "@/components/form/dnd-contexts";
 import { WorkResponsibilityEditor } from "./work-responsibility-editor";
 import { Button } from "@/components/ui/button";
-import { memo } from "react";
+import { Label } from "@/components/ui/label";
 
 type WorkExperienceEditorProps = WorkExperience;
 

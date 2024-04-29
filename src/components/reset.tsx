@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
+
 import { useAppDispatch } from "@/redux/hooks";
+
 import { resetSkippedSections } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { resetStyles } from "@/redux/features/Custom Styles/customStyleSlice";
 import { resetResumeData } from "@/redux/features/Resume Data/resumeDataSlice";

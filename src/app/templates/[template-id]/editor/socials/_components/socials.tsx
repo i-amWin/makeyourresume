@@ -1,12 +1,15 @@
-import DNDContexts from "@/components/form/dnd-contexts";
-import { Button } from "@/components/ui/button";
+import { arrayMove } from "@dnd-kit/sortable";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 import {
   addField,
   selectSocials,
   setFields,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { arrayMove } from "@dnd-kit/sortable";
+
+import DNDContexts from "@/components/form/dnd-contexts";
+import { Button } from "@/components/ui/button";
 import { SocialEditor } from "./social-editor";
 
 export const Socials = () => {

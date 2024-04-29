@@ -1,10 +1,13 @@
+import { memo } from "react";
+
+import { useAppDispatch } from "@/redux/hooks";
+
 import {
   Project,
   removeField,
   setField,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { memo } from "react";
+
 import { ProjectPreview } from "./project-preview";
 import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { TextInput } from "@/components/form/form-input";

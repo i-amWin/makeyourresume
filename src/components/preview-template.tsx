@@ -1,3 +1,5 @@
+import { Eye } from "lucide-react";
+
 import {
   Sheet,
   SheetClose,
@@ -7,7 +9,6 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { Eye } from "lucide-react";
 
 interface PreviewTemplateProps {
   className?: string;

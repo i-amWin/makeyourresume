@@ -1,4 +1,7 @@
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { memo } from "react";
+
+import { useAppDispatch } from "@/redux/hooks";
+
 import { TextInput } from "@/components/form/form-input";
 import FormSelect from "@/components/form/form-select";
 import {
@@ -6,8 +9,8 @@ import {
   removeField,
   setField,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { memo } from "react";
+
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { SocialPreview } from "./social-preview";
 
 type SocialEditorProps = Social;

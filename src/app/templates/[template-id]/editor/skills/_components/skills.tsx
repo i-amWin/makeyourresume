@@ -1,11 +1,14 @@
-import DNDContexts from "@/components/form/dnd-contexts";
+import { arrayMove } from "@dnd-kit/sortable";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 import {
   addField,
   selectSkills,
   setFields,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { arrayMove } from "@dnd-kit/sortable";
+
+import DNDContexts from "@/components/form/dnd-contexts";
 import { SkillEditor } from "./skill-editor";
 import { Button } from "@/components/ui/button";
 

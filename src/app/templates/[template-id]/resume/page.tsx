@@ -2,12 +2,15 @@
 
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import { Button } from "@/components/ui/button";
 import { Download, Pencil } from "lucide-react";
 import Link from "next/link";
-import EditStyles from "@/components/edit-styles";
-import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+
 import { getTemplateComponentById } from "@/lib/templateList";
+
+import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+
+import { Button } from "@/components/ui/button";
+import EditStyles from "@/components/edit-styles";
 
 const ResumeOutputPage = () => {
   const templateId = useTemplateIdParam();

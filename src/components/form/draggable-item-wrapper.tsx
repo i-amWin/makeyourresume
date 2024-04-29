@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { ChevronUp, GripVertical, Trash2 } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
 
 interface DraggableItemWrapperProps {
   id: string;

@@ -1,5 +1,6 @@
-import Template1 from "@/components/resume-templates/template-1";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
+
+import Template1 from "@/components/resume-templates/template-1";
 
 type TemplateList = {
   id: string;

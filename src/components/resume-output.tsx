@@ -2,11 +2,13 @@
 
 import { ForwardRefExoticComponent, RefAttributes, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import { Button } from "./ui/button";
 import { Download, Pencil } from "lucide-react";
 import Link from "next/link";
-import EditStyles from "./edit-styles";
+
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+
+import { Button } from "./ui/button";
+import EditStyles from "./edit-styles";
 import Template1 from "./resume-templates/template-1";
 
 export default function ResumeOutput() {

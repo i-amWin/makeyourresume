@@ -1,13 +1,16 @@
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { memo } from "react";
+
+import { useAppDispatch } from "@/redux/hooks";
+
 import {
   PersonalProfile,
   removeField,
   setField,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
+
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { PersonalProfilePreview } from "./personal-profile-preview";
 import { TextInput } from "@/components/form/form-input";
-import { memo } from "react";
 
 type PersonalProfileEditorProps = PersonalProfile;
 

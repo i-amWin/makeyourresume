@@ -1,6 +1,9 @@
 import { ReactNode } from "react";
+
 import { cn } from "@/utils/cn";
+
 import { useAppSelector } from "@/redux/hooks";
+
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 
 export default function Heading({

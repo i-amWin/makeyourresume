@@ -1,11 +1,14 @@
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { memo } from "react";
+
+import { useAppDispatch } from "@/redux/hooks";
+
 import {
   Interest,
   removeField,
   setField,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { memo } from "react";
+
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
 import { InterestPreview } from "./interest-preview";
 import { TextInput } from "@/components/form/form-input";
 

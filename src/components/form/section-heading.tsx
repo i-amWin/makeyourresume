@@ -1,5 +1,6 @@
-import { cn } from "@/utils/cn";
 import React, { ComponentPropsWithoutRef } from "react";
+
+import { cn } from "@/utils/cn";
 
 type SectionHeadingProps = ComponentPropsWithoutRef<"h2">;
 

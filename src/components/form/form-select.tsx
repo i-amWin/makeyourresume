@@ -1,4 +1,10 @@
 import React, { Fragment } from "react";
+
+import { capitalize } from "@/utils/capitalize";
+import { cn } from "@/utils/cn";
+
+import { socialNames } from "@/lib/data";
+
 import {
   Select,
   SelectValue,
@@ -6,10 +12,6 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-
-import { socialNames } from "@/lib/data";
-import { capitalize } from "@/utils/capitalize";
-import { cn } from "@/utils/cn";
 import { Label } from "../ui/label";
 
 type FromSelectProps = {

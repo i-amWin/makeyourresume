@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+
 import { useTemplateIdParam } from "@/hooks/useTemplateIdParam";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 import {
   setProfile,
   selectProfile,
@@ -12,7 +15,6 @@ import SectionHeading from "@/components/form/section-heading";
 import ImageInput from "@/components/form/image-input";
 import { TextInput } from "@/components/form/form-input";
 import { TextArea } from "@/components/form/form-textarea";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const ProfilePage = () => {
   const templateId = useTemplateIdParam();

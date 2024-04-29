@@ -1,4 +1,13 @@
 import Link from "next/link";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
+import {
+  selectSkippedSection,
+  toggleSkippedSection,
+  type Section,
+} from "@/redux/features/Skipped Sections/skippedSectionSlice";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,13 +20,6 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  selectSkippedSection,
-  toggleSkippedSection,
-  type Section,
-} from "@/redux/features/Skipped Sections/skippedSectionSlice";
 
 type SkipButtonProps = {
   sectionName: Section;

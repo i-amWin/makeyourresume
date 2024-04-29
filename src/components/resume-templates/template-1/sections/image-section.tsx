@@ -1,9 +1,14 @@
 import { Image } from "lucide-react";
+
 import { isDoubleHyphens } from "@/utils/is-double-hyphens";
+
 import { useAppSelector } from "@/redux/hooks";
+
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 import { selectProfile } from "@/redux/features/Resume Data/resumeDataSlice";
+
 import { Show } from "@/components/control-flow/show";
+
 import { dummyData } from "../../dummy-data";
 
 export default function ImageSection() {

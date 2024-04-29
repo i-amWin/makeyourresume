@@ -1,11 +1,13 @@
-import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
-import { Textarea } from "@/components/ui/textarea";
+import { useAppDispatch } from "@/redux/hooks";
+
 import {
   WorkResponsibility,
   removeWorkResponsibilityField,
   setWorkResponsibilityField,
 } from "@/redux/features/Resume Data/resumeDataSlice";
-import { useAppDispatch } from "@/redux/hooks";
+
+import DraggableItemWrapper from "@/components/form/draggable-item-wrapper";
+import { Textarea } from "@/components/ui/textarea";
 
 type WorkResponsibilityEditorProps = {
   id: string;

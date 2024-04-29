@@ -1,12 +1,17 @@
-import Heading from "../components/heading";
 import { Circle } from "lucide-react";
+
 import { isDoubleHyphens } from "@/utils/is-double-hyphens";
+
 import { useAppSelector } from "@/redux/hooks";
+
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 import { selectEducations } from "@/redux/features/Resume Data/resumeDataSlice";
+
+import Heading from "../components/heading";
 import { For } from "@/components/control-flow/for";
 import { Show } from "@/components/control-flow/show";
+
 import { dummyData } from "../../dummy-data";
 
 export default function EducationSection() {

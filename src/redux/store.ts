@@ -1,11 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 import SkippedSectionsReducer from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import CustomStyleReducer from "@/redux/features/Custom Styles/customStyleSlice";
 import ResumeDataReducer from "@/redux/features/Resume Data/resumeDataSlice";
-
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { persistStore } from "redux-persist";
 
 const persistConfig = {
   key: "root",

@@ -1,6 +1,14 @@
 "use client";
 
 import { forwardRef } from "react";
+import { Inter } from "next/font/google";
+
+import { useAppSelector } from "@/redux/hooks";
+
+import {
+  selectLeftColumnGap,
+  selectRightColumnGap,
+} from "@/redux/features/Custom Styles/customStyleSlice";
 
 import TemplateWrapper from "@/components/resume-templates/components/template-wrapper";
 import ImageSection from "./sections/image-section";
@@ -13,19 +21,9 @@ import ProjectsSection from "./sections/projects-section";
 import EducationSection from "./sections/education-section";
 import PersonalProfileSection from "./sections/personal-profile-section";
 
-import { Inter } from "next/font/google";
-import { useAppSelector } from "@/redux/hooks";
-import {
-  selectLeftColumnGap,
-  selectRightColumnGap,
-} from "@/redux/features/Custom Styles/customStyleSlice";
-
 const inter = Inter({ subsets: ["latin"] });
 
 const Template1 = forwardRef<HTMLDivElement>((_, ref) => {
-  // const leftColumnGap = useLeftColumnGap("template-1");
-  // const rightColumnGap = useRightColumnGap("template-1");
-
   const leftColumnGap = useAppSelector((state) =>
     selectLeftColumnGap(state, "template-1"),
   );

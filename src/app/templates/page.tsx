@@ -1,6 +1,8 @@
-import EditAccentColors from "@/components/edit-accent-colors";
 import Link from "next/link";
+
 import { templatesList } from "@/lib/templateList";
+
+import EditAccentColors from "@/components/edit-accent-colors";
 import Reset from "@/components/reset";
 
 const TemplatesPage = () => {

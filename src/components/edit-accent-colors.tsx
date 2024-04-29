@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+
 import { TemplateId } from "@/lib/data";
+
 import { useAppDispatch } from "@/redux/hooks";
+
 import {
   resetAccentColors,
   setAccentColors,
 } from "@/redux/features/Custom Styles/customStyleSlice";
+
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const predefinedColors = ["#cd6060", "#00856d", "#006e85", "#730779"];
 
