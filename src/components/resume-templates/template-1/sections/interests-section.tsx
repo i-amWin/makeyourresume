@@ -1,6 +1,6 @@
 import { LucideIcon, Heart } from "lucide-react";
 import Heading from "../components/heading";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -23,7 +23,7 @@ export default function InterestsSection() {
       <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
         <For each={interests.length === 0 ? dummyData.interests : interests}>
           {({ id, name }) => (
-            <Show key={id} when={!isDoubleUnderscores(name)}>
+            <Show key={id} when={!isDoubleHyphens(name)}>
               <li>
                 <InterestText text={name} />
               </li>

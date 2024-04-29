@@ -1,6 +1,6 @@
 import Heading from "../components/heading";
 import { Circle, Square } from "lucide-react";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -55,7 +55,7 @@ export default function ExperienceSection() {
               />
 
               <div className="grid flex-1">
-                <Show when={!isDoubleUnderscores(jobTitle)}>
+                <Show when={!isDoubleHyphens(jobTitle)}>
                   <h3
                     className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-none"
                     style={{ color: accentColor }}
@@ -64,7 +64,7 @@ export default function ExperienceSection() {
                   </h3>
                 </Show>
 
-                <Show when={!isDoubleUnderscores(companyName)}>
+                <Show when={!isDoubleHyphens(companyName)}>
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*10)] font-semibold leading-tight">
                     {companyName}
                   </p>
@@ -73,31 +73,31 @@ export default function ExperienceSection() {
                 <div className="flex justify-between">
                   <Show
                     when={
-                      !isDoubleUnderscores(joiningDate) ||
-                      !isDoubleUnderscores(leavingDate)
+                      !isDoubleHyphens(joiningDate) ||
+                      !isDoubleHyphens(leavingDate)
                     }
                   >
                     <p
                       className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
                       style={{ color: accentColor }}
                     >
-                      <Show when={!isDoubleUnderscores(joiningDate)}>
+                      <Show when={!isDoubleHyphens(joiningDate)}>
                         {joiningDate}
                       </Show>
                       <Show
                         when={
-                          !isDoubleUnderscores(joiningDate) &&
-                          !isDoubleUnderscores(leavingDate)
+                          !isDoubleHyphens(joiningDate) &&
+                          !isDoubleHyphens(leavingDate)
                         }
                       >
                         {" - "}
                       </Show>
-                      <Show when={!isDoubleUnderscores(leavingDate)}>
+                      <Show when={!isDoubleHyphens(leavingDate)}>
                         {leavingDate}
                       </Show>
                     </p>
                   </Show>
-                  <Show when={!isDoubleUnderscores(location)}>
+                  <Show when={!isDoubleHyphens(location)}>
                     <p
                       className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-tight"
                       style={{ color: accentColor }}
@@ -110,10 +110,7 @@ export default function ExperienceSection() {
                 <ul>
                   <For each={workResponsibilities}>
                     {({ id, responsibility }) => (
-                      <Show
-                        key={id}
-                        when={!isDoubleUnderscores(responsibility)}
-                      >
+                      <Show key={id} when={!isDoubleHyphens(responsibility)}>
                         <li className="flex gap-[calc(var(--WIDTHPERCENTAGE)*6)]">
                           <Square
                             color={accentColor}

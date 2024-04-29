@@ -1,6 +1,6 @@
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -53,33 +53,33 @@ export default function ProjectsSection() {
                     color: accentColor,
                   }}
                 >
-                  <Show when={!isDoubleUnderscores(projectName)}>
+                  <Show when={!isDoubleHyphens(projectName)}>
                     <h3 className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold">
                       {projectName}
                     </h3>
                   </Show>
 
-                  <Show when={!isDoubleUnderscores(liveLink)}>
+                  <Show when={!isDoubleHyphens(liveLink)}>
                     <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)]">
                       ({liveLink})
                     </p>
                   </Show>
                 </div>
 
-                <Show when={!isDoubleUnderscores(projectDescription)}>
+                <Show when={!isDoubleHyphens(projectDescription)}>
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
                     {projectDescription}
                   </p>
                 </Show>
 
-                <Show when={!isDoubleUnderscores(sourceLink)}>
+                <Show when={!isDoubleHyphens(sourceLink)}>
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] leading-snug">
                     <span className="font-semibold">Source Code: </span>
                     <span className="text-blue-500">{sourceLink}</span>
                   </p>
                 </Show>
 
-                <Show when={!isDoubleUnderscores(tags)}>
+                <Show when={!isDoubleHyphens(tags)}>
                   <p
                     className="text-[calc(var(--WIDTHPERCENTAGE)*8)] italic leading-snug"
                     style={{

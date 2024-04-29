@@ -1,5 +1,5 @@
 import { Image } from "lucide-react";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
 import { selectProfile } from "@/redux/features/Resume Data/resumeDataSlice";
@@ -54,7 +54,7 @@ function ImagePlaceholder({
       }}
     >
       <Show
-        when={isDoubleUnderscores(firstName) && isDoubleUnderscores(lastName)}
+        when={isDoubleHyphens(firstName) && isDoubleHyphens(lastName)}
         fallback={<Fallback firstName={firstName} lastName={lastName} />}
       >
         {/* eslint-disable-next-line jsx-a11y/alt-text */}

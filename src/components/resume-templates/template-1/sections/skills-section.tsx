@@ -1,5 +1,5 @@
 import Heading from "../components/heading";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -26,7 +26,7 @@ export default function SkillsSection() {
       <ul className="flex flex-wrap gap-[calc(var(--WIDTHPERCENTAGE)*6.5)]">
         <For each={skills.length === 0 ? dummyData.skills : skills}>
           {({ id, name }) => (
-            <Show key={id} when={!isDoubleUnderscores(name)}>
+            <Show key={id} when={!isDoubleHyphens(name)}>
               <li
                 className="rounded-[calc(var(--WIDTHPERCENTAGE)*3)] border-[calc(var(--WIDTHPERCENTAGE)*.9562)] px-[calc(var(--WIDTHPERCENTAGE)*6)] py-[calc(var(--WIDTHPERCENTAGE)*1.2)] text-[calc(var(--WIDTHPERCENTAGE)*9)] uppercase"
                 style={{

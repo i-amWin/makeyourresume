@@ -1,6 +1,6 @@
 import Heading from "../components/heading";
 import { Circle } from "lucide-react";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -40,7 +40,7 @@ export default function EducationSection() {
                 className="mt-[calc(var(--WIDTHPERCENTAGE)*3.3)] h-[calc(var(--WIDTHPERCENTAGE)*6)] w-[calc(var(--WIDTHPERCENTAGE)*6)]"
               />
               <div>
-                <Show when={!isDoubleUnderscores(courseName)}>
+                <Show when={!isDoubleHyphens(courseName)}>
                   <h3
                     className="text-[calc(var(--WIDTHPERCENTAGE)*12)] font-bold leading-[1.1]"
                     style={{
@@ -51,28 +51,22 @@ export default function EducationSection() {
                   </h3>
                 </Show>
 
-                <Show when={!isDoubleUnderscores(collegeName)}>
+                <Show when={!isDoubleHyphens(collegeName)}>
                   <p className="text-[calc(var(--WIDTHPERCENTAGE)*9)] italic leading-snug">
                     {collegeName}
                   </p>
                 </Show>
 
-                <Show
-                  when={!isDoubleUnderscores(from) || !isDoubleUnderscores(to)}
-                >
+                <Show when={!isDoubleHyphens(from) || !isDoubleHyphens(to)}>
                   <p
                     className="text-[calc(var(--WIDTHPERCENTAGE)*7)] italic"
                     style={{ color: accentColor }}
                   >
-                    <Show when={!isDoubleUnderscores(from)}>{from}</Show>
-                    <Show
-                      when={
-                        !isDoubleUnderscores(from) && !isDoubleUnderscores(to)
-                      }
-                    >
+                    <Show when={!isDoubleHyphens(from)}>{from}</Show>
+                    <Show when={!isDoubleHyphens(from) && !isDoubleHyphens(to)}>
                       {" - "}
                     </Show>
-                    <Show when={!isDoubleUnderscores(to)}>{to}</Show>
+                    <Show when={!isDoubleHyphens(to)}>{to}</Show>
                   </p>
                 </Show>
               </div>

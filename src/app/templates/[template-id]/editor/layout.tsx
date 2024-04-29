@@ -15,7 +15,7 @@ export default function ResumeFormLayout({
         Let<span className="text-primary">&apos;</span>s Start
       </h1>
       <p className="pb-3 text-sm">
-        <span className="font-bold">Tip:</span> Just type double underscores (
+        <span className="font-bold">Tip:</span> Just type double hyphens (
         <span className="font-bold text-primary">--</span>) to skip a field.
       </p>
 

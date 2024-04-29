@@ -1,6 +1,6 @@
 import { icons } from "@/lib/data";
 import { LucideIcon } from "lucide-react";
-import { isDoubleUnderscores } from "@/utils/is-double-underscores";
+import { isDoubleHyphens } from "@/utils/is-double-hyphens";
 import { useAppSelector } from "@/redux/hooks";
 import { selectSkippedSection } from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import { selectAccentColor } from "@/redux/features/Custom Styles/customStyleSlice";
@@ -26,19 +26,19 @@ function Contacts() {
 
   return (
     <>
-      <Show when={!isDoubleUnderscores(email)}>
+      <Show when={!isDoubleHyphens(email)}>
         <ContactAndSocialText
           icon="mail"
           text={email || dummyData.profile.email}
         />
       </Show>
-      <Show when={!isDoubleUnderscores(phone)}>
+      <Show when={!isDoubleHyphens(phone)}>
         <ContactAndSocialText
           icon="phone"
           text={phone || dummyData.profile.phone}
         />
       </Show>
-      <Show when={!isDoubleUnderscores(address)}>
+      <Show when={!isDoubleHyphens(address)}>
         <ContactAndSocialText
           icon="mapPin"
           text={address || dummyData.profile.address}
@@ -61,7 +61,7 @@ function Socials() {
     <ul className="flex flex-col gap-[calc(var(--WIDTHPERCENTAGE)*7)]">
       <For each={socials.length === 0 ? dummyData.socials : socials}>
         {({ id, name, url }) => (
-          <Show key={id} when={!isDoubleUnderscores(url)}>
+          <Show key={id} when={!isDoubleHyphens(url)}>
             <li>
               <ContactAndSocialText icon={name} text={url} />
             </li>
