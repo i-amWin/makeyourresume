@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-import { useSelector, useDispatch } from "react-redux";
 import Dropzone from "react-dropzone";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
