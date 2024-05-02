@@ -5,16 +5,19 @@ import storage from "redux-persist/lib/storage";
 import SkippedSectionsReducer from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import CustomStyleReducer from "@/redux/features/Custom Styles/customStyleSlice";
 import ResumeDataReducer from "@/redux/features/Resume Data/resumeDataSlice";
+import AuthReducer from "@/redux/features/user/userSlice";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["resumeData", "skippedSections", "customStyles"],
 };
 
 const rootReducer = combineReducers({
   resumeData: ResumeDataReducer,
   skippedSections: SkippedSectionsReducer,
   customStyles: CustomStyleReducer,
+  auth: AuthReducer,
 });
 
 const makeConfiguredStore = () =>
@@ -33,6 +36,10 @@ export const makeStore = () => {
 
   const store = configureStore({
     reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
 
   persistStore(store);

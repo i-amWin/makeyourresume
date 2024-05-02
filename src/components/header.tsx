@@ -1,6 +1,42 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { selectUser } from "@/redux/features/user/userSlice";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { LogOut, User } from "lucide-react";
+
+import { cn } from "@/utils/cn";
+
+import { Show } from "./control-flow/show";
+import { Button } from "./ui/button";
+import { For } from "./control-flow/for";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+
+const navLinks = [
+  {
+    href: "/",
+    label: "Home",
+  },
+  {
+    href: "/templates",
+    label: "Templates",
+  },
+];
 
 export default function Header() {
+  const path = usePathname();
+
+  const user = useAppSelector(selectUser);
+
   return (
     <header className="fixed left-0 right-0 top-0 z-[50] border-b bg-background/30 backdrop-blur">
       <div className="mx-auto flex max-w-[77.5rem] items-center justify-between px-4 py-2 pr-6">
@@ -33,7 +69,72 @@ export default function Header() {
             Make Your Resume
           </span>
         </Link>
+
+        <div className="flex items-center gap-4">
+          <nav className="flex gap-4">
+            <For each={navLinks}>
+              {({ href, label }) => (
+                <Link
+                  href={href}
+                  key={href}
+                  className={cn(
+                    "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                    {
+                      "text-secondary": path === href,
+                    },
+                  )}
+                >
+                  {label}
+                </Link>
+              )}
+            </For>
+          </nav>
+
+          <Show when={user !== null} fallback={<LoginAndSignUp />}>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage />
+                  <AvatarFallback className="font-medium">
+                    {user?.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 -translate-x-[5rem]">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => {}}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Show>
+        </div>
       </div>
     </header>
+  );
+}
+
+function LoginAndSignUp() {
+  return (
+    <div className="space-x-5">
+      <Button variant="outline" asChild className="py-2.5">
+        <Link href="/register">Register</Link>
+      </Button>
+      <Button asChild className="py-2.5">
+        <Link href="/login">Login</Link>
+      </Button>
+    </div>
   );
 }

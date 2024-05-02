@@ -4,6 +4,7 @@ import { templatesList } from "@/lib/templateList";
 
 import EditAccentColors from "@/components/edit-accent-colors";
 import Reset from "@/components/reset";
+import { AddTemplate } from "./_component/add-template";
 
 const TemplatesPage = () => {
   return (
@@ -25,12 +26,12 @@ const TemplatesPage = () => {
           return (
             <li
               key={template.id}
-              className="aspect-[596/842] origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
+              className="origin-bottom overflow-hidden rounded border-2 bg-muted/20 transition-transform hover:scale-[101%]"
             >
               <Link href={`/templates/${template.id}/editor/profile`}>
-                <div aria-hidden>
+                <AddTemplate templateId={template.id}>
                   <template.component />
-                </div>
+                </AddTemplate>
                 <span className="sr-only">{template.name}</span>
               </Link>
             </li>

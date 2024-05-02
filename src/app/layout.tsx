@@ -6,6 +6,10 @@ import "./globals.css";
 
 import Header from "@/components/header";
 import { StoreProvider } from "@/redux/store-provider";
+import { Bounce, ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+import { FetchUser } from "@/components/fetchUser";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -22,11 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className} relative`}>
-        <NextJSTopLoader color="#ffb300" showSpinner={false} />
-        <Header />
-        <main className="mx-auto max-w-[77.5rem] px-4">
-          <StoreProvider>{children}</StoreProvider>
-        </main>
+        <StoreProvider>
+          <FetchUser>
+            <NextJSTopLoader color="#ffb300" showSpinner={false} />
+            <Header />
+            <main className="mx-auto max-w-[77.5rem] px-4">
+              {children}
+              <ToastContainer
+                autoClose={3000}
+                theme="colored"
+                transition={Bounce}
+              />
+            </main>
+          </FetchUser>
+        </StoreProvider>
       </body>
     </html>
   );
