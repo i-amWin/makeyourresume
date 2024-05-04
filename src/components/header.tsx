@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { selectUser } from "@/redux/features/user/userSlice";
-import { useAppSelector } from "@/redux/hooks";
+import { usePathname, useRouter } from "next/navigation";
+import { selectUser, setUser } from "@/redux/features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { LogOut, User, Menu } from "lucide-react";
 
@@ -39,12 +39,14 @@ export default function Header() {
   const path = usePathname();
 
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
 
   function handleLogout() {
     axios
       .delete("/api/auth/logout")
       .then(({ data }) => {
         toast.success(data.message);
+        dispatch(setUser(null));
       })
       .catch((err) => {
         toast.error(err.response.data.message || "An error occurred!");

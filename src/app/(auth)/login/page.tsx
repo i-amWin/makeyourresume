@@ -21,6 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/features/user/userSlice";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email!" }),
@@ -33,6 +35,7 @@ const loginFormSchema = z.object({
 export default function RegisterPage() {
   const [isLoading, startTransition] = useTransition();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -48,8 +51,8 @@ export default function RegisterPage() {
         .post("/api/auth/login", values)
         .then(({ data }) => {
           toast.success(data.message);
-
           router.push("/");
+          dispatch(setUser(data.user));
         })
         .catch((err) => {
           toast.error(err.response.data.message || "An error occurred!");

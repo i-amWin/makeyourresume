@@ -36,7 +36,6 @@ export const WorkResponsibilityEditor = ({
     id: string,
     workResponsibilityId: string,
   ) => {
-    console.log({ id, workResponsibilityId });
     dispatch(
       removeWorkResponsibilityField({
         workExperienceId: id,

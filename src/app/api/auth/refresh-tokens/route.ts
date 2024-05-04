@@ -7,7 +7,6 @@ import { createAndSetTokens } from "../_utils/create-and-set-tokens";
 // ROUTE: POST /api/auth/refresh-token - [Authenticated User]
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
-
   const refreshToken = cookieStore.get("refreshToken");
 
   if (!refreshToken) {
