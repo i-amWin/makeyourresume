@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { nanoid } from "nanoid";
 
-export type Profile = {
+type Profile = {
   image: string;
   firstName: string;
   lastName: string;
@@ -78,7 +78,7 @@ export type ResumeDataType = {
   personalProfiles: PersonalProfile[];
 };
 
-export const initialResumeDataState: ResumeDataType = {
+const initialResumeDataState: ResumeDataType = {
   profile: {
     image: "",
     firstName: "",
@@ -357,10 +357,6 @@ export const {
 } = resumeDataSlice.actions;
 
 export default resumeDataSlice.reducer;
-
-export const selectProfileField =
-  (fieldName: keyof Profile) => (state: RootState) =>
-    state.resumeData.profile[fieldName];
 
 export const selectProfile = (state: RootState) => state.resumeData.profile;
 

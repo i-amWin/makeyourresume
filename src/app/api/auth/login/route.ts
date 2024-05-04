@@ -1,11 +1,9 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 import * as z from "zod";
-import { constants } from "@/constants";
 import { createAndSetTokens } from "../_utils/create-and-set-tokens";
 
 const loginSchema = z.object({
