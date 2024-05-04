@@ -21,6 +21,8 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const navLinks = [
   {
@@ -37,6 +39,17 @@ export default function Header() {
   const path = usePathname();
 
   const user = useAppSelector(selectUser);
+
+  function handleLogout() {
+    axios
+      .delete("/api/auth/logout")
+      .then(({ data }) => {
+        toast.success(data.message);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message || "An error occurred!");
+      });
+  }
 
   return (
     <header className="fixed left-0 right-0 top-0 z-[50] border-b bg-background/30 backdrop-blur">
@@ -114,7 +127,7 @@ export default function Header() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => {}}>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
