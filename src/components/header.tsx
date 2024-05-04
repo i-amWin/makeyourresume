@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { selectUser } from "@/redux/features/user/userSlice";
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Menu } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 
@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 
 const navLinks = [
   {
@@ -65,13 +66,13 @@ export default function Header() {
             />
           </svg>
 
-          <span className="inline-block text-lg font-bold uppercase text-accent">
+          <span className="inline-block text-lg font-bold uppercase leading-tight text-accent">
             Make Your Resume
           </span>
         </Link>
 
         <div className="flex items-center gap-4">
-          <nav className="flex gap-4">
+          <nav className="hidden gap-4 md:flex">
             <For each={navLinks}>
               {({ href, label }) => (
                 <Link
@@ -120,6 +121,43 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           </Show>
+
+          {/* Hamburger Menu */}
+          <Sheet>
+            <SheetTrigger className="md:hidden">
+              <Menu size={28} />
+            </SheetTrigger>
+            <SheetContent>
+              <nav className="grid gap-4 py-10 pl-4">
+                <For each={navLinks}>
+                  {({ href, label }) => (
+                    <SheetClose key={href} asChild>
+                      <Link
+                        href={href}
+                        className={cn(
+                          "relative text-[0.93rem] font-medium text-neutral-400 hover:text-secondary",
+                          {
+                            "text-secondary": path === href,
+                          },
+                        )}
+                      >
+                        {label}
+                      </Link>
+                    </SheetClose>
+                  )}
+                </For>
+
+                <SheetClose asChild>
+                  <Link
+                    href="/register"
+                    className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                  >
+                    Register
+                  </Link>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
@@ -129,10 +167,15 @@ export default function Header() {
 function LoginAndSignUp() {
   return (
     <div className="space-x-5">
-      <Button variant="outline" asChild className="py-2.5">
+      <Button
+        variant="outline"
+        asChild
+        className="hidden md:inline-block"
+        size="sm"
+      >
         <Link href="/register">Register</Link>
       </Button>
-      <Button asChild className="py-2.5">
+      <Button asChild size="sm">
         <Link href="/login">Login</Link>
       </Button>
     </div>
