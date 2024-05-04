@@ -160,14 +160,16 @@ export default function Header() {
                   )}
                 </For>
 
-                <SheetClose asChild>
-                  <Link
-                    href="/register"
-                    className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
-                  >
-                    Register
-                  </Link>
-                </SheetClose>
+                <Show when={user === null}>
+                  <SheetClose asChild>
+                    <Link
+                      href="/register"
+                      className="text-[0.93rem] font-medium text-accent/80 hover:text-accent"
+                    >
+                      Register
+                    </Link>
+                  </SheetClose>
+                </Show>
               </nav>
             </SheetContent>
           </Sheet>
