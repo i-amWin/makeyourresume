@@ -2,7 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/user/userSlice";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 export const AddTemplate = ({
   children,

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/user/userSlice";
+import { setUser } from "@/redux/features/auth/authSlice";
 import axios from "axios";
 
 export const RefreshUser = () => {

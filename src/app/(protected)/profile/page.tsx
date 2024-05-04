@@ -1,6 +1,6 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { selectUser } from "@/redux/features/user/userSlice";
+import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { For } from "@/components/control-flow/for";
 import { templatesList } from "@/lib/templateList";

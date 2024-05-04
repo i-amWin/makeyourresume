@@ -1,6 +1,6 @@
 "use client";
 
-import { selectUser } from "@/redux/features/user/userSlice";
+import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

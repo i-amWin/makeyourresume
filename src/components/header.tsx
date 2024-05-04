@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { selectUser, setUser } from "@/redux/features/user/userSlice";
+import { selectUser, setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { LogOut, User, Menu } from "lucide-react";

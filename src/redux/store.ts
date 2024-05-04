@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 import SkippedSectionsReducer from "@/redux/features/Skipped Sections/skippedSectionSlice";
 import CustomStyleReducer from "@/redux/features/Custom Styles/customStyleSlice";
 import ResumeDataReducer from "@/redux/features/Resume Data/resumeDataSlice";
-import AuthReducer from "@/redux/features/user/userSlice";
+import AuthReducer from "@/redux/features/auth/authSlice";
 
 const persistConfig = {
   key: "root",

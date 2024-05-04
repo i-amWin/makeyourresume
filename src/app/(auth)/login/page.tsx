@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/user/userSlice";
+import { setUser } from "@/redux/features/auth/authSlice";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email!" }),
