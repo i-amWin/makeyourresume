@@ -43,7 +43,6 @@ export const WorkExperiences = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("workExperiences"))}
       >
         Add Work Experience

@@ -41,7 +41,6 @@ export const Projects = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("projects"))}
       >
         Add Project

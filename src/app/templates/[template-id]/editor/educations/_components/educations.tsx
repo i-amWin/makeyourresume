@@ -41,7 +41,6 @@ export const Educations = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("educations"))}
       >
         Add Education

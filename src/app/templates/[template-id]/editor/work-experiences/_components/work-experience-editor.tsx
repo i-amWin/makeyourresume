@@ -139,7 +139,6 @@ export const WorkExperienceEditor = memo(
             <Button
               type="button"
               variant="accent"
-              size="sm"
               onClick={() => dispatch(addWorkResponsibility(workExperience.id))}
             >
               Add Work Responsibility

@@ -40,7 +40,6 @@ export const Interests = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("interests"))}
       >
         Add Interest

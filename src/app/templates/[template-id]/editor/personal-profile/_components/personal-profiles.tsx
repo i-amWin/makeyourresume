@@ -45,7 +45,6 @@ export const PersonalProfiles = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("personalProfiles"))}
       >
         Add Personal Profile

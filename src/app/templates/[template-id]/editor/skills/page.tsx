@@ -18,7 +18,7 @@ const SkillsPage = () => {
   return (
     <div className="space-y-2 rounded border p-4">
       <div className="flex flex-wrap gap-2">
-        <Button asChild size="sm" variant="secondary">
+        <Button asChild variant="secondary">
           <Link href={`/templates/${templateId}/editor/socials`}>
             Previous (Socials)
           </Link>

@@ -41,7 +41,6 @@ export const Socials = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("socials"))}
       >
         Add Social

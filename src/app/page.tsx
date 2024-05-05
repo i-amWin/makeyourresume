@@ -15,7 +15,7 @@ export default function Home() {
           showcases your skills. Start building your impactful resume now!
         </p>
 
-        <Button asChild size="lg" className="mx-auto w-fit md:text-base">
+        <Button asChild size="xl" className="mx-auto w-fit md:text-base">
           <Link href="/templates">Build Your Resume</Link>
         </Button>
       </div>

@@ -47,7 +47,6 @@ export default function SkipButton({
   if (isSkipped) {
     return (
       <Button
-        size="sm"
         variant={buttonVariant}
         onClick={() => handleToggleSkippedSection(false)}
       >
@@ -59,9 +58,7 @@ export default function SkipButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size="sm" variant={buttonVariant}>
-          {buttonLabel}
-        </Button>
+        <Button variant={buttonVariant}>{buttonLabel}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -73,10 +70,10 @@ export default function SkipButton({
         </AlertDialogDescription>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
-            <Button size="sm">Cancel</Button>
+            <Button>Cancel</Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button asChild size="sm">
+            <Button asChild>
               <Link
                 href={href}
                 onClick={() => handleToggleSkippedSection(true)}

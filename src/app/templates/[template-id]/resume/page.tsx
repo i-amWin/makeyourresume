@@ -41,7 +41,11 @@ const ResumeOutputPage = () => {
     <div className="flex flex-col gap-4 py-20 md:py-24 lg:flex-row">
       <div className="flex-1 space-y-4 rounded border p-4 sm:space-y-6">
         <div className="flex flex-wrap gap-2">
-          <Button asChild variant="secondary">
+          <Button
+            asChild
+            variant="secondary"
+            className="flex items-center gap-2"
+          >
             <Link
               href={`/templates/${templateId}/editor/profile`}
               className="space-x-2 border"
@@ -50,7 +54,10 @@ const ResumeOutputPage = () => {
             </Link>
           </Button>
 
-          <Button onClick={handlePrint} className="ml-auto space-x-2">
+          <Button
+            onClick={handlePrint}
+            className="ml-auto flex items-center gap-2"
+          >
             <span>Download</span> <Download size={18} />
           </Button>
         </div>

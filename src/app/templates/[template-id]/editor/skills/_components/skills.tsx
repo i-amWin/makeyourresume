@@ -41,7 +41,6 @@ export const Skills = () => {
       <Button
         type="button"
         variant="accent"
-        size="sm"
         onClick={() => dispatch(addField("skills"))}
       >
         Add Skill

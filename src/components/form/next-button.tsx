@@ -41,7 +41,7 @@ export default function NextButton({
   }
 
   return (
-    <Button size="sm" asChild>
+    <Button asChild>
       <Link href={href}>{label}</Link>
     </Button>
   );

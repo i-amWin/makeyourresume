@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { selectUser, setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
@@ -184,15 +184,10 @@ export default function Header() {
 function LoginAndSignUp() {
   return (
     <div className="space-x-5">
-      <Button
-        variant="outline"
-        asChild
-        className="hidden md:inline-block"
-        size="sm"
-      >
+      <Button variant="outline" asChild className="hidden md:inline-block">
         <Link href="/register">Register</Link>
       </Button>
-      <Button asChild size="sm">
+      <Button asChild>
         <Link href="/login">Login</Link>
       </Button>
     </div>
